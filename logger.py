@@ -391,3 +391,24 @@ def should_log_status_report():
 def get_stats_copy():
     """Returns a copy of current statistics."""
     return stats.copy()
+
+def get_logger():
+    """Returns a logger-like object with standard logging methods.
+    
+    Returns:
+        object: Logger object with info, error, warning, debug methods
+    """
+    class Logger:
+        def info(self, message):
+            log_message(message, "INFO")
+        
+        def error(self, message):
+            log_message(message, "ERROR")
+        
+        def warning(self, message):
+            log_message(message, "WARNING")
+        
+        def debug(self, message):
+            log_message(message, "DEBUG")
+    
+    return Logger()

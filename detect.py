@@ -16,6 +16,9 @@ Features:
 - Comprehensive logging system
 - Modular architecture with separated responsibilities
 
+Author: Matteo Sala
+Version: 1.0.0
+
 Usage:
     python detect.py
 
@@ -26,6 +29,7 @@ and automatically clicking when found.
 import sys
 import time
 import signal
+import argparse
 from datetime import datetime
 
 # Import modular components
@@ -205,8 +209,60 @@ def cleanup_on_exit():
 # MAIN ENTRY POINT
 # ============================================================================
 
+def create_argument_parser():
+    """Create and configure the argument parser."""
+    parser = argparse.ArgumentParser(
+        description="Automatic Detection and Click System for 'Continue' Messages",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python detect.py                    # Run the detection system
+  python detect.py --help             # Show this help message
+  python detect.py --version          # Show version information
+
+The script will run continuously, scanning for the target message every 2 minutes
+and automatically clicking when found.
+
+For more advanced control, use:
+  python interface_launcher.py        # Launch interface selector
+  python cli_interface.py             # Use command-line interface
+  python gui_interface.py             # Use graphical interface
+        """
+    )
+    
+    parser.add_argument(
+        '--version', 
+        action='version', 
+        version='Continue Detection System v1.0.0 - Developed by Matteo Sala'
+    )
+    
+    parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='Enable debug mode for detailed logs'
+    )
+    
+    parser.add_argument(
+        '--scan-interval',
+        type=int,
+        metavar='SECONDS',
+        help='Override scan interval in seconds (default: from config)'
+    )
+    
+    return parser
+
 def main():
     """Main entry point of the application."""
+    # Parse command line arguments
+    parser = create_argument_parser()
+    
+    # If no arguments provided, show help and exit
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(0)
+    
+    args = parser.parse_args()
+    
     try:
         # Setup logging
         setup_logging()
