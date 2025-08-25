@@ -182,7 +182,7 @@ def perform_single_scan(scan_number):
                 scan_number=scan_number,
                 success=success,
                 duration=scan_time,
-                detections_found=len(coordinates) if coordinates else 0,
+                coordinates_count=len(coordinates) if coordinates else 0,
                 error_message=None if success else "No detections found"
             )
             
@@ -402,18 +402,3 @@ def is_system_healthy():
     except Exception as e:
         log_error(f"Error checking system health: {e}")
         return True  # Assume healthy in case of error
-
-def log_scan_summary():
-    """Logs a summary of performed scans."""
-    try:
-        stats = get_stats_copy()
-        total_scans = stats.get('total_scans', 0)
-        successful_detections = stats.get('successful_detections', 0)
-        total_clicks = stats.get('total_clicks', 0)
-        
-        if total_scans > 0:
-            success_rate = (successful_detections / total_scans) * 100
-            log_message(f"📊 Summary: {total_scans} scans, {successful_detections} detections ({success_rate:.1f}%), {total_clicks} clicks")
-        
-    except Exception as e:
-        log_error(f"Error during scan summary logging: {e}")
