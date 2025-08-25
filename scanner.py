@@ -40,8 +40,17 @@ def scan_entire_screen_for_continue_message():
     try:
         log_debug("Starting complete screen scan")
         
+        # Get system controller to update activity
+        try:
+            from system_controller import get_system_controller
+            controller = get_system_controller()
+        except Exception:
+            controller = None
+        
         # Manage screenshot folder
         try:
+            if controller:
+                controller.set_current_activity("Taking screenshot", "Preparing screenshot folder")
             manage_screenshots_folder()
         except Exception as e:
             log_error(f"Error managing screenshot folder: {e}")
@@ -49,6 +58,8 @@ def scan_entire_screen_for_continue_message():
         
         # Capture screenshot
         try:
+            if controller:
+                controller.set_current_activity("Taking screenshot", "Capturing screen")
             screenshot = safe_screenshot()
             if screenshot is None:
                 log_error("Unable to capture screenshot")
@@ -66,6 +77,8 @@ def scan_entire_screen_for_continue_message():
         
         # Image enhancement
         try:
+            if controller:
+                controller.set_current_activity("Processing image", "Enhancing image for OCR")
             enhanced_images = enhance_image_for_text_detection(screenshot)
             if not enhanced_images:
                 log_error("No enhanced images generated")
@@ -77,6 +90,8 @@ def scan_entire_screen_for_continue_message():
         # Process original image first
         all_detections = []
         try:
+            if controller:
+                controller.set_current_activity("Running OCR", "Processing original image")
             log_debug("Processing original image")
             original_detections = extract_all_text_with_positions(screenshot)
             if original_detections:
@@ -88,8 +103,10 @@ def scan_entire_screen_for_continue_message():
             log_error(f"Error extracting text from original image: {e}")
         
         # Process each enhanced image
-        for method_name, enhanced_image in enhanced_images:
+        for i, (method_name, enhanced_image) in enumerate(enhanced_images):
             try:
+                if controller:
+                    controller.set_current_activity("Running OCR", f"Processing enhanced image {i+1}/{len(enhanced_images)} ({method_name})")
                 log_debug(f"Processing enhanced image: {method_name}")
                 
                 # Save enhanced image for debug
@@ -121,6 +138,8 @@ def scan_entire_screen_for_continue_message():
         
         # Deduplicate detections
         try:
+            if controller:
+                controller.set_current_activity("Processing results", "Deduplicating text detections")
             unique_detections = deduplicate_detections(all_detections)
             log_debug(f"Detections after deduplication: {len(unique_detections)}")
         except Exception as e:
@@ -137,6 +156,8 @@ def scan_entire_screen_for_continue_message():
         
         # Search for target pattern
         try:
+            if controller:
+                controller.set_current_activity("Processing results", "Searching for target pattern")
             coordinates = find_target_pattern_in_detections(
                 unique_detections, TARGET_PATTERN, TARGET_END_WORD
             )
@@ -147,6 +168,8 @@ def scan_entire_screen_for_continue_message():
         
         # Final coordinate deduplication
         try:
+            if controller:
+                controller.set_current_activity("Processing results", "Finalizing coordinates")
             final_coordinates = deduplicate_coordinates(coordinates)
             log_debug(f"Final coordinates after deduplication: {len(final_coordinates)}")
             return final_coordinates

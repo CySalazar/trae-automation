@@ -84,6 +84,10 @@ class SystemController:
         self._last_scan_time: Optional[datetime] = None
         self._scan_count = 0
         
+        # Current activity tracking
+        self._current_activity = "Idle"
+        self._current_activity_details = ""
+        
         # Setup logging
         setup_logging()
         
@@ -121,6 +125,17 @@ class SystemController:
     def can_resume(self) -> bool:
         """Check if system can be resumed"""
         return self.get_state() == SystemState.PAUSED
+    
+    def set_current_activity(self, activity: str, details: str = ""):
+        """Set the current activity being performed"""
+        with self._state_lock:
+            self._current_activity = activity
+            self._current_activity_details = details
+    
+    def get_current_activity(self) -> tuple[str, str]:
+        """Get the current activity and details"""
+        with self._state_lock:
+            return self._current_activity, self._current_activity_details
     
     def _set_state(self, new_state: SystemState):
         """Set system state and notify callbacks"""
@@ -302,6 +317,8 @@ class SystemController:
                 'scan_count': self._scan_count,
                 'uptime_seconds': (datetime.now() - self._start_time).total_seconds() if self._start_time else 0,
                 'thread_alive': self._scan_thread.is_alive() if self._scan_thread else False,
+                'current_activity': self._current_activity,
+                'current_activity_details': self._current_activity_details,
                 'can_start': self.can_start(),
                 'can_stop': self.can_stop(),
                 'can_pause': self.can_pause(),
@@ -338,10 +355,15 @@ class SystemController:
         try:
             consecutive_failures = 0
             
+            # Set initial next scan time for countdown
+            from statistics_manager import get_stats_manager
+            get_stats_manager().set_next_scan_time(SCAN_INTERVAL)
+            
             while not self._stop_event.is_set():
                 try:
                     # Check if paused
                     if self._pause_event.is_set():
+                        self.set_current_activity("Paused", "System is paused")
                         time.sleep(0.5)  # Short sleep while paused
                         continue
                     
@@ -353,6 +375,9 @@ class SystemController:
                     scan_number = get_next_scan_number()
                     self._scan_count = scan_number
                     
+                    # Set activity to preparing scan
+                    self.set_current_activity("Preparing scan", f"Scan #{scan_number}")
+                    
                     # Notify scan start callbacks
                     for callback in self._scan_callbacks.values():
                         try:
@@ -361,6 +386,7 @@ class SystemController:
                             log_error(f"Error in scan callback: {e}")
                     
                     # Execute scan with retry
+                    self.set_current_activity("Scanning", f"Executing scan #{scan_number}")
                     scan_start_time = time.time()
                     success, coordinates = perform_scan_with_retry(scan_number)
                     scan_time = time.time() - scan_start_time
@@ -370,6 +396,7 @@ class SystemController:
                     # Handle scan result
                     click_performed = False
                     if success:
+                        self.set_current_activity("Processing result", f"Target found, handling click for scan #{scan_number}")
                         click_performed = handle_scan_result(scan_number, success, coordinates)
                         consecutive_failures = 0  # Reset on success
                     else:
@@ -400,7 +427,12 @@ class SystemController:
                     if should_log_status_report():
                         log_system_status()
                     
+                    # Set next scan time for countdown
+                    from statistics_manager import get_stats_manager
+                    get_stats_manager().set_next_scan_time(SCAN_INTERVAL)
+                    
                     # Wait for next scan (with interruption check)
+                    self.set_current_activity("Waiting", f"Next scan in {SCAN_INTERVAL}s")
                     self._wait_for_next_scan()
                     
                 except Exception as e:
@@ -431,6 +463,11 @@ class SystemController:
         while time.time() - start_time < wait_time:
             if self._stop_event.is_set():
                 break
+            
+            # Update activity with remaining time
+            remaining_time = wait_time - (time.time() - start_time)
+            if remaining_time > 0:
+                self.set_current_activity("Waiting", f"Next scan in {remaining_time:.1f}s")
             
             # Sleep in small increments to allow interruption
             time.sleep(min(0.5, wait_time - (time.time() - start_time)))

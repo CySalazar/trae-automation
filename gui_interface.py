@@ -158,11 +158,11 @@ class SystemMonitorGUI:
         
         # Left panel - Status and controls
         left_frame = ttk.Frame(paned)
-        paned.add(left_frame, weight=1)
+        paned.add(left_frame, weight=2)
         
         # Right panel - Graphs
         right_frame = ttk.Frame(paned)
-        paned.add(right_frame, weight=2)
+        paned.add(right_frame, weight=3)
         
         # === LEFT PANEL ===
         
@@ -652,6 +652,45 @@ System Resources:
                 print(f"Error in update worker: {e}")
                 time.sleep(5)
     
+    def _format_time_remaining(self, seconds):
+        """Format time remaining in a human-readable format"""
+        if seconds is None or seconds < 0:
+            return "--"
+        
+        seconds = int(seconds)
+        
+        if seconds >= 3600:  # >= 1 hour
+            hours = seconds // 3600
+            minutes = (seconds % 3600) // 60
+            secs = seconds % 60
+            return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+        elif seconds >= 60:  # >= 1 minute
+            minutes = seconds // 60
+            secs = seconds % 60
+            return f"{minutes:02d}:{secs:02d}"
+        else:  # < 1 minute
+            return f"{seconds}s"
+    
+    def _format_uptime(self, seconds):
+        """Format uptime in a readable format"""
+        if seconds is None or seconds < 0:
+            return "--"
+        
+        seconds = int(seconds)
+        
+        if seconds < 60:
+            return f"{seconds}s"
+        elif seconds < 3600:
+            minutes = seconds // 60
+            return f"{minutes}m"
+        else:
+            hours = seconds // 3600
+            minutes = (seconds % 3600) // 60
+            if minutes > 0:
+                return f"{hours}h {minutes}m"
+            else:
+                return f"{hours}h"
+    
     def _update_dashboard(self):
         """Update dashboard status labels"""
         try:
@@ -707,14 +746,18 @@ System Resources:
             self.status_labels['last_scan_time'].config(text=f"{stats['performance']['last_scan_time']:.3f}s")
             
             # Update next scan countdown
-            if 'next_scan' in stats and 'seconds_remaining' in stats['next_scan']:
-                remaining = stats['next_scan']['seconds_remaining']
-                if remaining is not None and remaining >= 0:
-                    self.status_labels['next_scan_countdown'].config(text=f"{remaining:.0f}s")
+            state = self.controller.get_state()
+            if state == SystemState.RUNNING:
+                if 'next_scan' in stats and 'seconds_remaining' in stats['next_scan']:
+                    remaining = stats['next_scan']['seconds_remaining']
+                    formatted_time = self._format_time_remaining(remaining)
+                    self.status_labels['next_scan_countdown'].config(text=formatted_time)
                 else:
                     self.status_labels['next_scan_countdown'].config(text="--")
+            elif state == SystemState.PAUSED:
+                self.status_labels['next_scan_countdown'].config(text="Paused")
             else:
-                self.status_labels['next_scan_countdown'].config(text="--")
+                self.status_labels['next_scan_countdown'].config(text="Stopped")
             
         except Exception as e:
             print(f"Error updating dashboard: {e}")
@@ -2211,25 +2254,46 @@ CONFIGURATION KEYS:
         """Update system status display"""
         try:
             state = self.controller.get_state()
+            info = self.controller.get_system_info()
             
-            # Update status labels based on system state
+            # Create detailed status messages based on system state
             if state == SystemState.RUNNING:
-                status_text = "Running"
+                scan_count = info.get('scan_count', 0)
+                uptime = info.get('uptime_seconds', 0)
+                uptime_str = self._format_uptime(uptime)
+                current_activity = info.get('current_activity', 'Scanning')
+                activity_details = info.get('current_activity_details', '')
+                
+                if activity_details:
+                    status_text = f"Running - {current_activity}: {activity_details} ({scan_count} scans, {uptime_str})"
+                else:
+                    status_text = f"Running - {current_activity} ({scan_count} scans, {uptime_str})"
                 status_style = 'Success.TLabel'
             elif state == SystemState.PAUSED:
-                status_text = "Paused"
+                scan_count = info.get('scan_count', 0)
+                status_text = f"Paused - {scan_count} scans completed"
                 status_style = 'Warning.TLabel'
             elif state == SystemState.STARTING:
-                status_text = "Starting"
+                status_text = "Starting system..."
                 status_style = 'Status.TLabel'
             elif state == SystemState.STOPPING:
-                status_text = "Stopping"
+                status_text = "Stopping system..."
+                status_style = 'Status.TLabel'
+            elif state == SystemState.PAUSING:
+                status_text = "Pausing system..."
+                status_style = 'Status.TLabel'
+            elif state == SystemState.RESUMING:
+                status_text = "Resuming system..."
                 status_style = 'Status.TLabel'
             elif state == SystemState.ERROR:
-                status_text = "Error"
+                status_text = "Error - System malfunction"
                 status_style = 'Error.TLabel'
             else:
-                status_text = "Stopped"
+                total_scans = info.get('scan_count', 0)
+                if total_scans > 0:
+                    status_text = f"Stopped - {total_scans} scans completed"
+                else:
+                    status_text = "Stopped - Ready to start"
                 status_style = 'Error.TLabel'
             
             if hasattr(self, 'status_labels') and 'system_state' in self.status_labels:
