@@ -133,11 +133,11 @@ FILE_TIMESTAMP_FORMAT = "%Y%m%d_%H%M%S"
 # Target message to search for
 TARGET_MESSAGE = "Model thinking limit reached, please enter 'Continue' to"
 
-# Regex pattern to find the target message
-TARGET_PATTERN = r"Model\s+thinking\s+limit\s+reached.*?Continue.*?to"
+# Regex pattern to find the target message (flexible to handle OCR errors)
+TARGET_PATTERN = r"Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]"
 
-# Final word to find coordinates for
-TARGET_END_WORD = "to"
+# Final word to find coordinates for (flexible to handle OCR errors)
+TARGET_END_WORD = "t[o0]"
 
 # ============================================================================
 # STATISTICS CONFIGURATIONS

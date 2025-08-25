@@ -25,7 +25,7 @@
     "partial_match": true,
     "click_delay": 0.1,
     "double_click_prevention": true,
-    "click_offset_x": 0,
+    "click_offset_x": 50,
     "click_offset_y": 0,
     "log_level": "INFO",
     "log_to_file": true,
@@ -39,5 +39,5 @@
   },
   "profiles": {},
   "current_profile": "default",
-  "last_saved": "2025-08-25T11:32:56.087941"
+  "last_saved": "2025-08-25T12:15:04.645753"
 }

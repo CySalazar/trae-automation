@@ -17,6 +17,7 @@ from logger import (
     log_message, log_error, log_debug, log_coordinates_found,
     record_click_performed, record_click_error
 )
+from config_manager import get_config
 
 def validate_coordinates(coordinates):
     """Validates that coordinates are usable for a click.
@@ -83,6 +84,18 @@ def safe_click(coordinates, validate_after_click=True):
             return False
         
         x, y = coordinates
+        
+        # Apply click offsets from configuration
+        try:
+            offset_x = get_config("click_offset_x")
+            offset_y = get_config("click_offset_y")
+            x += offset_x
+            y += offset_y
+            log_debug(f"Applied offsets: ({offset_x}, {offset_y}), final coordinates: ({x}, {y})")
+        except Exception as e:
+            log_error(f"Error applying click offsets: {e}")
+            # Continue with original coordinates if offset fails
+        
         log_debug(f"Attempting click at coordinates ({x}, {y})")
         
         # Execute the click

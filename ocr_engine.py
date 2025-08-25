@@ -346,25 +346,30 @@ def find_target_pattern_in_detections(detections, target_pattern, target_end_wor
                 try:
                     # Find all occurrences of target word in the match
                     match_text = match.group()
-                    word_pattern = r'\b' + re.escape(target_end_word) + r'\b'
-                    word_matches = list(re.finditer(word_pattern, match_text, re.IGNORECASE))
                     
-                    for word_match in word_matches:
-                        try:
-                            # Calculate absolute position of the word
-                            word_start_pos = match.start() + word_match.start()
-                            word_end_pos = match.start() + word_match.end() - 1
-                            
-                            # Find detection corresponding to end of word
-                            if word_end_pos in text_to_detection:
-                                det = text_to_detection[word_end_pos]
-                                coord = (det['center_x'], det['center_y'])
-                                coordinates.append(coord)
-                                log_debug(f"Coordinates found for '{target_end_word}': {coord}")
-                            
-                        except Exception as e:
-                            log_error(f"Error extracting word coordinates: {e}")
-                            continue
+                    # Search for both "to" and "t0" as possible end words
+                    end_words = ['to', 't0']
+                    
+                    for end_word in end_words:
+                        word_pattern = r'\b' + re.escape(end_word) + r'\b'
+                        word_matches = list(re.finditer(word_pattern, match_text, re.IGNORECASE))
+                        
+                        for word_match in word_matches:
+                            try:
+                                # Calculate absolute position of the word
+                                word_start_pos = match.start() + word_match.start()
+                                word_end_pos = match.start() + word_match.end() - 1
+                                
+                                # Find detection corresponding to end of word
+                                if word_end_pos in text_to_detection:
+                                    det = text_to_detection[word_end_pos]
+                                    coord = (det['center_x'], det['center_y'])
+                                    coordinates.append(coord)
+                                    log_debug(f"Coordinates found for '{end_word}': {coord}")
+                                
+                            except Exception as e:
+                                log_error(f"Error extracting word coordinates: {e}")
+                                continue
                             
                 except Exception as e:
                     log_error(f"Error processing pattern match: {e}")
@@ -372,6 +377,29 @@ def find_target_pattern_in_detections(detections, target_pattern, target_end_wor
                     
         except Exception as e:
             log_error(f"Error searching regex pattern: {e}")
+        
+        # If no coordinates found with pattern matching, try direct word search
+        if not coordinates:
+            log_debug("No coordinates found with pattern matching, trying direct word search")
+            try:
+                # Look for "Continue" followed by "to" or "t0" in nearby detections
+                continue_detections = [det for det in detections if 'continue' in det['text'].lower()]
+                
+                for continue_det in continue_detections:
+                    # Find detections near "Continue" that contain "to" or "t0"
+                    for det in detections:
+                        if det['text'].lower() in ['to', 't0']:
+                            # Check if this detection is reasonably close to Continue
+                            distance = ((det['center_x'] - continue_det['center_x'])**2 + 
+                                      (det['center_y'] - continue_det['center_y'])**2)**0.5
+                            
+                            if distance < 200:  # Within 200 pixels
+                                coord = (det['center_x'], det['center_y'])
+                                coordinates.append(coord)
+                                log_debug(f"Direct search found '{det['text']}' near Continue: {coord}")
+                                
+            except Exception as e:
+                log_error(f"Error in direct word search: {e}")
         
         log_debug(f"Pattern search completed: {len(coordinates)} coordinates found")
         return coordinates

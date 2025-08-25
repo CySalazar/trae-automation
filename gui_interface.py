@@ -351,12 +351,21 @@ class SystemMonitorGUI:
         self.log_text = scrolledtext.ScrolledText(logs_frame, wrap=tk.WORD, height=25)
         self.log_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         
+        # Bind click event for line selection
+        self.log_text.bind("<Button-1>", self._on_log_line_click)
+        
         # Configure text tags for different log levels
         self.log_text.tag_configure("DEBUG", foreground="gray")
         self.log_text.tag_configure("INFO", foreground="black")
         self.log_text.tag_configure("WARNING", foreground="orange")
         self.log_text.tag_configure("ERROR", foreground="red")
         self.log_text.tag_configure("CRITICAL", foreground="red", background="yellow")
+        
+        # Configure tag for selected line
+        self.log_text.tag_configure("selected_line", background="#E3F2FD", foreground="#1976D2")
+        
+        # Track selected line
+        self.selected_log_line = None
     
     def _create_statistics_tab(self):
         """Create the statistics tab"""
@@ -1102,10 +1111,20 @@ System Resources:
                     # Try to get logs from the logger module
                     recent_logs = self.logger.get_recent_logs(100)  # Get last 100 log entries
                     
+                    # Store current selection line content to restore after refresh
+                    selected_content = None
+                    if self.selected_log_line is not None:
+                        try:
+                            selected_content = self.log_text.get(f"{self.selected_log_line}.0", f"{self.selected_log_line}.end")
+                        except:
+                            pass
+                    
                     # Clear current logs
                     self.log_text.delete(1.0, tk.END)
+                    self.selected_log_line = None
                     
                     # Add recent logs
+                    line_num = 1
                     for log_entry in recent_logs:
                         timestamp = log_entry.get('timestamp', datetime.now().strftime('%H:%M:%S'))
                         level = log_entry.get('level', 'INFO')
@@ -1117,18 +1136,25 @@ System Resources:
                         # Insert with color coding based on level
                         self.log_text.insert(tk.END, formatted_log)
                         
-                        # Apply color tags based on log level
+                        # Apply color tags based on log level using proper tag names
                         if level == 'ERROR':
-                            self.log_text.tag_add('error', f"end-{len(formatted_log)}c", 'end-1c')
+                            self.log_text.tag_add('ERROR', f"{line_num}.0", f"{line_num}.end")
                         elif level == 'WARNING':
-                            self.log_text.tag_add('warning', f"end-{len(formatted_log)}c", 'end-1c')
+                            self.log_text.tag_add('WARNING', f"{line_num}.0", f"{line_num}.end")
                         elif level == 'DEBUG':
-                            self.log_text.tag_add('debug', f"end-{len(formatted_log)}c", 'end-1c')
-                    
-                    # Configure color tags
-                    self.log_text.tag_config('error', foreground='red')
-                    self.log_text.tag_config('warning', foreground='orange')
-                    self.log_text.tag_config('debug', foreground='gray')
+                            self.log_text.tag_add('DEBUG', f"{line_num}.0", f"{line_num}.end")
+                        elif level == 'INFO':
+                            self.log_text.tag_add('INFO', f"{line_num}.0", f"{line_num}.end")
+                        elif level == 'CRITICAL':
+                            self.log_text.tag_add('CRITICAL', f"{line_num}.0", f"{line_num}.end")
+                        
+                        # Try to restore selection if content matches
+                        if selected_content and formatted_log.strip() == selected_content.strip():
+                            self.selected_log_line = line_num
+                            self.log_text.tag_add("selected_line", f"{line_num}.0", f"{line_num}.end")
+                            self.log_text.tag_raise("selected_line")
+                        
+                        line_num += 1
                     
                     # Scroll to bottom
                     self.log_text.see(tk.END)
@@ -1142,6 +1168,29 @@ System Resources:
                     
         except Exception as e:
             print(f"Error refreshing logs: {e}")
+    
+    def _on_log_line_click(self, event):
+        """Handle click on log line to select it"""
+        try:
+            # Get the position of the click
+            click_index = self.log_text.index(f"@{event.x},{event.y}")
+            
+            # Get the line number
+            line_num = int(click_index.split('.')[0])
+            
+            # Clear previous selection
+            if self.selected_log_line is not None:
+                self.log_text.tag_remove("selected_line", f"{self.selected_log_line}.0", f"{self.selected_log_line}.end")
+            
+            # Select the new line
+            self.selected_log_line = line_num
+            self.log_text.tag_add("selected_line", f"{line_num}.0", f"{line_num}.end")
+            
+            # Ensure the selected line tag has higher priority
+            self.log_text.tag_raise("selected_line")
+            
+        except Exception as e:
+            print(f"Error selecting log line: {e}")
     
     def _clear_logs(self):
         """Clear log display"""

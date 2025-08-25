@@ -248,7 +248,7 @@ class ConfigurationManager:
         )
         
         self.register_parameter(
-            "click_offset_x", 0, "X offset for click position", int,
+            "click_offset_x", 50, "X offset for click position", int,
             min_value=-50, max_value=50, category="clicking"
         )
         

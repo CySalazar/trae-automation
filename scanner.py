@@ -74,8 +74,20 @@ def scan_entire_screen_for_continue_message():
             log_error(f"Error during image enhancement: {e}")
             return []
         
-        # Process each enhanced image
+        # Process original image first
         all_detections = []
+        try:
+            log_debug("Processing original image")
+            original_detections = extract_all_text_with_positions(screenshot)
+            if original_detections:
+                all_detections.extend(original_detections)
+                log_enhancement_stats("ORIGINAL", len(original_detections))
+            else:
+                log_debug("No detections for original image")
+        except Exception as e:
+            log_error(f"Error extracting text from original image: {e}")
+        
+        # Process each enhanced image
         for method_name, enhanced_image in enhanced_images:
             try:
                 log_debug(f"Processing enhanced image: {method_name}")
