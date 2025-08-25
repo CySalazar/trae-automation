@@ -1,5 +1,8 @@
 # Automatic Continue Detection System
 
+**Author: Matteo Sala**  
+**Version: 1.0.0**
+
 An intelligent automation tool that automatically detects "Continue" messages on screen and performs clicks when found. This system uses advanced OCR (Optical Character Recognition) technology with multiple image enhancement techniques to reliably detect text patterns and execute automated responses.
 
 ## 🚀 Features
@@ -102,6 +105,8 @@ Start the automatic detection system:
 python detect.py
 ```
 
+**Note**: Running `python detect.py` without arguments will show the help message. To actually start the system, use one of the command line options below.
+
 The system will:
 1. Initialize all components
 2. Start continuous screen monitoring
@@ -112,14 +117,32 @@ The system will:
 ### Command Line Options
 
 ```bash
+# Show help and available options
+python detect.py --help
+
+# Show version information
+python detect.py --version
+
 # Run with debug logging
 python detect.py --debug
 
-# Validate system requirements
-python detect.py --validate
+# Run with custom scan interval
+python detect.py --scan-interval 60
+```
 
-# Run single scan (for testing)
-python detect.py --single-scan
+### Alternative Interfaces
+
+For more advanced control, you can use:
+
+```bash
+# Launch interface selector
+python interface_launcher.py
+
+# Use command-line interface
+python cli_interface.py
+
+# Use graphical interface
+python gui_interface.py
 ```
 
 ### Stopping the System
@@ -164,7 +187,14 @@ detect.py              # Main entry point and orchestration
 ├── scanner.py         # Main scanning logic
 ├── image_processing.py # Image capture and enhancement
 ├── ocr_engine.py      # Text extraction and processing
-└── coordinate_manager.py # Click automation and validation
+├── coordinate_manager.py # Click automation and validation
+├── system_controller.py # System state management
+├── gui_interface.py   # Graphical user interface
+├── cli_interface.py   # Command-line interface
+├── interface_launcher.py # Interface selection launcher
+├── config_manager.py  # Configuration management
+├── statistics_manager.py # Performance statistics
+└── log_viewer.py      # Log viewing utilities
 ```
 
 ### Key Components
@@ -173,7 +203,11 @@ detect.py              # Main entry point and orchestration
 - **Image Processing**: Captures screenshots and applies enhancement filters
 - **OCR Engine**: Extracts text using multiple OCR configurations
 - **Coordinate Manager**: Validates coordinates and performs safe clicks
+- **System Controller**: Manages system state and lifecycle
+- **GUI Interface**: Provides graphical control and monitoring
+- **CLI Interface**: Command-line control and configuration
 - **Logger**: Comprehensive logging and performance monitoring
+- **Statistics Manager**: Real-time performance tracking and analysis
 
 ## 🔧 Troubleshooting
 
