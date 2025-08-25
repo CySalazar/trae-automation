@@ -25,7 +25,7 @@ import threading
 from datetime import datetime, timedelta
 from collections import deque, defaultdict
 from dataclasses import dataclass, asdict
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Tuple
 import psutil
 import os
 
@@ -107,6 +107,11 @@ class StatisticsManager:
         self.detection_streak = 0
         self.longest_streak = 0
         
+        # Click tracking
+        self.total_clicks = 0
+        self.successful_clicks = 0
+        self.failed_clicks = 0
+        
         # Error tracking
         self.error_counts = defaultdict(int)
         self.recent_errors = deque(maxlen=100)
@@ -170,6 +175,15 @@ class StatisticsManager:
             if recent_scans:
                 self.avg_scan_time = sum(s.duration for s in recent_scans) / len(recent_scans)
     
+    def record_click(self, coordinates: Optional[Tuple[int, int]] = None, success: bool = True):
+        """Record a click event"""
+        with self._lock:
+            self.total_clicks += 1
+            if success:
+                self.successful_clicks += 1
+            else:
+                self.failed_clicks += 1
+    
     def _monitor_system_health(self):
         """Background thread to monitor system health"""
         while self.system_monitor_active:
@@ -224,6 +238,12 @@ class StatisticsManager:
                     'failed': self.failed_scans,
                     'success_rate': round(success_rate, 2),
                     'total_detections': self.total_detections
+                },
+                'clicks': {
+                    'total': self.total_clicks,
+                    'successful': self.successful_clicks,
+                    'failed': self.failed_clicks,
+                    'success_rate': round((self.successful_clicks / self.total_clicks * 100) if self.total_clicks > 0 else 0, 2)
                 },
                 'performance': {
                     'avg_scan_time': round(self.avg_scan_time, 3),
@@ -306,6 +326,9 @@ class StatisticsManager:
             self.successful_scans = 0
             self.failed_scans = 0
             self.total_detections = 0
+            self.total_clicks = 0
+            self.successful_clicks = 0
+            self.failed_clicks = 0
             self.avg_scan_time = 0.0
             self.min_scan_time = float('inf')
             self.max_scan_time = 0.0

@@ -29,6 +29,7 @@ from ocr_engine import (
     find_target_pattern_in_detections, deduplicate_coordinates
 )
 from coordinate_manager import perform_automatic_click
+from statistics_manager import get_stats_manager
 
 def scan_entire_screen_for_continue_message():
     """Executes a complete screen scan to find the 'Continue' message.
@@ -171,8 +172,24 @@ def perform_single_scan(scan_number):
         # Log result
         log_scan_complete(scan_number, success, coordinates)
 
-        # Update statistics
+        # Update statistics (both logger and statistics_manager)
         update_scan_stats(success, scan_time)
+        
+        # Update statistics manager
+        try:
+            stats_manager = get_stats_manager()
+            stats_manager.record_scan(
+                scan_number=scan_number,
+                success=success,
+                duration=scan_time,
+                detections_found=len(coordinates) if coordinates else 0,
+                error_message=None if success else "No detections found"
+            )
+            
+            if success:
+                stats_manager.record_detection(coordinates)
+        except Exception as e:
+            log_error(f"Error updating statistics manager: {e}")
         
         if success:
             record_successful_detection()
@@ -247,6 +264,13 @@ def handle_scan_result(scan_number, success, coordinates):
             
             # Execute automatic click
             click_success = perform_automatic_click(coordinates)
+            
+            # Update statistics manager for click
+            try:
+                stats_manager = get_stats_manager()
+                stats_manager.record_click(coordinates[0] if coordinates else None, success=click_success)
+            except Exception as e:
+                log_error(f"Error updating click statistics: {e}")
             
             if click_success:
                 log_message(f"✅ Automatic click executed successfully for scan #{scan_number}")

@@ -315,6 +315,22 @@ class SystemController:
             except Exception as e:
                 log_error(f"Error getting stats: {e}")
             
+            # Add statistics from statistics manager
+            try:
+                from statistics_manager import get_stats_manager
+                stats_mgr = get_stats_manager()
+                mgr_stats = stats_mgr.get_current_stats()
+                
+                # Add click statistics
+                if 'clicks' in mgr_stats:
+                    info['clicks_performed'] = mgr_stats['clicks']['total']
+                    info['successful_clicks'] = mgr_stats['clicks']['successful']
+                    info['failed_clicks'] = mgr_stats['clicks']['failed']
+                    info['click_success_rate'] = mgr_stats['clicks']['success_rate']
+                
+            except Exception as e:
+                log_error(f"Error getting statistics manager stats: {e}")
+            
             return info
     
     def _scan_loop(self):
