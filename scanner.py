@@ -181,8 +181,20 @@ def perform_single_scan(scan_number):
         # Determine if the scan was successful
         success = len(coordinates) > 0
         
-        # Log result
-        log_scan_complete(scan_number, success, coordinates)
+        # Calculate final coordinates with offset for logging
+        final_coordinates = coordinates
+        if success and coordinates:
+            try:
+                from config_manager import get_config
+                offset_x = get_config("click_offset_x")
+                offset_y = get_config("click_offset_y")
+                final_coordinates = [(coord[0] + offset_x, coord[1] + offset_y) for coord in coordinates]
+            except Exception as e:
+                log_error(f"Error calculating final coordinates for logging: {e}")
+                # Use original coordinates as fallback
+        
+        # Log result with final coordinates
+        log_scan_complete(scan_number, success, final_coordinates)
 
         # Update statistics (both logger and statistics_manager)
         update_scan_stats(success, scan_time)
@@ -199,7 +211,7 @@ def perform_single_scan(scan_number):
             )
             
             if success:
-                stats_manager.record_detection(coordinates)
+                stats_manager.record_click(coordinates)
         except Exception as e:
             log_error(f"Error updating statistics manager: {e}")
         

@@ -20,7 +20,7 @@ Version: 1.0.0
 """
 
 import tkinter as tk
-from tkinter import ttk, messagebox, filedialog, scrolledtext
+from tkinter import ttk, filedialog, scrolledtext
 import threading
 import time
 from datetime import datetime
@@ -77,6 +77,10 @@ class SystemMonitorGUI:
         self._create_menu()
         self._create_main_interface()
         self._setup_update_thread()
+        
+        # Notification system
+        self.notification_queue = []
+        self.current_notification = None
         
         # Bind close event
         self.root.protocol("WM_DELETE_WINDOW", self._on_closing)
@@ -342,6 +346,10 @@ class SystemMonitorGUI:
         ttk.Button(control_frame, text="Refresh", command=self._refresh_logs).pack(side=tk.LEFT, padx=2)
         ttk.Button(control_frame, text="Clear", command=self._clear_logs).pack(side=tk.LEFT, padx=2)
         ttk.Button(control_frame, text="Export", command=self._export_logs).pack(side=tk.LEFT, padx=2)
+        
+        # Auto-refresh checkbox
+        self.auto_refresh_logs_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(control_frame, text="Auto-refresh", variable=self.auto_refresh_logs_var).pack(side=tk.RIGHT, padx=(0, 10))
         
         # Auto-scroll checkbox
         self.auto_scroll_var = tk.BooleanVar(value=True)
@@ -631,6 +639,11 @@ System Resources:
                     self.root.after(0, self._update_graphs)
                     self.root.after(0, self._update_resource_monitoring)
                     self.root.after(0, self._update_system_info)
+                
+                # Auto-refresh logs if enabled
+                if hasattr(self, 'auto_refresh_logs_var') and self.auto_refresh_logs_var.get():
+                    self.root.after(0, self._refresh_logs)
+                
                 time.sleep(self.update_interval / 1000.0)
             except Exception as e:
                 print(f"Error in update worker: {e}")
@@ -913,26 +926,32 @@ System Resources:
         """Save a parameter value"""
         try:
             if self.config_manager.set_parameter(param_name, value, "GUI User", "Modified via GUI"):
-                messagebox.showinfo("Success", f"Parameter '{param_name}' updated successfully")
+                self._show_toast_notification("Parameter Updated", f"Parameter '{param_name}' updated successfully", "success")
+                self._show_notification(f"Parameter '{param_name}' updated", "success")
             else:
-                messagebox.showerror("Error", f"Failed to update parameter '{param_name}'")
+                self._show_toast_notification("Update Failed", f"Failed to update parameter '{param_name}'", "error")
+                self._show_notification("Parameter update failed", "error")
         except Exception as e:
-            messagebox.showerror("Error", f"Error updating parameter: {e}")
+            self._show_toast_notification("Update Error", f"Error updating parameter: {e}", "error")
+            self._show_notification("Parameter update error", "error")
     
     def _reset_parameter(self, param_name: str):
         """Reset a parameter to default value"""
         try:
             if self.config_manager.reset_parameter(param_name, "GUI User"):
-                messagebox.showinfo("Success", f"Parameter '{param_name}' reset to default")
+                self._show_toast_notification("Parameter Reset", f"Parameter '{param_name}' reset to default", "success")
+                self._show_notification(f"Parameter '{param_name}' reset", "success")
                 # Refresh the current category
                 selection = self.categories_listbox.curselection()
                 if selection:
                     category = self.categories_listbox.get(selection[0])
                     self._load_category_parameters(category)
             else:
-                messagebox.showerror("Error", f"Failed to reset parameter '{param_name}'")
+                self._show_toast_notification("Reset Failed", f"Failed to reset parameter '{param_name}'", "error")
+                self._show_notification("Parameter reset failed", "error")
         except Exception as e:
-            messagebox.showerror("Error", f"Error resetting parameter: {e}")
+            self._show_toast_notification("Reset Error", f"Error resetting parameter: {e}", "error")
+            self._show_notification("Parameter reset error", "error")
     
     def _update_scan_interval(self, value):
         """Update scan interval from scale"""
@@ -942,15 +961,117 @@ System Resources:
         """Update OCR confidence from scale"""
         self.config_manager.set_parameter('ocr_confidence_threshold', float(value), "GUI User", "Quick setting")
     
+    def _show_notification(self, message, notification_type="info", duration=3000):
+        """Show a temporary notification in the status bar"""
+        if hasattr(self, 'status_label'):
+            # Store original status
+            if not hasattr(self, '_original_status'):
+                self._original_status = self.status_label.cget('text')
+            
+            # Set notification colors
+            colors = {
+                'info': '#2196F3',
+                'success': '#4CAF50', 
+                'warning': '#FF9800',
+                'error': '#F44336'
+            }
+            
+            # Update status label with notification
+            self.status_label.config(text=f"📢 {message}", foreground=colors.get(notification_type, '#2196F3'))
+            
+            # Clear any existing notification timer
+            if self.current_notification:
+                self.root.after_cancel(self.current_notification)
+            
+            # Schedule restoration of original status
+            self.current_notification = self.root.after(duration, self._restore_status)
+    
+    def _restore_status(self):
+        """Restore the original status text"""
+        if hasattr(self, 'status_label') and hasattr(self, '_original_status'):
+            self.status_label.config(text=self._original_status, foreground='black')
+            self.current_notification = None
+    
+    def _show_toast_notification(self, title, message, notification_type="info"):
+        """Show a small toast notification in the corner"""
+        # Create toast window
+        toast = tk.Toplevel(self.root)
+        toast.withdraw()  # Hide initially
+        toast.overrideredirect(True)  # Remove window decorations
+        toast.attributes('-topmost', True)  # Keep on top
+        
+        # Configure toast appearance
+        colors = {
+            'info': ('#E3F2FD', '#1976D2'),
+            'success': ('#E8F5E8', '#388E3C'),
+            'warning': ('#FFF3E0', '#F57C00'),
+            'error': ('#FFEBEE', '#D32F2F')
+        }
+        bg_color, text_color = colors.get(notification_type, colors['info'])
+        
+        # Create toast content
+        frame = tk.Frame(toast, bg=bg_color, relief='raised', bd=1)
+        frame.pack(fill='both', expand=True, padx=2, pady=2)
+        
+        title_label = tk.Label(frame, text=title, font=('Arial', 9, 'bold'), 
+                              bg=bg_color, fg=text_color)
+        title_label.pack(anchor='w', padx=8, pady=(6, 2))
+        
+        msg_label = tk.Label(frame, text=message, font=('Arial', 8), 
+                            bg=bg_color, fg=text_color, wraplength=250)
+        msg_label.pack(anchor='w', padx=8, pady=(0, 6))
+        
+        # Position toast in bottom-right corner
+        toast.update_idletasks()
+        width = toast.winfo_reqwidth()
+        height = toast.winfo_reqheight()
+        x = self.root.winfo_x() + self.root.winfo_width() - width - 20
+        y = self.root.winfo_y() + self.root.winfo_height() - height - 60
+        toast.geometry(f"{width}x{height}+{x}+{y}")
+        
+        # Show toast with fade-in effect
+        toast.deiconify()
+        toast.attributes('-alpha', 0.0)
+        
+        def fade_in(alpha=0.0):
+            alpha += 0.1
+            if alpha <= 1.0:
+                toast.attributes('-alpha', alpha)
+                toast.after(50, lambda: fade_in(alpha))
+        
+        def fade_out(alpha=1.0):
+            alpha -= 0.1
+            if alpha >= 0.0:
+                toast.attributes('-alpha', alpha)
+                toast.after(50, lambda: fade_out(alpha))
+            else:
+                toast.destroy()
+        
+        fade_in()
+        
+        # Auto-close after 3 seconds
+        toast.after(3000, fade_out)
+        
+        # Allow manual close on click
+        def close_toast(event=None):
+            fade_out()
+        
+        frame.bind('<Button-1>', close_toast)
+        title_label.bind('<Button-1>', close_toast)
+        msg_label.bind('<Button-1>', close_toast)
+    
     def _start_system(self):
         """Start the detection system"""
         try:
             if self.controller.start_system():
-                messagebox.showinfo("System Start", "Detection system started successfully!")
+                self._show_toast_notification("System Started", "Detection system started successfully!", "success")
+                self._show_notification("System started successfully", "success")
             else:
-                messagebox.showerror("Error", "Failed to start detection system. Check logs for details.")
+                self._show_toast_notification("Start Failed", "Failed to start detection system. Check logs for details.", "error")
+                self._show_notification("Failed to start system", "error")
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to start system: {str(e)}")
+            self._show_toast_notification("Start Error", f"Failed to start system: {str(e)}", "error")
+            self._show_notification("System start error", "error")
     
     def _stop_system(self):
         """Stop the detection system"""
@@ -958,15 +1079,18 @@ System Resources:
             current_state = self.controller.get_state()
             
             if current_state.value == "stopped":
-                messagebox.showinfo("System Stop", "Detection system is already stopped.")
+                self._show_notification("System already stopped", "info")
                 return
                 
             if self.controller.stop_system():
-                messagebox.showinfo("System Stop", "Detection system stopped successfully!")
+                self._show_toast_notification("System Stopped", "Detection system stopped successfully!", "success")
+                self._show_notification("System stopped successfully", "success")
             else:
-                messagebox.showerror("Error", f"Failed to stop detection system. Current state: {current_state.value}. Check logs for details.")
+                self._show_toast_notification("Stop Failed", f"Failed to stop detection system. Current state: {current_state.value}. Check logs for details.", "error")
+                self._show_notification("Failed to stop system", "error")
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to stop system: {str(e)}")
+            self._show_toast_notification("Stop Error", f"Failed to stop system: {str(e)}", "error")
+            self._show_notification("System stop error", "error")
     
     def _pause_system(self):
         """Pause/Resume the detection system"""
@@ -974,41 +1098,50 @@ System Resources:
             if self.controller.is_paused():
                 # Resume
                 if self.controller.resume_system():
-                    messagebox.showinfo("System Resume", "Detection system resumed successfully!")
+                    self._show_toast_notification("System Resumed", "Detection system resumed successfully!", "success")
+                    self._show_notification("System resumed successfully", "success")
                 else:
-                    messagebox.showerror("Error", "Failed to resume detection system.")
+                    self._show_toast_notification("Resume Failed", "Failed to resume detection system.", "error")
+                    self._show_notification("Failed to resume system", "error")
             elif self.controller.is_running():
                 # Pause
                 if self.controller.pause_system():
-                    messagebox.showinfo("System Pause", "Detection system paused successfully!")
+                    self._show_toast_notification("System Paused", "Detection system paused successfully!", "success")
+                    self._show_notification("System paused successfully", "success")
                 else:
-                    messagebox.showerror("Error", "Failed to pause detection system.")
+                    self._show_toast_notification("Pause Failed", "Failed to pause detection system.", "error")
+                    self._show_notification("Failed to pause system", "error")
             else:
-                messagebox.showwarning("Warning", "System must be running to pause/resume.")
+                self._show_notification("System must be running to pause/resume", "warning")
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to pause/resume system: {str(e)}")
+            self._show_toast_notification("Pause/Resume Error", f"Failed to pause/resume system: {str(e)}", "error")
+            self._show_notification("Pause/resume error", "error")
     
     def _reset_statistics(self):
         """Reset all statistics"""
-        if messagebox.askyesno("Confirm Reset", "Are you sure you want to reset all statistics?"):
+        if self._show_custom_confirmation("Reset Statistics", "Are you sure you want to reset all statistics?", "Reset", "Cancel"):
             self.stats_manager.reset_statistics()
-            messagebox.showinfo("Success", "Statistics reset successfully")
+            self._show_toast_notification("Statistics Reset", "Statistics reset successfully", "success")
+            self._show_notification("Statistics reset successfully", "success")
     
     def _emergency_stop(self):
         """Emergency stop all operations"""
         try:
-            result = messagebox.askyesno(
+            result = self._show_custom_confirmation(
                 "Emergency Stop", 
                 "Are you sure you want to perform an emergency stop?\n\nThis will immediately halt all operations.",
-                icon='warning'
+                "Emergency Stop", "Cancel"
             )
             if result:
                 if self.controller.emergency_stop():
-                    messagebox.showinfo("Emergency Stop", "Emergency stop completed successfully!")
+                    self._show_toast_notification("Emergency Stop", "Emergency stop completed successfully!", "success")
+                    self._show_notification("Emergency stop completed", "success")
                 else:
-                    messagebox.showerror("Error", "Emergency stop failed. Check logs for details.")
+                    self._show_toast_notification("Emergency Stop Failed", "Emergency stop failed. Check logs for details.", "error")
+                    self._show_notification("Emergency stop failed", "error")
         except Exception as e:
-            messagebox.showerror("Error", f"Emergency stop failed: {str(e)}")
+            self._show_toast_notification("Emergency Stop Error", f"Emergency stop failed: {str(e)}", "error")
+            self._show_notification("Emergency stop error", "error")
     
     def _manual_refresh(self):
         """Manual refresh of all data"""
@@ -1025,9 +1158,11 @@ System Resources:
         if filename:
             try:
                 self.stats_manager.export_data(filename)
-                messagebox.showinfo("Success", f"Statistics exported to {filename}")
+                self._show_toast_notification("Export Complete", f"Statistics exported to {filename}", "success")
+                self._show_notification("Statistics exported successfully", "success")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to export statistics: {e}")
+                self._show_toast_notification("Export Failed", f"Failed to export statistics: {e}", "error")
+                self._show_notification("Statistics export failed", "error")
     
     def _export_configuration(self):
         """Export configuration to file"""
@@ -1038,11 +1173,14 @@ System Resources:
         if filename:
             try:
                 if self.config_manager.export_configuration(filename):
-                    messagebox.showinfo("Success", f"Configuration exported to {filename}")
+                    self._show_toast_notification("Export Complete", f"Configuration exported to {filename}", "success")
+                    self._show_notification("Configuration exported successfully", "success")
                 else:
-                    messagebox.showerror("Error", "Failed to export configuration")
+                    self._show_toast_notification("Export Failed", "Failed to export configuration", "error")
+                    self._show_notification("Configuration export failed", "error")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to export configuration: {e}")
+                self._show_toast_notification("Export Error", f"Failed to export configuration: {e}", "error")
+                self._show_notification("Configuration export error", "error")
     
     def _import_configuration(self):
         """Import configuration from file"""
@@ -1052,46 +1190,54 @@ System Resources:
         if filename:
             try:
                 if self.config_manager.import_configuration(filename, "GUI User"):
-                    messagebox.showinfo("Success", f"Configuration imported from {filename}")
+                    self._show_toast_notification("Import Complete", f"Configuration imported from {filename}", "success")
+                    self._show_notification("Configuration imported successfully", "success")
                     self._load_categories()  # Refresh categories
                 else:
-                    messagebox.showerror("Error", "Failed to import configuration")
+                    self._show_toast_notification("Import Failed", "Failed to import configuration", "error")
+                    self._show_notification("Configuration import failed", "error")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to import configuration: {e}")
+                self._show_toast_notification("Import Error", f"Failed to import configuration: {e}", "error")
+                self._show_notification("Configuration import error", "error")
     
     def _load_profile(self):
         """Load selected profile"""
         profile_name = self.profile_var.get()
         if profile_name:
             if self.config_manager.load_profile(profile_name, "GUI User"):
-                messagebox.showinfo("Success", f"Profile '{profile_name}' loaded")
+                self._show_toast_notification("Profile Loaded", f"Profile '{profile_name}' loaded", "success")
+                self._show_notification(f"Profile '{profile_name}' loaded", "success")
                 # Refresh current category view
                 selection = self.categories_listbox.curselection()
                 if selection:
                     category = self.categories_listbox.get(selection[0])
                     self._load_category_parameters(category)
             else:
-                messagebox.showerror("Error", f"Failed to load profile '{profile_name}'")
+                self._show_toast_notification("Load Failed", f"Failed to load profile '{profile_name}'", "error")
+                self._show_notification("Profile load failed", "error")
     
     def _save_profile(self):
         """Save current configuration as profile"""
         profile_name = tk.simpledialog.askstring("Save Profile", "Enter profile name:")
         if profile_name:
             if self.config_manager.save_profile(profile_name):
-                messagebox.showinfo("Success", f"Profile '{profile_name}' saved")
+                self._show_toast_notification("Profile Saved", f"Profile '{profile_name}' saved", "success")
+                self._show_notification(f"Profile '{profile_name}' saved", "success")
                 # Refresh profile list
                 profiles = self.config_manager.get_profiles()
                 self.profile_combo['values'] = profiles
             else:
-                messagebox.showerror("Error", f"Failed to save profile '{profile_name}'")
+                self._show_toast_notification("Save Failed", f"Failed to save profile '{profile_name}'", "error")
+                self._show_notification("Profile save failed", "error")
     
     def _delete_profile(self):
         """Delete selected profile"""
         profile_name = self.profile_var.get()
         if profile_name:
-            if messagebox.askyesno("Confirm Delete", f"Delete profile '{profile_name}'?"):
+            if self._show_custom_confirmation("Delete Profile", f"Delete profile '{profile_name}'?", "Delete", "Cancel"):
                 if self.config_manager.delete_profile(profile_name):
-                    messagebox.showinfo("Success", f"Profile '{profile_name}' deleted")
+                    self._show_toast_notification("Profile Deleted", f"Profile '{profile_name}' deleted", "success")
+                    self._show_notification(f"Profile '{profile_name}' deleted", "success")
                     # Refresh profile list
                     profiles = self.config_manager.get_profiles()
                     self.profile_combo['values'] = profiles
@@ -1100,7 +1246,8 @@ System Resources:
                     else:
                         self.profile_combo.set("")
                 else:
-                    messagebox.showerror("Error", f"Failed to delete profile '{profile_name}'")
+                    self._show_toast_notification("Delete Failed", f"Failed to delete profile '{profile_name}'", "error")
+                    self._show_notification("Profile delete failed", "error")
     
     def _refresh_logs(self):
         """Refresh log display"""
@@ -1156,8 +1303,9 @@ System Resources:
                         
                         line_num += 1
                     
-                    # Scroll to bottom
-                    self.log_text.see(tk.END)
+                    # Auto-scroll to bottom only if auto-scroll is enabled
+                    if self.auto_scroll_var.get():
+                        self.log_text.see(tk.END)
                     
                 except (AttributeError, TypeError):
                     # Fallback if get_recent_logs is not available
@@ -1180,11 +1328,22 @@ System Resources:
             
             # Clear previous selection
             if self.selected_log_line is not None:
-                self.log_text.tag_remove("selected_line", f"{self.selected_log_line}.0", f"{self.selected_log_line}.end")
+                self.log_text.tag_remove("selected_line", f"{self.selected_log_line}.0", f"{self.selected_log_line}.end+1c")
             
-            # Select the new line
+            # Select the new line - extend selection to include the newline character
+            # This ensures the entire line width is highlighted
             self.selected_log_line = line_num
-            self.log_text.tag_add("selected_line", f"{line_num}.0", f"{line_num}.end")
+            
+            # Get the actual end of the line content
+            line_end = self.log_text.index(f"{line_num}.end")
+            
+            # Select from beginning of line to end, including newline if present
+            try:
+                # Try to include the newline character for full-width selection
+                self.log_text.tag_add("selected_line", f"{line_num}.0", f"{line_num}.end+1c")
+            except:
+                # Fallback to just the line content if newline doesn't exist
+                self.log_text.tag_add("selected_line", f"{line_num}.0", f"{line_num}.end")
             
             # Ensure the selected line tag has higher priority
             self.log_text.tag_raise("selected_line")
@@ -1206,9 +1365,11 @@ System Resources:
             try:
                 with open(filename, 'w') as f:
                     f.write(self.log_text.get(1.0, tk.END))
-                messagebox.showinfo("Success", f"Logs exported to {filename}")
+                self._show_toast_notification("Export Complete", f"Logs exported to {filename}", "success")
+                self._show_notification("Logs exported successfully", "success")
             except Exception as e:
-                messagebox.showerror("Error", f"Failed to export logs: {e}")
+                self._show_toast_notification("Export Failed", f"Failed to export logs: {e}", "error")
+                self._show_notification("Log export failed", "error")
     
     def _refresh_historical(self):
         """Refresh historical statistics"""
@@ -1314,7 +1475,8 @@ System Resources:
             threading.Thread(target=run_tests, daemon=True).start()
             
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to run system test: {str(e)}")
+            self._show_toast_notification("Test Failed", f"Failed to run system test: {str(e)}", "error")
+            self._show_notification("System test failed", "error")
     
     def _test_system_controller(self):
         """Test system controller functionality"""
@@ -1408,7 +1570,8 @@ System Resources:
             ttk.Button(close_frame, text="Close", command=perf_window.destroy).pack(side=tk.RIGHT)
             
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to show performance analysis: {str(e)}")
+            self._show_toast_notification("Analysis Failed", f"Failed to show performance analysis: {str(e)}", "error")
+            self._show_notification("Performance analysis failed", "error")
     
     def _create_system_performance_tab(self, parent):
         """Create system performance analysis tab"""
@@ -1542,7 +1705,35 @@ Features:
 
 Developed with Python, Tkinter, and OpenCV
         """
-        messagebox.showinfo("About", about_text)
+        # Create custom about window
+        about_window = tk.Toplevel(self.root)
+        about_window.title("About")
+        about_window.geometry("500x400")
+        about_window.resizable(False, False)
+        about_window.transient(self.root)
+        about_window.grab_set()
+        
+        # Center the window
+        about_window.geometry("+%d+%d" % (self.root.winfo_rootx() + 50, self.root.winfo_rooty() + 50))
+        
+        # Create text widget with scrollbar
+        text_frame = ttk.Frame(about_window)
+        text_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        text_widget = tk.Text(text_frame, wrap=tk.WORD, font=('Arial', 10))
+        scrollbar = ttk.Scrollbar(text_frame, orient=tk.VERTICAL, command=text_widget.yview)
+        text_widget.configure(yscrollcommand=scrollbar.set)
+        
+        text_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        text_widget.insert(tk.END, about_text)
+        text_widget.config(state=tk.DISABLED)
+        
+        # Close button
+        button_frame = ttk.Frame(about_window)
+        button_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
+        ttk.Button(button_frame, text="Close", command=about_window.destroy).pack(side=tk.RIGHT)
     
     def _show_documentation(self):
         """Show help documentation"""
@@ -1600,7 +1791,8 @@ Developed with Python, Tkinter, and OpenCV
             ttk.Button(close_frame, text="Close", command=doc_window.destroy).pack(side=tk.RIGHT)
             
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to show documentation: {str(e)}")
+            self._show_toast_notification("Documentation Error", f"Failed to show documentation: {str(e)}", "error")
+            self._show_notification("Documentation failed to load", "error")
     
     def _create_overview_tab(self, parent):
         """Create overview documentation tab"""
@@ -2009,15 +2201,74 @@ CONFIGURATION KEYS:
     
     def _on_closing(self):
         """Handle application closing"""
-        if messagebox.askokcancel("Quit", "Do you want to quit?"):
-            self.is_running = False
-            # Stop the system controller if running
-            try:
-                if self.controller.is_running():
+        # Check if system is running and show appropriate confirmation
+        if hasattr(self, 'controller') and self.controller.is_running():
+            # Create a custom confirmation dialog for running system
+            result = self._show_custom_confirmation(
+                "System Running", 
+                "The detection system is currently running.\nDo you want to stop it and exit?",
+                "Stop & Exit", "Cancel"
+            )
+            if result:
+                self._show_notification("Stopping system and exiting...", "info")
+                self.is_running = False
+                try:
                     self.controller.stop_system()
-            except Exception as e:
-                print(f"Error stopping system on close: {e}")
+                except Exception as e:
+                    print(f"Error stopping system on close: {e}")
+                self.root.destroy()
+        else:
+            # System not running, exit directly with minimal confirmation
+            self.is_running = False
             self.root.destroy()
+    
+    def _show_custom_confirmation(self, title, message, ok_text="OK", cancel_text="Cancel"):
+        """Show a custom confirmation dialog that's less intrusive"""
+        # Create custom dialog
+        dialog = tk.Toplevel(self.root)
+        dialog.title(title)
+        dialog.geometry("400x150")
+        dialog.transient(self.root)
+        dialog.grab_set()
+        dialog.resizable(False, False)
+        
+        # Center the dialog
+        dialog.geometry("+%d+%d" % (
+            self.root.winfo_rootx() + (self.root.winfo_width() // 2) - 200,
+            self.root.winfo_rooty() + (self.root.winfo_height() // 2) - 75
+        ))
+        
+        result = [False]  # Use list to allow modification in nested function
+        
+        # Create dialog content
+        main_frame = ttk.Frame(dialog, padding="20")
+        main_frame.pack(fill='both', expand=True)
+        
+        # Message
+        ttk.Label(main_frame, text=message, font=('Arial', 10)).pack(pady=(0, 20))
+        
+        # Buttons
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill='x')
+        
+        def on_ok():
+            result[0] = True
+            dialog.destroy()
+        
+        def on_cancel():
+            result[0] = False
+            dialog.destroy()
+        
+        ttk.Button(button_frame, text=cancel_text, command=on_cancel).pack(side='right', padx=(10, 0))
+        ttk.Button(button_frame, text=ok_text, command=on_ok).pack(side='right')
+        
+        # Handle window close button
+        dialog.protocol("WM_DELETE_WINDOW", on_cancel)
+        
+        # Wait for dialog to close
+        dialog.wait_window()
+        
+        return result[0]
     
     def run(self):
         """Start the GUI application"""
@@ -2030,7 +2281,9 @@ def main():
         app.run()
     except Exception as e:
         print(f"Error starting GUI application: {e}")
-        messagebox.showerror("Error", f"Failed to start application: {e}")
+        # Cannot use GUI notifications here as the GUI failed to start
+        import sys
+        sys.stderr.write(f"CRITICAL ERROR: Failed to start application: {e}\n")
 
 if __name__ == "__main__":
     main()

@@ -221,7 +221,19 @@ def filter_valid_coordinates(coordinates_list):
             try:
                 if validate_coordinates(coord):
                     valid_coordinates.append(coord)
-                    log_coordinates_found("target", coord)
+                    
+                    # Calculate final coordinates with offset for logging
+                    try:
+                        offset_x = get_config("click_offset_x")
+                        offset_y = get_config("click_offset_y")
+                        final_x = coord[0] + offset_x
+                        final_y = coord[1] + offset_y
+                        final_coord = (final_x, final_y)
+                        log_coordinates_found("target", final_coord)
+                    except Exception as e:
+                        log_error(f"Error calculating final coordinates: {e}")
+                        # Fallback to original coordinates
+                        log_coordinates_found("target", coord)
                 else:
                     log_debug(f"Invalid coordinate filtered: {coord}")
             except Exception as e:

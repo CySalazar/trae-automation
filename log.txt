@@ -8697,3 +8697,1029 @@ Totale detection prima deduplicazione: 3459
 [2025-08-25 12:15:21] [INFO] ✅ Successful detections: 1
 [2025-08-25 12:15:21] [DEBUG] Resource cleanup in progress...
 [2025-08-25 12:15:21] [DEBUG] Cleanup completed
+
+================================================================================
+[2025-08-25 12:16:41] [INFO] 🚀 Automatic detection system started
+[2025-08-25 12:16:41] [INFO] 📁 Log file: log.txt
+[2025-08-25 12:16:45] [DEBUG] System state changed: stopped -> starting
+[2025-08-25 12:16:46] [DEBUG] System state changed: starting -> running
+
+================================================================================
+[2025-08-25 12:16:46] [INFO] 🚀 Automatic detection system started
+[2025-08-25 12:16:46] [INFO] 📁 Log file: log.txt
+[2025-08-25 12:16:46] [INFO] ⏰ Startup: 2025-08-25 12:16:46
+[2025-08-25 12:16:46] [INFO] 🎯 Target: 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]'
+[2025-08-25 12:16:46] [INFO] 🔍 Final word: 't[o0]'
+[2025-08-25 12:16:46] [INFO] 🤖 Mode: AUTOMATIC - Automatic click without confirmation
+[2025-08-25 12:16:46] [INFO] 🔍 Starting scan #1...
+[2025-08-25 12:16:46] [DEBUG] Starting complete screen scan
+[2025-08-25 12:16:46] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_120631.png
+[2025-08-25 12:16:46] [DEBUG] Screenshot removed: debug_fullscreen_20250825_120622.png
+[2025-08-25 12:16:46] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_120521.png
+[2025-08-25 12:16:46] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_120507.png
+[2025-08-25 12:16:46] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:16:46] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:16:46] [DEBUG] Screenshot saved: debug_fullscreen_20250825_121646.png
+[2025-08-25 12:16:46] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:16:46] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:16:46] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:16:46] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:16:46] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:16:46] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:16:46] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:16:46] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:16:46] [DEBUG] Processing original image
+[2025-08-25 12:16:46] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:16:46] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:16:48] [DEBUG] Config --psm 6: 582 valid detections
+[2025-08-25 12:16:48] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:16:49] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:16:49] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:16:49] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:16:49] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:16:51] [DEBUG] Config --psm 11: 521 valid detections
+[2025-08-25 12:16:51] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:16:54] [DEBUG] Config --psm 12: 536 valid detections
+[2025-08-25 12:16:54] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:16:55] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:16:55] [DEBUG] Text extraction completed: 1639 total detections
+[2025-08-25 12:16:55] [DEBUG] Enhancement ORIGINAL: 1639 valid detections
+[2025-08-25 12:16:55] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:16:55] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_121655.png
+[2025-08-25 12:16:55] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:16:55] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:16:57] [DEBUG] Config --psm 6: 515 valid detections
+[2025-08-25 12:16:57] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:16:58] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:16:58] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:16:58] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:16:58] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:17:01] [DEBUG] Config --psm 11: 423 valid detections
+[2025-08-25 12:17:01] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:17:05] [DEBUG] Config --psm 12: 424 valid detections
+[2025-08-25 12:17:05] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:17:05] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:17:05] [DEBUG] Text extraction completed: 1362 total detections
+[2025-08-25 12:17:05] [DEBUG] Enhancement CLAHE: 1362 valid detections
+[2025-08-25 12:17:05] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:17:05] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_121705.png
+[2025-08-25 12:17:05] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:17:05] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:17:07] [DEBUG] Config --psm 6: 321 valid detections
+[2025-08-25 12:17:07] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:17:08] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:17:08] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:17:08] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:17:08] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:17:10] [DEBUG] Config --psm 11: 375 valid detections
+[2025-08-25 12:17:10] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:17:13] [DEBUG] Config --psm 12: 378 valid detections
+[2025-08-25 12:17:13] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:17:14] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:17:14] [DEBUG] Text extraction completed: 1074 total detections
+[2025-08-25 12:17:14] [DEBUG] Enhancement DARK_ON_LIGHT: 1074 valid detections
+[2025-08-25 12:17:14] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:17:14] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_121714.png
+[2025-08-25 12:17:14] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:17:14] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:17:16] [DEBUG] Config --psm 6: 315 valid detections
+[2025-08-25 12:17:16] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:17:17] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:17:17] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:17:17] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:17:17] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:17:19] [DEBUG] Config --psm 11: 366 valid detections
+[2025-08-25 12:17:19] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:17:22] [DEBUG] Config --psm 12: 371 valid detections
+[2025-08-25 12:17:22] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:17:23] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:17:23] [DEBUG] Text extraction completed: 1052 total detections
+[2025-08-25 12:17:23] [DEBUG] Enhancement LIGHT_ON_DARK: 1052 valid detections
+[2025-08-25 12:17:23] [DEBUG] Starting deduplication of 5127 detections
+[2025-08-25 12:17:23] [DEBUG] Valid detections after filtering: 5127
+[2025-08-25 12:17:24] [DEBUG] Deduplication completed: 2515 unique detections
+[2025-08-25 12:17:24] [DEBUG] Detections after deduplication: 2515
+[2025-08-25 12:17:24] [DEBUG] Detected words (first 10): Evan, Search, Terminal, classe, principale., del, were, successfully, Please, pixel
+[2025-08-25 12:17:24] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 2515 detections
+[2025-08-25 12:17:24] [DEBUG] Full text for search: 'Evan Search Terminal classe principale. del were successfully Please pixel system Uptime: Total 2 li...'
+[2025-08-25 12:17:24] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:17:24] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:17:24] [DEBUG] Pattern search completed: 0 coordinates found
+[2025-08-25 12:17:24] [DEBUG] Coordinates found by pattern: 0
+[2025-08-25 12:17:24] [DEBUG] Final coordinates after deduplication: 0
+[2025-08-25 12:17:24] [DEBUG] Scan time: 38.16s (Average: 38.16s)
+[2025-08-25 12:17:24] [INFO] ❌ Scan #1 completed - Target not found
+[2025-08-25 12:17:24] [DEBUG] Scan time: 38.16s (Average: 38.16s)
+[2025-08-25 12:17:24] [DEBUG] Scan failed, retrying in 5 seconds...
+[2025-08-25 12:17:29] [DEBUG] Retry scan #1, attempt 2/4
+[2025-08-25 12:17:29] [INFO] 🔍 Starting scan #1...
+[2025-08-25 12:17:29] [DEBUG] Starting complete screen scan
+[2025-08-25 12:17:29] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_121313.png
+[2025-08-25 12:17:29] [DEBUG] Screenshot removed: debug_fullscreen_20250825_121301.png
+[2025-08-25 12:17:29] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_120652.png
+[2025-08-25 12:17:29] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_120642.png
+[2025-08-25 12:17:29] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:17:29] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:17:29] [DEBUG] Screenshot saved: debug_fullscreen_20250825_121729.png
+[2025-08-25 12:17:29] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:17:29] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:17:29] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:17:29] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:17:29] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:17:29] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:17:29] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:17:29] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:17:29] [DEBUG] Processing original image
+[2025-08-25 12:17:29] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:17:29] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:17:31] [DEBUG] Config --psm 6: 408 valid detections
+[2025-08-25 12:17:31] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:17:31] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:17:31] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:17:32] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:17:32] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:17:33] [DEBUG] Config --psm 11: 421 valid detections
+[2025-08-25 12:17:33] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:17:35] [DEBUG] Config --psm 12: 422 valid detections
+[2025-08-25 12:17:35] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:17:36] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:17:36] [DEBUG] Text extraction completed: 1253 total detections
+[2025-08-25 12:17:36] [DEBUG] Enhancement ORIGINAL: 1253 valid detections
+[2025-08-25 12:17:36] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:17:36] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_121736.png
+[2025-08-25 12:17:36] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:17:36] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:17:38] [DEBUG] Config --psm 6: 307 valid detections
+[2025-08-25 12:17:38] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:17:38] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:17:38] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:17:38] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:17:38] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:17:40] [DEBUG] Config --psm 11: 327 valid detections
+[2025-08-25 12:17:40] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:17:43] [DEBUG] Config --psm 12: 332 valid detections
+[2025-08-25 12:17:43] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:17:43] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:17:43] [DEBUG] Text extraction completed: 968 total detections
+[2025-08-25 12:17:43] [DEBUG] Enhancement CLAHE: 968 valid detections
+[2025-08-25 12:17:43] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:17:43] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_121743.png
+[2025-08-25 12:17:43] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:17:43] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:17:45] [DEBUG] Config --psm 6: 250 valid detections
+[2025-08-25 12:17:45] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:17:46] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:17:46] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:17:46] [DEBUG] Config --psm 7: 3 valid detections
+[2025-08-25 12:17:46] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:17:48] [DEBUG] Config --psm 11: 283 valid detections
+[2025-08-25 12:17:48] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:17:50] [DEBUG] Config --psm 12: 281 valid detections
+[2025-08-25 12:17:50] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:17:51] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:17:51] [DEBUG] Text extraction completed: 819 total detections
+[2025-08-25 12:17:51] [DEBUG] Enhancement DARK_ON_LIGHT: 819 valid detections
+[2025-08-25 12:17:51] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:17:51] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_121751.png
+[2025-08-25 12:17:51] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:17:51] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:17:53] [DEBUG] Config --psm 6: 256 valid detections
+[2025-08-25 12:17:53] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:17:53] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:17:53] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:17:53] [DEBUG] Config --psm 7: 3 valid detections
+[2025-08-25 12:17:53] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:17:55] [DEBUG] Config --psm 11: 277 valid detections
+[2025-08-25 12:17:55] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:17:58] [DEBUG] Config --psm 12: 272 valid detections
+[2025-08-25 12:17:58] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:17:58] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:17:58] [DEBUG] Text extraction completed: 810 total detections
+[2025-08-25 12:17:58] [DEBUG] Enhancement LIGHT_ON_DARK: 810 valid detections
+[2025-08-25 12:17:58] [DEBUG] Starting deduplication of 3850 detections
+[2025-08-25 12:17:58] [DEBUG] Valid detections after filtering: 3850
+[2025-08-25 12:17:58] [DEBUG] Deduplication completed: 1768 unique detections
+[2025-08-25 12:17:58] [DEBUG] Detections after deduplication: 1768
+[2025-08-25 12:17:58] [DEBUG] Detected words (first 10): Evan, Search, >, TRAE, non, ha, ci, Detection, Tasks, done
+[2025-08-25 12:17:58] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 1768 detections
+[2025-08-25 12:17:58] [DEBUG] Full text for search: 'Evan Search > TRAE non ha ci Detection Tasks done di Passo servizio: gli di Memory Usage auth con mo...'
+[2025-08-25 12:17:58] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:17:58] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:17:58] [DEBUG] Pattern search completed: 0 coordinates found
+[2025-08-25 12:17:58] [DEBUG] Coordinates found by pattern: 0
+[2025-08-25 12:17:58] [DEBUG] Final coordinates after deduplication: 0
+[2025-08-25 12:17:58] [DEBUG] Scan time: 29.71s (Average: 35.34s)
+[2025-08-25 12:17:58] [INFO] ❌ Scan #1 completed - Target not found
+[2025-08-25 12:17:58] [DEBUG] Scan time: 29.71s (Average: 33.93s)
+[2025-08-25 12:17:58] [DEBUG] Scan failed, retrying in 5 seconds...
+[2025-08-25 12:18:03] [DEBUG] Retry scan #1, attempt 3/4
+[2025-08-25 12:18:04] [INFO] 🔍 Starting scan #1...
+[2025-08-25 12:18:04] [DEBUG] Starting complete screen scan
+[2025-08-25 12:18:04] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_121443.png
+[2025-08-25 12:18:04] [DEBUG] Screenshot removed: debug_fullscreen_20250825_121434.png
+[2025-08-25 12:18:04] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_121344.png
+[2025-08-25 12:18:04] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_121328.png
+[2025-08-25 12:18:04] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:18:04] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:18:04] [DEBUG] Screenshot saved: debug_fullscreen_20250825_121804.png
+[2025-08-25 12:18:04] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:18:04] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:18:04] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:18:04] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:18:04] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:18:04] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:18:04] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:18:04] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:18:04] [DEBUG] Processing original image
+[2025-08-25 12:18:04] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:18:04] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:18:06] [DEBUG] Config --psm 6: 365 valid detections
+[2025-08-25 12:18:06] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:18:06] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:18:06] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:18:07] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:18:07] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:18:08] [DEBUG] Config --psm 11: 389 valid detections
+[2025-08-25 12:18:08] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:18:11] [DEBUG] Config --psm 12: 383 valid detections
+[2025-08-25 12:18:11] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:18:11] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:18:11] [DEBUG] Text extraction completed: 1139 total detections
+[2025-08-25 12:18:11] [DEBUG] Enhancement ORIGINAL: 1139 valid detections
+[2025-08-25 12:18:11] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:18:11] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_121811.png
+[2025-08-25 12:18:11] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:18:11] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:18:13] [DEBUG] Config --psm 6: 324 valid detections
+[2025-08-25 12:18:13] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:18:14] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:18:14] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:18:14] [DEBUG] Config --psm 7: 5 valid detections
+[2025-08-25 12:18:14] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:18:16] [DEBUG] Config --psm 11: 349 valid detections
+[2025-08-25 12:18:16] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:18:19] [DEBUG] Config --psm 12: 345 valid detections
+[2025-08-25 12:18:19] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:18:19] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:18:19] [DEBUG] Text extraction completed: 1025 total detections
+[2025-08-25 12:18:19] [DEBUG] Enhancement CLAHE: 1025 valid detections
+[2025-08-25 12:18:19] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:18:19] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_121819.png
+[2025-08-25 12:18:19] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:18:19] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:18:21] [DEBUG] Config --psm 6: 171 valid detections
+[2025-08-25 12:18:21] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:18:21] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:18:21] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:18:21] [DEBUG] Config --psm 7: 5 valid detections
+[2025-08-25 12:18:21] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:18:24] [DEBUG] Config --psm 11: 292 valid detections
+[2025-08-25 12:18:24] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:18:26] [DEBUG] Config --psm 12: 282 valid detections
+[2025-08-25 12:18:26] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:18:26] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:18:26] [DEBUG] Text extraction completed: 752 total detections
+[2025-08-25 12:18:26] [DEBUG] Enhancement DARK_ON_LIGHT: 752 valid detections
+[2025-08-25 12:18:26] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:18:26] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_121826.png
+[2025-08-25 12:18:26] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:18:26] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:18:28] [DEBUG] Config --psm 6: 178 valid detections
+[2025-08-25 12:18:28] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:18:29] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:18:29] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:18:29] [DEBUG] Config --psm 7: 5 valid detections
+[2025-08-25 12:18:29] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:18:31] [DEBUG] Config --psm 11: 299 valid detections
+[2025-08-25 12:18:31] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:18:34] [DEBUG] Config --psm 12: 288 valid detections
+[2025-08-25 12:18:34] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:18:34] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:18:34] [DEBUG] Text extraction completed: 772 total detections
+[2025-08-25 12:18:34] [DEBUG] Enhancement LIGHT_ON_DARK: 772 valid detections
+[2025-08-25 12:18:34] [DEBUG] Starting deduplication of 3688 detections
+[2025-08-25 12:18:34] [DEBUG] Valid detections after filtering: 3688
+[2025-08-25 12:18:35] [DEBUG] Deduplication completed: 1656 unique detections
+[2025-08-25 12:18:35] [DEBUG] Detections after deduplication: 1656
+[2025-08-25 12:18:35] [DEBUG] Detected words (first 10): TRAE, pip, Categories, Parameters, tra, questo, per, accidental, double, clicks
+[2025-08-25 12:18:35] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 1656 detections
+[2025-08-25 12:18:35] [DEBUG] Full text for search: 'TRAE pip Categories Parameters tra questo per accidental double clicks source pip Save problemi su s...'
+[2025-08-25 12:18:35] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:18:35] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:18:35] [DEBUG] Pattern search completed: 0 coordinates found
+[2025-08-25 12:18:35] [DEBUG] Coordinates found by pattern: 0
+[2025-08-25 12:18:35] [DEBUG] Final coordinates after deduplication: 0
+[2025-08-25 12:18:35] [DEBUG] Scan time: 31.26s (Average: 33.40s)
+[2025-08-25 12:18:35] [INFO] ❌ Scan #1 completed - Target not found
+[2025-08-25 12:18:35] [DEBUG] Scan time: 31.26s (Average: 33.04s)
+[2025-08-25 12:18:35] [DEBUG] Scan failed, retrying in 5 seconds...
+[2025-08-25 12:18:40] [DEBUG] Retry scan #1, attempt 4/4
+[2025-08-25 12:18:40] [INFO] 🔍 Starting scan #1...
+[2025-08-25 12:18:40] [DEBUG] Starting complete screen scan
+[2025-08-25 12:18:40] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_121655.png
+[2025-08-25 12:18:40] [DEBUG] Screenshot removed: debug_fullscreen_20250825_121646.png
+[2025-08-25 12:18:40] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_121501.png
+[2025-08-25 12:18:40] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_121452.png
+[2025-08-25 12:18:40] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:18:40] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:18:40] [DEBUG] Screenshot saved: debug_fullscreen_20250825_121840.png
+[2025-08-25 12:18:40] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:18:40] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:18:40] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:18:40] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:18:40] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:18:40] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:18:40] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:18:40] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:18:40] [DEBUG] Processing original image
+[2025-08-25 12:18:40] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:18:40] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:18:42] [DEBUG] Config --psm 6: 408 valid detections
+[2025-08-25 12:18:42] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:18:42] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:18:42] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:18:43] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:18:43] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:18:45] [DEBUG] Config --psm 11: 393 valid detections
+[2025-08-25 12:18:45] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:18:47] [DEBUG] Config --psm 12: 397 valid detections
+[2025-08-25 12:18:47] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:18:48] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:18:48] [DEBUG] Text extraction completed: 1200 total detections
+[2025-08-25 12:18:48] [DEBUG] Enhancement ORIGINAL: 1200 valid detections
+[2025-08-25 12:18:48] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:18:48] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_121848.png
+[2025-08-25 12:18:48] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:18:48] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:18:50] [DEBUG] Config --psm 6: 321 valid detections
+[2025-08-25 12:18:50] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:18:51] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:18:51] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:18:51] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:18:51] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:18:53] [DEBUG] Config --psm 11: 319 valid detections
+[2025-08-25 12:18:53] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:18:56] [DEBUG] Config --psm 12: 317 valid detections
+[2025-08-25 12:18:56] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:18:56] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:18:56] [DEBUG] Text extraction completed: 959 total detections
+[2025-08-25 12:18:56] [DEBUG] Enhancement CLAHE: 959 valid detections
+[2025-08-25 12:18:56] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:18:56] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_121856.png
+[2025-08-25 12:18:56] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:18:56] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:18:58] [DEBUG] Config --psm 6: 223 valid detections
+[2025-08-25 12:18:58] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:18:58] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:18:58] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:18:59] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:18:59] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:19:01] [DEBUG] Config --psm 11: 291 valid detections
+[2025-08-25 12:19:01] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:19:04] [DEBUG] Config --psm 12: 300 valid detections
+[2025-08-25 12:19:04] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:19:04] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:19:04] [DEBUG] Text extraction completed: 814 total detections
+[2025-08-25 12:19:04] [DEBUG] Enhancement DARK_ON_LIGHT: 814 valid detections
+[2025-08-25 12:19:04] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:19:04] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_121904.png
+[2025-08-25 12:19:04] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:19:04] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:19:06] [DEBUG] Config --psm 6: 230 valid detections
+[2025-08-25 12:19:06] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:19:07] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:19:07] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:19:07] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:19:07] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:19:09] [DEBUG] Config --psm 11: 281 valid detections
+[2025-08-25 12:19:09] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:19:12] [DEBUG] Config --psm 12: 291 valid detections
+[2025-08-25 12:19:12] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:19:13] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:19:13] [DEBUG] Text extraction completed: 804 total detections
+[2025-08-25 12:19:13] [DEBUG] Enhancement LIGHT_ON_DARK: 804 valid detections
+[2025-08-25 12:19:13] [DEBUG] Starting deduplication of 3777 detections
+[2025-08-25 12:19:13] [DEBUG] Valid detections after filtering: 3777
+[2025-08-25 12:19:13] [DEBUG] Deduplication completed: 1696 unique detections
+[2025-08-25 12:19:13] [DEBUG] Detections after deduplication: 1696
+[2025-08-25 12:19:13] [DEBUG] Detected words (first 10): TRAE, Detection, Control, Logs, System, Resources, Scan, Performance, pip, Uptime:
+[2025-08-25 12:19:13] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 1696 detections
+[2025-08-25 12:19:13] [DEBUG] Full text for search: 'TRAE Detection Control Logs System Resources Scan Performance pip Uptime: 20 Total 30000 Last 25000 ...'
+[2025-08-25 12:19:13] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:19:13] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:19:13] [DEBUG] Pattern search completed: 0 coordinates found
+[2025-08-25 12:19:13] [DEBUG] Coordinates found by pattern: 0
+[2025-08-25 12:19:13] [DEBUG] Final coordinates after deduplication: 0
+[2025-08-25 12:19:13] [DEBUG] Scan time: 33.36s (Average: 33.09s)
+[2025-08-25 12:19:13] [INFO] ❌ Scan #1 completed - Target not found
+[2025-08-25 12:19:13] [DEBUG] Scan time: 33.36s (Average: 33.12s)
+[2025-08-25 12:19:13] [DEBUG] All scan attempts #1 failed
+[2025-08-25 12:19:13] [INFO] ❌ Scan #1 - Target not found (147.59s)
+[2025-08-25 12:20:40] [DEBUG] System state changed: running -> stopping
+[2025-08-25 12:20:40] [DEBUG] Scan loop terminated
+[2025-08-25 12:20:40] [DEBUG] System state changed: stopping -> stopped
+
+================================================================================
+[2025-08-25 12:20:40] [INFO] 🛑 Automatic detection system stopped
+[2025-08-25 12:20:40] [INFO] ⏱️ Total uptime: 3m 59s
+[2025-08-25 12:20:40] [INFO] 🔍 Total scans: 4
+[2025-08-25 12:20:40] [INFO] ✅ Successful detections: 0
+
+================================================================================
+[2025-08-25 12:22:18] [INFO] 🚀 Automatic detection system started
+[2025-08-25 12:22:18] [INFO] 📁 Log file: log.txt
+[2025-08-25 12:23:10] [DEBUG] System state changed: stopped -> starting
+[2025-08-25 12:23:10] [DEBUG] System state changed: starting -> running
+
+================================================================================
+[2025-08-25 12:23:10] [INFO] 🚀 Automatic detection system started
+[2025-08-25 12:23:10] [INFO] 📁 Log file: log.txt
+[2025-08-25 12:23:10] [INFO] ⏰ Startup: 2025-08-25 12:23:10
+[2025-08-25 12:23:10] [INFO] 🎯 Target: 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]'
+[2025-08-25 12:23:10] [INFO] 🔍 Final word: 't[o0]'
+[2025-08-25 12:23:10] [INFO] 🤖 Mode: AUTOMATIC - Automatic click without confirmation
+[2025-08-25 12:23:10] [INFO] 🔍 Starting scan #1...
+[2025-08-25 12:23:10] [DEBUG] Starting complete screen scan
+[2025-08-25 12:23:10] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_121736.png
+[2025-08-25 12:23:10] [DEBUG] Screenshot removed: debug_fullscreen_20250825_121729.png
+[2025-08-25 12:23:10] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_121714.png
+[2025-08-25 12:23:10] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_121705.png
+[2025-08-25 12:23:10] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:23:10] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:23:10] [DEBUG] Screenshot saved: debug_fullscreen_20250825_122310.png
+[2025-08-25 12:23:10] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:23:10] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:23:10] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:23:10] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:23:10] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:23:10] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:23:10] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:23:10] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:23:10] [DEBUG] Processing original image
+[2025-08-25 12:23:10] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:23:10] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:23:12] [DEBUG] Config --psm 6: 445 valid detections
+[2025-08-25 12:23:12] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:23:13] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:23:13] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:23:14] [DEBUG] Config --psm 7: 1 valid detections
+[2025-08-25 12:23:14] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:23:16] [DEBUG] Config --psm 11: 441 valid detections
+[2025-08-25 12:23:16] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:23:18] [DEBUG] Config --psm 12: 453 valid detections
+[2025-08-25 12:23:18] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:23:19] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:23:19] [DEBUG] Text extraction completed: 1342 total detections
+[2025-08-25 12:23:19] [DEBUG] Enhancement ORIGINAL: 1342 valid detections
+[2025-08-25 12:23:19] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:23:19] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_122319.png
+[2025-08-25 12:23:19] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:23:19] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:23:22] [DEBUG] Config --psm 6: 383 valid detections
+[2025-08-25 12:23:22] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:23:22] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:23:22] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:23:22] [DEBUG] Config --psm 7: 1 valid detections
+[2025-08-25 12:23:22] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:23:25] [DEBUG] Config --psm 11: 404 valid detections
+[2025-08-25 12:23:25] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:23:29] [DEBUG] Config --psm 12: 396 valid detections
+[2025-08-25 12:23:29] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:23:29] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:23:29] [DEBUG] Text extraction completed: 1186 total detections
+[2025-08-25 12:23:29] [DEBUG] Enhancement CLAHE: 1186 valid detections
+[2025-08-25 12:23:29] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:23:29] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_122329.png
+[2025-08-25 12:23:29] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:23:29] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:23:32] [DEBUG] Config --psm 6: 307 valid detections
+[2025-08-25 12:23:32] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:23:32] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:23:32] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:23:32] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:23:32] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:23:35] [DEBUG] Config --psm 11: 417 valid detections
+[2025-08-25 12:23:35] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:23:38] [DEBUG] Config --psm 12: 361 valid detections
+[2025-08-25 12:23:38] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:23:39] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:23:39] [DEBUG] Text extraction completed: 1087 total detections
+[2025-08-25 12:23:39] [DEBUG] Enhancement DARK_ON_LIGHT: 1087 valid detections
+[2025-08-25 12:23:39] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:23:39] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_122339.png
+[2025-08-25 12:23:39] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:23:39] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:23:42] [DEBUG] Config --psm 6: 290 valid detections
+[2025-08-25 12:23:42] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:23:42] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:23:42] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:23:42] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:23:42] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:23:45] [DEBUG] Config --psm 11: 402 valid detections
+[2025-08-25 12:23:45] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:23:48] [DEBUG] Config --psm 12: 348 valid detections
+[2025-08-25 12:23:48] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:23:49] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:23:49] [DEBUG] Text extraction completed: 1042 total detections
+[2025-08-25 12:23:49] [DEBUG] Enhancement LIGHT_ON_DARK: 1042 valid detections
+[2025-08-25 12:23:49] [DEBUG] Starting deduplication of 4657 detections
+[2025-08-25 12:23:49] [DEBUG] Valid detections after filtering: 4657
+[2025-08-25 12:23:50] [DEBUG] Deduplication completed: 2267 unique detections
+[2025-08-25 12:23:50] [DEBUG] Detections after deduplication: 2267
+[2025-08-25 12:23:50] [DEBUG] Detected words (first 10): Search, Detection, System, Resources, Scan, Performance, Uptime:, per, per, orchestrator.
+[2025-08-25 12:23:50] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 2267 detections
+[2025-08-25 12:23:50] [DEBUG] Full text for search: 'Search Detection System Resources Scan Performance Uptime: per per orchestrator. 2 System Success pe...'
+[2025-08-25 12:23:50] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:23:50] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:23:50] [DEBUG] Pattern search completed: 0 coordinates found
+[2025-08-25 12:23:50] [DEBUG] Coordinates found by pattern: 0
+[2025-08-25 12:23:50] [DEBUG] Final coordinates after deduplication: 0
+[2025-08-25 12:23:50] [DEBUG] Scan time: 39.71s (Average: 39.71s)
+[2025-08-25 12:23:50] [INFO] ❌ Scan #1 completed - Target not found
+[2025-08-25 12:23:50] [DEBUG] Scan time: 39.71s (Average: 39.71s)
+[2025-08-25 12:23:50] [DEBUG] Scan failed, retrying in 5 seconds...
+[2025-08-25 12:23:55] [DEBUG] Retry scan #1, attempt 2/4
+[2025-08-25 12:23:55] [INFO] 🔍 Starting scan #1...
+[2025-08-25 12:23:55] [DEBUG] Starting complete screen scan
+[2025-08-25 12:23:55] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_121811.png
+[2025-08-25 12:23:55] [DEBUG] Screenshot removed: debug_fullscreen_20250825_121804.png
+[2025-08-25 12:23:55] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_121751.png
+[2025-08-25 12:23:55] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_121743.png
+[2025-08-25 12:23:55] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:23:55] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:23:55] [DEBUG] Screenshot saved: debug_fullscreen_20250825_122355.png
+[2025-08-25 12:23:55] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:23:55] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:23:55] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:23:55] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:23:55] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:23:55] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:23:55] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:23:55] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:23:55] [DEBUG] Processing original image
+[2025-08-25 12:23:55] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:23:55] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:23:59] [DEBUG] Config --psm 6: 776 valid detections
+[2025-08-25 12:23:59] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:23:59] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:23:59] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:24:00] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:24:00] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:24:05] [DEBUG] Config --psm 11: 882 valid detections
+[2025-08-25 12:24:05] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:24:10] [DEBUG] Config --psm 12: 862 valid detections
+[2025-08-25 12:24:10] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:24:10] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:24:10] [DEBUG] Text extraction completed: 2522 total detections
+[2025-08-25 12:24:10] [DEBUG] Enhancement ORIGINAL: 2522 valid detections
+[2025-08-25 12:24:10] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:24:11] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_122410.png
+[2025-08-25 12:24:11] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:24:11] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:24:15] [DEBUG] Config --psm 6: 632 valid detections
+[2025-08-25 12:24:15] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:24:16] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:24:16] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:24:16] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:24:16] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:24:26] [DEBUG] Config --psm 11: 768 valid detections
+[2025-08-25 12:24:26] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:24:35] [DEBUG] Config --psm 12: 741 valid detections
+[2025-08-25 12:24:35] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:24:35] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:24:35] [DEBUG] Text extraction completed: 2143 total detections
+[2025-08-25 12:24:35] [DEBUG] Enhancement CLAHE: 2143 valid detections
+[2025-08-25 12:24:35] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:24:35] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_122435.png
+[2025-08-25 12:24:35] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:24:35] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:24:39] [DEBUG] Config --psm 6: 501 valid detections
+[2025-08-25 12:24:39] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:24:40] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:24:40] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:24:40] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:24:40] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:24:50] [DEBUG] Config --psm 11: 760 valid detections
+[2025-08-25 12:24:50] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:24:58] [DEBUG] Config --psm 12: 677 valid detections
+[2025-08-25 12:24:58] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:24:58] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:24:58] [DEBUG] Text extraction completed: 1938 total detections
+[2025-08-25 12:24:58] [DEBUG] Enhancement DARK_ON_LIGHT: 1938 valid detections
+[2025-08-25 12:24:58] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:24:58] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_122458.png
+[2025-08-25 12:24:58] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:24:58] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:25:03] [DEBUG] Config --psm 6: 498 valid detections
+[2025-08-25 12:25:03] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:25:03] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:25:03] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:25:03] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:25:03] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:25:13] [DEBUG] Config --psm 11: 753 valid detections
+[2025-08-25 12:25:13] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:25:21] [DEBUG] Config --psm 12: 695 valid detections
+[2025-08-25 12:25:21] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:25:21] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:25:21] [DEBUG] Text extraction completed: 1948 total detections
+[2025-08-25 12:25:21] [DEBUG] Enhancement LIGHT_ON_DARK: 1948 valid detections
+[2025-08-25 12:25:21] [DEBUG] Starting deduplication of 8551 detections
+[2025-08-25 12:25:22] [DEBUG] Valid detections after filtering: 8551
+[2025-08-25 12:25:24] [DEBUG] Deduplication completed: 3879 unique detections
+[2025-08-25 12:25:24] [DEBUG] Detections after deduplication: 3879
+[2025-08-25 12:25:24] [DEBUG] Detected words (first 10): with, Searching, by, Search, Detection, Logs, saved:, Starting, text, from
+[2025-08-25 12:25:24] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 3879 detections
+[2025-08-25 12:25:24] [DEBUG] Full text for search: 'with Searching by Search Detection Logs saved: Starting text from image [DEBUG] 6: detections with 1...'
+[2025-08-25 12:25:24] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:25:24] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:25:24] [DEBUG] Pattern search completed: 0 coordinates found
+[2025-08-25 12:25:24] [DEBUG] Coordinates found by pattern: 0
+[2025-08-25 12:25:24] [DEBUG] Final coordinates after deduplication: 0
+[2025-08-25 12:25:24] [DEBUG] Scan time: 89.08s (Average: 56.16s)
+[2025-08-25 12:25:24] [INFO] ❌ Scan #1 completed - Target not found
+[2025-08-25 12:25:24] [DEBUG] Scan time: 89.08s (Average: 64.39s)
+[2025-08-25 12:25:24] [DEBUG] Scan failed, retrying in 5 seconds...
+[2025-08-25 12:25:29] [DEBUG] Retry scan #1, attempt 3/4
+[2025-08-25 12:25:29] [INFO] 🔍 Starting scan #1...
+[2025-08-25 12:25:29] [DEBUG] Starting complete screen scan
+[2025-08-25 12:25:29] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_121848.png
+[2025-08-25 12:25:29] [DEBUG] Screenshot removed: debug_fullscreen_20250825_121840.png
+[2025-08-25 12:25:29] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_121826.png
+[2025-08-25 12:25:29] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_121819.png
+[2025-08-25 12:25:29] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:25:29] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:25:29] [DEBUG] Screenshot saved: debug_fullscreen_20250825_122529.png
+[2025-08-25 12:25:29] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:25:29] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:25:29] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:25:29] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:25:29] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:25:29] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:25:29] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:25:29] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:25:29] [DEBUG] Processing original image
+[2025-08-25 12:25:29] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:25:29] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:25:33] [DEBUG] Config --psm 6: 830 valid detections
+[2025-08-25 12:25:33] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:25:33] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:25:33] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:25:34] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:25:34] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:25:39] [DEBUG] Config --psm 11: 904 valid detections
+[2025-08-25 12:25:39] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:25:44] [DEBUG] Config --psm 12: 900 valid detections
+[2025-08-25 12:25:44] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:25:45] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:25:45] [DEBUG] Text extraction completed: 2636 total detections
+[2025-08-25 12:25:45] [DEBUG] Enhancement ORIGINAL: 2636 valid detections
+[2025-08-25 12:25:45] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:25:45] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_122545.png
+[2025-08-25 12:25:45] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:25:45] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:25:50] [DEBUG] Config --psm 6: 693 valid detections
+[2025-08-25 12:25:50] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:25:50] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:25:50] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:25:51] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:25:51] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:26:00] [DEBUG] Config --psm 11: 819 valid detections
+[2025-08-25 12:26:00] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:26:09] [DEBUG] Config --psm 12: 794 valid detections
+[2025-08-25 12:26:09] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:26:10] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:26:10] [DEBUG] Text extraction completed: 2308 total detections
+[2025-08-25 12:26:10] [DEBUG] Enhancement CLAHE: 2308 valid detections
+[2025-08-25 12:26:10] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:26:10] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_122610.png
+[2025-08-25 12:26:10] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:26:10] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:26:14] [DEBUG] Config --psm 6: 502 valid detections
+[2025-08-25 12:26:14] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:26:14] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:26:14] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:26:15] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:26:15] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:26:24] [DEBUG] Config --psm 11: 775 valid detections
+[2025-08-25 12:26:24] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:26:33] [DEBUG] Config --psm 12: 729 valid detections
+[2025-08-25 12:26:33] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:26:33] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:26:33] [DEBUG] Text extraction completed: 2008 total detections
+[2025-08-25 12:26:33] [DEBUG] Enhancement DARK_ON_LIGHT: 2008 valid detections
+[2025-08-25 12:26:33] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:26:33] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_122633.png
+[2025-08-25 12:26:33] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:26:33] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:26:37] [DEBUG] Config --psm 6: 505 valid detections
+[2025-08-25 12:26:37] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:26:37] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:26:37] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:26:38] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:26:38] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:26:48] [DEBUG] Config --psm 11: 769 valid detections
+[2025-08-25 12:26:48] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:26:56] [DEBUG] Config --psm 12: 737 valid detections
+[2025-08-25 12:26:56] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:26:57] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:26:57] [DEBUG] Text extraction completed: 2013 total detections
+[2025-08-25 12:26:57] [DEBUG] Enhancement LIGHT_ON_DARK: 2013 valid detections
+[2025-08-25 12:26:57] [DEBUG] Starting deduplication of 8965 detections
+[2025-08-25 12:26:57] [DEBUG] Valid detections after filtering: 8965
+[2025-08-25 12:27:00] [DEBUG] Deduplication completed: 4050 unique detections
+[2025-08-25 12:27:00] [DEBUG] Detections after deduplication: 4050
+[2025-08-25 12:27:00] [DEBUG] Detected words (first 10): 12, with, by, Search, Detection, Configuration, Logs, Statistics, per, vedere
+[2025-08-25 12:27:00] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 4050 detections
+[2025-08-25 12:27:00] [DEBUG] Full text for search: '12 with by Search Detection Configuration Logs Statistics per vedere gli si OCR with 6 0 12:24:40] [...'
+[2025-08-25 12:27:00] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:27:00] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:27:00] [DEBUG] Direct search found 'to' near Continue: (1936, 915)
+[2025-08-25 12:27:00] [DEBUG] Direct search found 'to' near Continue: (1936, 915)
+[2025-08-25 12:27:00] [DEBUG] Pattern search completed: 2 coordinates found
+[2025-08-25 12:27:00] [DEBUG] Coordinates found by pattern: 2
+[2025-08-25 12:27:00] [DEBUG] Deduplicating 2 coordinates with tolerance 5
+[2025-08-25 12:27:00] [DEBUG] Coordinate deduplication completed: 1 unique coordinates
+[2025-08-25 12:27:00] [DEBUG] Final coordinates after deduplication: 1
+[2025-08-25 12:27:00] [DEBUG] Scan time: 90.74s (Average: 69.66s)
+[2025-08-25 12:27:00] [INFO] ✅ Scan #1 completed - Target found at coordinates [(1936, 915)]
+[2025-08-25 12:27:00] [DEBUG] Scan time: 90.74s (Average: 73.17s)
+[2025-08-25 12:27:00] [ERROR] Error updating statistics manager: 'StatisticsManager' object has no attribute 'record_detection'
+[2025-08-25 12:27:00] [INFO] ✅ Target message detection completed successfully!
+[2025-08-25 12:27:00] [INFO] ✅ Scan #1 successful on attempt 3
+[2025-08-25 12:27:00] [INFO] 🎯 Target message found in scan #1!
+[2025-08-25 12:27:00] [DEBUG] Automatic click attempt on 1 candidate coordinates
+[2025-08-25 12:27:00] [INFO] 🎯 Coordinates found for 'target': (1936, 915)
+[2025-08-25 12:27:00] [DEBUG] Coordinate filter: 1/1 valid
+[2025-08-25 12:27:00] [DEBUG] Only one valid coordinate: (1936, 915)
+[2025-08-25 12:27:00] [INFO] 🖱️ Executing automatic click at coordinates (1936, 915)
+[2025-08-25 12:27:00] [DEBUG] Click attempt #1/4
+[2025-08-25 12:27:00] [DEBUG] Applied offsets: (50, 0), final coordinates: (1986, 915)
+[2025-08-25 12:27:00] [DEBUG] Attempting click at coordinates (1986, 915)
+[2025-08-25 12:27:00] [DEBUG] Click executed at coordinates (1986, 915)
+[2025-08-25 12:27:02] [INFO] 🖱️ Automatic click performed! (Total: 1)
+[2025-08-25 12:27:02] [INFO] ✅ Click executed successfully on attempt #1
+[2025-08-25 12:27:02] [INFO] ✅ Automatic click executed successfully at coordinates (1936, 915)
+[2025-08-25 12:27:02] [INFO] ✅ Automatic click executed successfully for scan #1
+[2025-08-25 12:27:02] [INFO] ✅ Scan #1 - Target found - Click performed (229.62s)
+[2025-08-25 12:29:02] [INFO] 🔍 Starting scan #4...
+[2025-08-25 12:29:02] [DEBUG] Starting complete screen scan
+[2025-08-25 12:29:02] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_122319.png
+[2025-08-25 12:29:02] [DEBUG] Screenshot removed: debug_fullscreen_20250825_122310.png
+[2025-08-25 12:29:02] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_121904.png
+[2025-08-25 12:29:02] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_121856.png
+[2025-08-25 12:29:02] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:29:02] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:29:02] [DEBUG] Screenshot saved: debug_fullscreen_20250825_122902.png
+[2025-08-25 12:29:02] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:29:02] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:29:02] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:29:02] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:29:02] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:29:02] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:29:02] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:29:02] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:29:02] [DEBUG] Processing original image
+[2025-08-25 12:29:02] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:29:02] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:29:06] [DEBUG] Config --psm 6: 850 valid detections
+[2025-08-25 12:29:06] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:29:06] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:29:06] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:29:07] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:29:07] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:29:11] [DEBUG] Config --psm 11: 845 valid detections
+[2025-08-25 12:29:11] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:29:15] [DEBUG] Config --psm 12: 856 valid detections
+[2025-08-25 12:29:15] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:29:16] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:29:16] [DEBUG] Text extraction completed: 2551 total detections
+[2025-08-25 12:29:16] [DEBUG] Enhancement ORIGINAL: 2551 valid detections
+[2025-08-25 12:29:16] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:29:16] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_122916.png
+[2025-08-25 12:29:16] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:29:16] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:29:20] [DEBUG] Config --psm 6: 666 valid detections
+[2025-08-25 12:29:20] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:29:21] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:29:21] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:29:21] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:29:21] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:29:29] [DEBUG] Config --psm 11: 773 valid detections
+[2025-08-25 12:29:29] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:29:36] [DEBUG] Config --psm 12: 712 valid detections
+[2025-08-25 12:29:36] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:29:37] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:29:37] [DEBUG] Text extraction completed: 2151 total detections
+[2025-08-25 12:29:37] [DEBUG] Enhancement CLAHE: 2151 valid detections
+[2025-08-25 12:29:37] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:29:37] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_122937.png
+[2025-08-25 12:29:37] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:29:37] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:29:42] [DEBUG] Config --psm 6: 572 valid detections
+[2025-08-25 12:29:42] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:29:42] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:29:42] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:29:43] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:29:43] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:29:50] [DEBUG] Config --psm 11: 666 valid detections
+[2025-08-25 12:29:50] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:29:58] [DEBUG] Config --psm 12: 658 valid detections
+[2025-08-25 12:29:58] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:29:58] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:29:58] [DEBUG] Text extraction completed: 1898 total detections
+[2025-08-25 12:29:58] [DEBUG] Enhancement DARK_ON_LIGHT: 1898 valid detections
+[2025-08-25 12:29:58] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:29:58] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_122958.png
+[2025-08-25 12:29:58] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:29:58] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:30:03] [DEBUG] Config --psm 6: 582 valid detections
+[2025-08-25 12:30:03] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:30:04] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:30:04] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:30:04] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:30:04] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:30:12] [DEBUG] Config --psm 11: 674 valid detections
+[2025-08-25 12:30:12] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:30:19] [DEBUG] Config --psm 12: 673 valid detections
+[2025-08-25 12:30:19] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:30:20] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:30:20] [DEBUG] Text extraction completed: 1931 total detections
+[2025-08-25 12:30:20] [DEBUG] Enhancement LIGHT_ON_DARK: 1931 valid detections
+[2025-08-25 12:30:20] [DEBUG] Starting deduplication of 8531 detections
+[2025-08-25 12:30:20] [DEBUG] Valid detections after filtering: 8531
+[2025-08-25 12:30:23] [DEBUG] Deduplication completed: 3975 unique detections
+[2025-08-25 12:30:23] [DEBUG] Detections after deduplication: 3975
+[2025-08-25 12:30:23] [DEBUG] Detected words (first 10): executed, Terminal, Evan, Search, Go, Terminal, Help, Explorer, il, su
+[2025-08-25 12:30:23] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 3975 detections
+[2025-08-25 12:30:23] [DEBUG] Full text for search: 'executed Terminal Evan Search Go Terminal Help Explorer il su were successfully Please screenshots d...'
+[2025-08-25 12:30:23] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:30:23] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:30:23] [DEBUG] Pattern search completed: 0 coordinates found
+[2025-08-25 12:30:23] [DEBUG] Coordinates found by pattern: 0
+[2025-08-25 12:30:23] [DEBUG] Final coordinates after deduplication: 0
+[2025-08-25 12:30:23] [DEBUG] Scan time: 80.80s (Average: 74.26s)
+[2025-08-25 12:30:23] [INFO] ❌ Scan #4 completed - Target not found
+[2025-08-25 12:30:23] [DEBUG] Scan time: 80.80s (Average: 75.08s)
+[2025-08-25 12:30:23] [DEBUG] Scan failed, retrying in 5 seconds...
+[2025-08-25 12:30:23] [DEBUG] System state changed: running -> stopping
+[2025-08-25 12:30:28] [DEBUG] Retry scan #4, attempt 2/4
+[2025-08-25 12:30:28] [INFO] 🔍 Starting scan #4...
+[2025-08-25 12:30:28] [DEBUG] Starting complete screen scan
+[2025-08-25 12:30:28] [DEBUG] Screenshot removed: debug_enhanced_CLAHE_20250825_122410.png
+[2025-08-25 12:30:28] [DEBUG] Screenshot removed: debug_fullscreen_20250825_122355.png
+[2025-08-25 12:30:28] [DEBUG] Screenshot removed: debug_enhanced_LIGHT_ON_DARK_20250825_122339.png
+[2025-08-25 12:30:28] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_122329.png
+[2025-08-25 12:30:28] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:30:28] [ERROR] Scan thread did not stop gracefully
+[2025-08-25 12:30:28] [DEBUG] System state changed: stopping -> stopped
+
+================================================================================
+[2025-08-25 12:30:28] [INFO] 🛑 Automatic detection system stopped
+[2025-08-25 12:30:28] [INFO] ⏱️ Total uptime: 8m 10s
+[2025-08-25 12:30:28] [INFO] 🔍 Total scans: 4
+[2025-08-25 12:30:28] [DEBUG] Screenshot captured successfully: 2056x1291
+
+================================================================================
+[2025-08-25 12:50:39] [INFO] 🚀 Automatic detection system started
+[2025-08-25 12:50:39] [INFO] 📁 Log file: log.txt
+
+================================================================================
+[2025-08-25 12:57:03] [INFO] 🚀 Automatic detection system started
+[2025-08-25 12:57:03] [INFO] 📁 Log file: log.txt
+[2025-08-25 12:57:13] [DEBUG] System state changed: stopped -> starting
+[2025-08-25 12:57:13] [DEBUG] System state changed: starting -> running
+
+================================================================================
+[2025-08-25 12:57:13] [INFO] 🚀 Automatic detection system started
+[2025-08-25 12:57:13] [INFO] 📁 Log file: log.txt
+[2025-08-25 12:57:13] [INFO] ⏰ Startup: 2025-08-25 12:57:13
+[2025-08-25 12:57:13] [INFO] 🎯 Target: 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]'
+[2025-08-25 12:57:13] [INFO] 🔍 Final word: 't[o0]'
+[2025-08-25 12:57:13] [INFO] 🤖 Mode: AUTOMATIC - Automatic click without confirmation
+[2025-08-25 12:57:13] [INFO] 🔍 Starting scan #1...
+[2025-08-25 12:57:13] [DEBUG] Starting complete screen scan
+[2025-08-25 12:57:13] [DEBUG] Screenshot removed: debug_enhanced_DARK_ON_LIGHT_20250825_122435.png
+[2025-08-25 12:57:13] [DEBUG] Screenshot attempt #1
+[2025-08-25 12:57:13] [DEBUG] Screenshot captured successfully: 2056x1291
+[2025-08-25 12:57:14] [DEBUG] Screenshot saved: debug_fullscreen_20250825_125713.png
+[2025-08-25 12:57:14] [DEBUG] Starting image enhancement 2056x1291
+[2025-08-25 12:57:14] [DEBUG] Applying enhancement: CLAHE
+[2025-08-25 12:57:14] [DEBUG] Enhancement CLAHE completed successfully
+[2025-08-25 12:57:14] [DEBUG] Applying enhancement: DARK_ON_LIGHT
+[2025-08-25 12:57:14] [DEBUG] Enhancement DARK_ON_LIGHT completed successfully
+[2025-08-25 12:57:14] [DEBUG] Applying enhancement: LIGHT_ON_DARK
+[2025-08-25 12:57:14] [DEBUG] Enhancement LIGHT_ON_DARK completed successfully
+[2025-08-25 12:57:14] [DEBUG] Enhancement completed: 3 images generated
+[2025-08-25 12:57:14] [DEBUG] Processing original image
+[2025-08-25 12:57:14] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:57:14] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:57:16] [DEBUG] Config --psm 6: 492 valid detections
+[2025-08-25 12:57:16] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:57:17] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:57:17] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:57:17] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:57:17] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:57:20] [DEBUG] Config --psm 11: 512 valid detections
+[2025-08-25 12:57:20] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:57:22] [DEBUG] Config --psm 12: 512 valid detections
+[2025-08-25 12:57:22] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:57:23] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:57:23] [DEBUG] Text extraction completed: 1516 total detections
+[2025-08-25 12:57:23] [DEBUG] Enhancement ORIGINAL: 1516 valid detections
+[2025-08-25 12:57:23] [DEBUG] Processing enhanced image: CLAHE
+[2025-08-25 12:57:23] [DEBUG] Screenshot saved: debug_enhanced_CLAHE_20250825_125723.png
+[2025-08-25 12:57:23] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:57:23] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:57:25] [DEBUG] Config --psm 6: 401 valid detections
+[2025-08-25 12:57:25] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:57:26] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:57:26] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:57:26] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:57:26] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:57:29] [DEBUG] Config --psm 11: 412 valid detections
+[2025-08-25 12:57:29] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:57:32] [DEBUG] Config --psm 12: 422 valid detections
+[2025-08-25 12:57:32] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:57:32] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:57:32] [DEBUG] Text extraction completed: 1235 total detections
+[2025-08-25 12:57:32] [DEBUG] Enhancement CLAHE: 1235 valid detections
+[2025-08-25 12:57:32] [DEBUG] Processing enhanced image: DARK_ON_LIGHT
+[2025-08-25 12:57:32] [DEBUG] Screenshot saved: debug_enhanced_DARK_ON_LIGHT_20250825_125732.png
+[2025-08-25 12:57:32] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:57:32] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:57:35] [DEBUG] Config --psm 6: 325 valid detections
+[2025-08-25 12:57:35] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:57:35] [DEBUG] Config --psm 8: 0 valid detections
+[2025-08-25 12:57:35] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:57:35] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:57:35] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:57:38] [DEBUG] Config --psm 11: 355 valid detections
+[2025-08-25 12:57:38] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:57:41] [DEBUG] Config --psm 12: 366 valid detections
+[2025-08-25 12:57:41] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:57:41] [DEBUG] Config --psm 13: 0 valid detections
+[2025-08-25 12:57:41] [DEBUG] Text extraction completed: 1046 total detections
+[2025-08-25 12:57:41] [DEBUG] Enhancement DARK_ON_LIGHT: 1046 valid detections
+[2025-08-25 12:57:41] [DEBUG] Processing enhanced image: LIGHT_ON_DARK
+[2025-08-25 12:57:41] [DEBUG] Screenshot saved: debug_enhanced_LIGHT_ON_DARK_20250825_125741.png
+[2025-08-25 12:57:41] [DEBUG] Starting text extraction from image 2056x1291
+[2025-08-25 12:57:41] [DEBUG] OCR attempt with config: --psm 6
+[2025-08-25 12:57:43] [DEBUG] Config --psm 6: 321 valid detections
+[2025-08-25 12:57:43] [DEBUG] OCR attempt with config: --psm 8
+[2025-08-25 12:57:44] [DEBUG] Config --psm 8: 1 valid detections
+[2025-08-25 12:57:44] [DEBUG] OCR attempt with config: --psm 7
+[2025-08-25 12:57:44] [DEBUG] Config --psm 7: 0 valid detections
+[2025-08-25 12:57:44] [DEBUG] OCR attempt with config: --psm 11
+[2025-08-25 12:57:47] [DEBUG] Config --psm 11: 354 valid detections
+[2025-08-25 12:57:47] [DEBUG] OCR attempt with config: --psm 12
+[2025-08-25 12:57:49] [DEBUG] Config --psm 12: 368 valid detections
+[2025-08-25 12:57:49] [DEBUG] OCR attempt with config: --psm 13
+[2025-08-25 12:57:50] [DEBUG] Config --psm 13: 1 valid detections
+[2025-08-25 12:57:50] [DEBUG] Text extraction completed: 1045 total detections
+[2025-08-25 12:57:50] [DEBUG] Enhancement LIGHT_ON_DARK: 1045 valid detections
+[2025-08-25 12:57:50] [DEBUG] Starting deduplication of 4842 detections
+[2025-08-25 12:57:50] [DEBUG] Valid detections after filtering: 4842
+[2025-08-25 12:57:51] [DEBUG] Deduplication completed: 2329 unique detections
+[2025-08-25 12:57:51] [DEBUG] Detections after deduplication: 2329
+[2025-08-25 12:57:51] [DEBUG] Detected words (first 10): da, batch, Top, Control, devo, System, Resources, Scan, Performance, vedo
+[2025-08-25 12:57:51] [DEBUG] Searching pattern 'Model\s+thinking\s+limit\s+reached.*?Continue.*?t[o0]' in 2329 detections
+[2025-08-25 12:57:51] [DEBUG] Full text for search: 'da batch Top Control devo System Resources Scan Performance vedo ha = Last di con un script per il S...'
+[2025-08-25 12:57:51] [DEBUG] Found 0 pattern matches
+[2025-08-25 12:57:51] [DEBUG] No coordinates found with pattern matching, trying direct word search
+[2025-08-25 12:57:51] [DEBUG] Direct search found 'to' near Continue: (1937, 915)
+[2025-08-25 12:57:51] [DEBUG] Direct search found 'to' near Continue: (1937, 915)
+[2025-08-25 12:57:51] [DEBUG] Direct search found 'to' near Continue: (1937, 915)
+[2025-08-25 12:57:51] [DEBUG] Pattern search completed: 3 coordinates found
+[2025-08-25 12:57:51] [DEBUG] Coordinates found by pattern: 3
+[2025-08-25 12:57:51] [DEBUG] Deduplicating 3 coordinates with tolerance 5
+[2025-08-25 12:57:51] [DEBUG] Coordinate deduplication completed: 1 unique coordinates
+[2025-08-25 12:57:51] [DEBUG] Final coordinates after deduplication: 1
+[2025-08-25 12:57:51] [DEBUG] Scan time: 37.42s (Average: 37.42s)
+[2025-08-25 12:57:51] [INFO] ✅ Scan #1 completed - Target found at coordinates [(1987, 915)]
+[2025-08-25 12:57:51] [DEBUG] Scan time: 37.42s (Average: 37.42s)
+[2025-08-25 12:57:51] [ERROR] Error updating statistics manager: 'StatisticsManager' object has no attribute 'record_detection'
+[2025-08-25 12:57:51] [INFO] ✅ Target message detection completed successfully!
+[2025-08-25 12:57:51] [INFO] 🎯 Target message found in scan #1!
+[2025-08-25 12:57:51] [DEBUG] Automatic click attempt on 1 candidate coordinates
+[2025-08-25 12:57:51] [INFO] 🎯 Coordinates found for 'target': (1987, 915)
+[2025-08-25 12:57:51] [DEBUG] Coordinate filter: 1/1 valid
+[2025-08-25 12:57:51] [DEBUG] Only one valid coordinate: (1937, 915)
+[2025-08-25 12:57:51] [INFO] 🖱️ Executing automatic click at coordinates (1937, 915)
+[2025-08-25 12:57:51] [DEBUG] Click attempt #1/4
+[2025-08-25 12:57:51] [DEBUG] Applied offsets: (50, 0), final coordinates: (1987, 915)
+[2025-08-25 12:57:51] [DEBUG] Attempting click at coordinates (1987, 915)
+[2025-08-25 12:57:51] [DEBUG] Click executed at coordinates (1987, 915)
+[2025-08-25 12:57:53] [INFO] 🖱️ Automatic click performed! (Total: 1)
+[2025-08-25 12:57:53] [INFO] ✅ Click executed successfully on attempt #1
+[2025-08-25 12:57:53] [INFO] ✅ Automatic click executed successfully at coordinates (1937, 915)
+[2025-08-25 12:57:53] [INFO] ✅ Automatic click executed successfully for scan #1
+[2025-08-25 12:57:53] [INFO] ✅ Scan #1 - Target found - Click performed (37.44s)
+[2025-08-25 12:59:32] [DEBUG] System state changed: running -> stopping
+[2025-08-25 12:59:33] [DEBUG] Scan loop terminated
+[2025-08-25 12:59:33] [DEBUG] System state changed: stopping -> stopped
+
+================================================================================
+[2025-08-25 12:59:33] [INFO] 🛑 Automatic detection system stopped
+[2025-08-25 12:59:33] [INFO] ⏱️ Total uptime: 2m 30s
+[2025-08-25 12:59:33] [INFO] 🔍 Total scans: 1
+[2025-08-25 12:59:33] [INFO] ✅ Successful detections: 1

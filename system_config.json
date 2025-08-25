@@ -37,7 +37,46 @@
     "pause_duration": 0.1,
     "emergency_stop_key": "ctrl+shift+q"
   },
-  "profiles": {},
+  "profiles": {
+    "Trae - 0": {
+      "scan_interval": 120,
+      "max_scan_attempts": 3,
+      "scan_timeout": 30.0,
+      "ocr_confidence_threshold": 15,
+      "ocr_language": "eng",
+      "ocr_psm_mode": 6,
+      "image_scale_factor": 2.0,
+      "gaussian_blur_kernel": 3,
+      "contrast_enhancement": true,
+      "target_message": "Model thinking limit reached, please enter 'Continue' to",
+      "target_end_word": "to",
+      "max_retries": 3,
+      "retry_delay": 5,
+      "screenshot_timeout": 5.0,
+      "ocr_timeout": 10.0,
+      "screenshots_folder": "screenshots",
+      "max_screenshots_to_keep": 10,
+      "enable_image_enhancement": true,
+      "contrast_factor": 1.5,
+      "brightness_factor": 1.2,
+      "max_scan_times_history": 100,
+      "case_sensitive": false,
+      "partial_match": true,
+      "click_delay": 0.1,
+      "double_click_prevention": true,
+      "click_offset_x": 50,
+      "click_offset_y": 0,
+      "log_level": "INFO",
+      "log_to_file": true,
+      "max_log_files": 10,
+      "cpu_usage_limit": 80.0,
+      "memory_usage_limit": 90.0,
+      "enable_performance_monitoring": true,
+      "failsafe_enabled": true,
+      "pause_duration": 0.1,
+      "emergency_stop_key": "ctrl+shift+q"
+    }
+  },
   "current_profile": "default",
-  "last_saved": "2025-08-25T12:15:04.645753"
+  "last_saved": "2025-08-25T12:59:33.004955"
 }
