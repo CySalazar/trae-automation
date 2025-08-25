@@ -410,5 +410,68 @@ def get_logger():
         
         def debug(self, message):
             log_message(message, "DEBUG")
+            
+        def get_recent_logs(self, count=100):
+            """Get recent log entries from the log file."""
+            return get_recent_logs(count)
     
     return Logger()
+
+def get_recent_logs(count=100):
+    """Get recent log entries from the log file.
+    
+    Args:
+        count (int): Number of recent log entries to retrieve
+        
+    Returns:
+        list: List of dictionaries containing log entries with timestamp, level, and message
+    """
+    logs = []
+    try:
+        if os.path.exists(LOG_FILE):
+            with open(LOG_FILE, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+                
+            # Get the last 'count' lines
+            recent_lines = lines[-count:] if len(lines) > count else lines
+            
+            for line in recent_lines:
+                line = line.strip()
+                if line and line.startswith('['):
+                    try:
+                        # Parse log format: [timestamp] [level] message
+                        parts = line.split('] ', 2)
+                        if len(parts) >= 3:
+                            timestamp = parts[0][1:]  # Remove opening bracket
+                            level = parts[1][1:]      # Remove opening bracket
+                            message = parts[2]
+                            
+                            logs.append({
+                                'timestamp': timestamp,
+                                'level': level,
+                                'message': message
+                            })
+                        else:
+                            # Handle malformed lines
+                            logs.append({
+                                'timestamp': datetime.now().strftime('%H:%M:%S'),
+                                'level': 'INFO',
+                                'message': line
+                            })
+                    except Exception:
+                        # Handle parsing errors
+                        logs.append({
+                            'timestamp': datetime.now().strftime('%H:%M:%S'),
+                            'level': 'INFO',
+                            'message': line
+                        })
+                        
+    except Exception as e:
+        # Return error log if file reading fails
+        logs.append({
+            'timestamp': datetime.now().strftime('%H:%M:%S'),
+            'level': 'ERROR',
+            'message': f'Failed to read log file: {e}'
+        })
+        
+    return logs

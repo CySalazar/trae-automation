@@ -393,7 +393,7 @@ class SystemController:
                     
                     # Handle consecutive failures
                     if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
-                        handle_consecutive_failures(consecutive_failures)
+                        handle_consecutive_failures()
                         consecutive_failures = 0  # Reset after handling
                     
                     # Status report

@@ -1919,7 +1919,7 @@ CONFIGURATION KEYS:
         except Exception as e:
             print(f"Error handling state change: {e}")
     
-    def _on_scan_event(self, scan_data):
+    def _on_scan_event(self, event_type, scan_data):
         """Handle scan events"""
         try:
             # Update dashboard with latest scan data
