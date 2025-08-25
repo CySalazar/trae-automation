@@ -50,10 +50,12 @@ class ScanMetrics:
 
 @dataclass
 class SystemHealth:
-    """Data class for system health metrics"""
+    """System health metrics snapshot"""
     timestamp: float
     cpu_percent: float
     memory_percent: float
+    memory_used_mb: float
+    memory_total_mb: float
     disk_usage: float
     active_threads: int
     uptime: float
@@ -115,6 +117,16 @@ class StatisticsManager:
         # Error tracking
         self.error_counts = defaultdict(int)
         self.recent_errors = deque(maxlen=100)
+        
+        # Next scan timing
+        self.next_scan_time = None
+        self.scan_interval = 0
+        
+        # Process-specific metrics
+        self.process = psutil.Process(os.getpid())
+        self.process_cpu_percent = 0.0
+        self.process_memory_mb = 0.0
+        self.process_memory_percent = 0.0
         
         # System monitoring
         self.system_monitor_active = True
@@ -189,10 +201,30 @@ class StatisticsManager:
         while self.system_monitor_active:
             try:
                 with self._lock:
+                    # Update process-specific metrics
+                    try:
+                        # Get CPU percent with interval for more accurate reading
+                        # Divide by CPU count to normalize to system-wide percentage
+                        raw_cpu = self.process.cpu_percent()
+                        cpu_count = psutil.cpu_count()
+                        self.process_cpu_percent = raw_cpu / cpu_count if cpu_count > 0 else raw_cpu
+                        
+                        memory_info = self.process.memory_info()
+                        self.process_memory_mb = memory_info.rss / 1024 / 1024  # Convert to MB
+                        self.process_memory_percent = self.process.memory_percent()
+                    except (psutil.NoSuchProcess, psutil.AccessDenied):
+                        # Process might have changed, reinitialize
+                        self.process = psutil.Process(os.getpid())
+                    
+                    # Get system memory info
+                    memory_info = psutil.virtual_memory()
+                    
                     health = SystemHealth(
                         timestamp=time.time(),
                         cpu_percent=psutil.cpu_percent(),
-                        memory_percent=psutil.virtual_memory().percent,
+                        memory_percent=memory_info.percent,
+                        memory_used_mb=memory_info.used / 1024 / 1024,  # Convert to MB
+                        memory_total_mb=memory_info.total / 1024 / 1024,  # Convert to MB
                         disk_usage=psutil.disk_usage('/').percent if os.name != 'nt' else psutil.disk_usage('C:').percent,
                         active_threads=threading.active_count(),
                         uptime=time.time() - self.start_time
@@ -259,9 +291,21 @@ class StatisticsManager:
                 'system': {
                     'cpu_percent': recent_health.cpu_percent if recent_health else 0,
                     'memory_percent': recent_health.memory_percent if recent_health else 0,
+                    'memory_used_mb': round(recent_health.memory_used_mb, 2) if recent_health else 0,
+                    'memory_total_mb': round(recent_health.memory_total_mb, 2) if recent_health else 0,
                     'disk_usage': recent_health.disk_usage if recent_health else 0,
                     'active_threads': recent_health.active_threads if recent_health else 0,
-                    'temperature': recent_health.temperature if recent_health else None
+                    'temperature': recent_health.temperature if recent_health and recent_health.temperature else None
+                },
+                'process': {
+                    'cpu_percent': round(self.process_cpu_percent, 2),
+                    'memory_mb': round(self.process_memory_mb, 2),
+                    'memory_percent': round(self.process_memory_percent, 2)
+                },
+                'next_scan': {
+                    'scheduled_time': self.next_scan_time.isoformat() if self.next_scan_time else None,
+                    'seconds_remaining': max(0, int((self.next_scan_time - datetime.now()).total_seconds())) if self.next_scan_time else None,
+                    'interval_seconds': self.scan_interval
                 },
                 'errors': {
                     'total_errors': len(self.recent_errors),
@@ -359,6 +403,28 @@ class StatisticsManager:
         self.system_monitor_active = False
         if self.system_monitor_thread.is_alive():
             self.system_monitor_thread.join(timeout=5)
+    
+    def set_next_scan_time(self, scan_interval: float):
+        """Set the time for the next scan"""
+        with self._lock:
+            self.scan_interval = scan_interval
+            self.next_scan_time = datetime.now() + timedelta(seconds=scan_interval)
+    
+    def get_time_until_next_scan(self) -> Optional[float]:
+        """Get seconds remaining until next scan"""
+        with self._lock:
+            if self.next_scan_time:
+                remaining = (self.next_scan_time - datetime.now()).total_seconds()
+                return max(0, remaining)
+            return None
+    
+    def update_scan_interval(self, new_interval: float):
+        """Update the scan interval and recalculate next scan time"""
+        with self._lock:
+            self.scan_interval = new_interval
+            if self.next_scan_time:
+                # Adjust next scan time based on new interval
+                self.next_scan_time = datetime.now() + timedelta(seconds=new_interval)
     
     @staticmethod
     def _format_duration(seconds: float) -> str:

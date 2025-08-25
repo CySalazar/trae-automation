@@ -47,6 +47,7 @@ try:
         perform_scan_with_retry, handle_scan_result, handle_consecutive_failures,
         get_next_scan_number, is_system_healthy, log_scan_summary
     )
+    from statistics_manager import get_stats_manager
 except ImportError as e:
     print(f"Error importing modular components: {e}")
     print("Please ensure all required modules are in the same directory:")
@@ -134,6 +135,15 @@ def run_continuous_scanner():
                 # Wait before next scan
                 try:
                     next_scan_number = get_next_scan_number()
+                    
+                    # Update statistics manager with next scan timing
+                    try:
+                        stats_mgr = get_stats_manager()
+                        stats_mgr.set_next_scan_time(time.time() + SCAN_INTERVAL)
+                        stats_mgr.update_scan_interval(SCAN_INTERVAL)
+                    except Exception as e:
+                        log_error(f"Error updating scan timing: {e}")
+                    
                     log_message(f"\n⏰ Next scan #{next_scan_number} in {SCAN_INTERVAL//60} minutes...")
                     log_message("💡 Press Ctrl+C to interrupt")
                     time.sleep(SCAN_INTERVAL)

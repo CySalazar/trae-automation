@@ -194,8 +194,11 @@ class SystemMonitorGUI:
         perf_items = [
             ('CPU Usage', 'cpu_usage'),
             ('Memory Usage', 'memory_usage'),
+            ('Process CPU', 'process_cpu'),
+            ('Process Memory', 'process_memory'),
             ('Avg Scan Time', 'avg_scan_time'),
-            ('Last Scan Time', 'last_scan_time')
+            ('Last Scan Time', 'last_scan_time'),
+            ('Next Scan In', 'next_scan_countdown')
         ]
         
         for i, (label, key) in enumerate(perf_items):
@@ -673,9 +676,45 @@ System Resources:
             
             # Update performance labels
             self.status_labels['cpu_usage'].config(text=f"{stats['system']['cpu_percent']:.1f}%")
-            self.status_labels['memory_usage'].config(text=f"{stats['system']['memory_percent']:.1f}%")
+            memory_used_mb = stats['system'].get('memory_used_mb', 0)
+            memory_total_mb = stats['system'].get('memory_total_mb', 0)
+            memory_percent = stats['system']['memory_percent']
+            
+            # Format memory values more compactly
+            if memory_total_mb >= 1024:
+                used_gb = memory_used_mb / 1024
+                total_gb = memory_total_mb / 1024
+                memory_text = f"{memory_percent:.1f}% ({used_gb:.1f}/{total_gb:.1f}GB)"
+            else:
+                memory_text = f"{memory_percent:.1f}% ({memory_used_mb:.0f}/{memory_total_mb:.0f}MB)"
+            
+            self.status_labels['memory_usage'].config(text=memory_text)
+            
+            # Update process-specific metrics
+            if 'process' in stats and 'cpu_percent' in stats['process']:
+                self.status_labels['process_cpu'].config(text=f"{stats['process']['cpu_percent']:.1f}%")
+            else:
+                self.status_labels['process_cpu'].config(text="--")
+                
+            if 'process' in stats and 'memory_mb' in stats['process'] and 'memory_percent' in stats['process']:
+                self.status_labels['process_memory'].config(
+                    text=f"{stats['process']['memory_mb']:.1f}MB ({stats['process']['memory_percent']:.1f}%)"
+                )
+            else:
+                self.status_labels['process_memory'].config(text="--")
+            
             self.status_labels['avg_scan_time'].config(text=f"{stats['performance']['avg_scan_time']:.3f}s")
             self.status_labels['last_scan_time'].config(text=f"{stats['performance']['last_scan_time']:.3f}s")
+            
+            # Update next scan countdown
+            if 'next_scan' in stats and 'seconds_remaining' in stats['next_scan']:
+                remaining = stats['next_scan']['seconds_remaining']
+                if remaining is not None and remaining >= 0:
+                    self.status_labels['next_scan_countdown'].config(text=f"{remaining:.0f}s")
+                else:
+                    self.status_labels['next_scan_countdown'].config(text="--")
+            else:
+                self.status_labels['next_scan_countdown'].config(text="--")
             
         except Exception as e:
             print(f"Error updating dashboard: {e}")
