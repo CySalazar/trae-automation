@@ -1,7 +1,7 @@
-"""Configurazioni globali per il sistema di rilevamento automatico.
+"""Global configurations for the automatic detection system.
 
-Questo modulo contiene tutte le configurazioni, costanti e impostazioni
-globali utilizzate dal sistema di rilevamento automatico del messaggio 'Continue'.
+This module contains all configurations, constants and global settings
+used by the automatic detection system for the 'Continue' message.
 """
 
 import time
@@ -9,88 +9,88 @@ import pytesseract
 import pyautogui
 
 # ============================================================================
-# CONFIGURAZIONI TESSERACT
+# TESSERACT CONFIGURATIONS
 # ============================================================================
 
-# Percorso dell'eseguibile Tesseract OCR
+# Path to Tesseract OCR executable
 TESSERACT_CMD = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 pytesseract.pytesseract.tesseract_cmd = TESSERACT_CMD
 
 # ============================================================================
-# CONFIGURAZIONI PYAUTOGUI
+# PYAUTOGUI CONFIGURATIONS
 # ============================================================================
 
-# Configurazioni di sicurezza per pyautogui
-FAILSAFE_ENABLED = True    # Muovi mouse nell'angolo per interrompere
-PAUSE_BETWEEN_ACTIONS = 0.5  # Pausa tra azioni per stabilità
+# Safety configurations for pyautogui
+FAILSAFE_ENABLED = True    # Move mouse to corner to interrupt
+PAUSE_BETWEEN_ACTIONS = 0.5  # Pause between actions for stability
 
-# Applica configurazioni
+# Apply configurations
 pyautogui.FAILSAFE = FAILSAFE_ENABLED
 pyautogui.PAUSE = PAUSE_BETWEEN_ACTIONS
 
 # ============================================================================
-# CONFIGURAZIONI RETRY E TIMEOUT
+# RETRY AND TIMEOUT CONFIGURATIONS
 # ============================================================================
 
-# Configurazioni per retry automatici
+# Configurations for automatic retries
 MAX_RETRIES = 3
-RETRY_DELAY = 5  # secondi
-CLICK_VALIDATION_TIMEOUT = 2  # secondi
+RETRY_DELAY = 5  # seconds
+CLICK_VALIDATION_TIMEOUT = 2  # seconds
 SCREENSHOT_MAX_RETRIES = 3
 
-# Configurazioni per gestione fallimenti consecutivi
+# Configurations for consecutive failures handling
 MAX_CONSECUTIVE_FAILURES = 5
-EXTENDED_WAIT_TIME = 300  # 5 minuti in secondi
+EXTENDED_WAIT_TIME = 300  # 5 minutes in seconds
 
 # ============================================================================
-# CONFIGURAZIONI SCANSIONE
+# SCANNING CONFIGURATIONS
 # ============================================================================
 
-# Intervallo tra scansioni
-SCAN_INTERVAL = 120  # 2 minuti in secondi
+# Interval between scans
+SCAN_INTERVAL = 120  # 2 minutes in seconds
 
-# Frequenza report stato sistema
-STATUS_REPORT_FREQUENCY = 10  # ogni N scansioni
+# System status report frequency
+STATUS_REPORT_FREQUENCY = 10  # every N scans
 
 # ============================================================================
-# CONFIGURAZIONI OCR
+# OCR CONFIGURATIONS
 # ============================================================================
 
-# Configurazioni OCR per massimizzare il rilevamento
+# OCR configurations to maximize detection
 OCR_CONFIGS = [
-    '--psm 6',   # Assume un singolo blocco di testo uniforme
-    '--psm 8',   # Tratta l'immagine come una singola parola
-    '--psm 7',   # Tratta l'immagine come una singola riga di testo
-    '--psm 11',  # Trova il testo sparso
-    '--psm 12',  # Trova il testo sparso con OSD
-    '--psm 13'   # Riga grezza. Tratta l'immagine come una singola riga di testo
+    '--psm 6',   # Assume a single uniform block of text
+    '--psm 8',   # Treat the image as a single word
+    '--psm 7',   # Treat the image as a single text line
+    '--psm 11',  # Sparse text. Find as much text as possible in no particular order
+    '--psm 12',  # Sparse text with OSD
+    '--psm 13'   # Raw line. Treat the image as a single text line
 ]
 
-# Soglia minima di confidence per accettare una detection
+# Minimum confidence threshold to accept a detection
 MIN_CONFIDENCE_THRESHOLD = 15
 
 # ============================================================================
-# CONFIGURAZIONI DEDUPLICAZIONE
+# DEDUPLICATION CONFIGURATIONS
 # ============================================================================
 
-# Distanza minima tra detection per considerarle duplicate
+# Minimum distance between detections to consider them duplicates
 DEDUPLICATION_DISTANCE_THRESHOLD = 20
 FINAL_COORDINATES_TOLERANCE = 5
 
 # ============================================================================
-# CONFIGURAZIONI ENHANCEMENT IMMAGINI
+# IMAGE ENHANCEMENT CONFIGURATIONS
 # ============================================================================
 
-# Parametri per CLAHE (Contrast Limited Adaptive Histogram Equalization)
+# Parameters for CLAHE (Contrast Limited Adaptive Histogram Equalization)
 CLAHE_CLIP_LIMIT = 3.0
 CLAHE_TILE_GRID_SIZE = (8, 8)
 
-# Parametri per threshold adattivo
+# Parameters for adaptive threshold
 ADAPTIVE_THRESHOLD_MAX_VALUE = 255
 ADAPTIVE_THRESHOLD_BLOCK_SIZE = 11
 ADAPTIVE_THRESHOLD_C = 2
 
-# Parametri per filtri
+# Parameters for filters
 GAUSSIAN_BLUR_KERNEL_SIZE = (5, 5)
 MORPHOLOGY_KERNEL_SIZE = (2, 2)
 MEDIAN_BLUR_KERNEL_SIZE = 3
@@ -98,60 +98,60 @@ BILATERAL_FILTER_D = 9
 BILATERAL_FILTER_SIGMA_COLOR = 75
 BILATERAL_FILTER_SIGMA_SPACE = 75
 
-# Kernel per sharpening
+# Kernel for sharpening
 SHARPENING_KERNEL = [[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]]
 
 # ============================================================================
-# CONFIGURAZIONI GESTIONE SCREENSHOT
+# SCREENSHOT MANAGEMENT CONFIGURATIONS
 # ============================================================================
 
-# Cartella per salvare gli screenshot
+# Folder to save screenshots
 SCREENSHOTS_FOLDER = "screenshots"
 
-# Numero massimo di screenshot da mantenere
+# Maximum number of screenshots to keep
 MAX_SCREENSHOTS_TO_KEEP = 10
 
-# Pattern per nomi file screenshot
+# Patterns for screenshot file names
 SCREENSHOT_FULLSCREEN_PATTERN = "debug_fullscreen_{timestamp}.png"
 SCREENSHOT_ENHANCED_PATTERN = "debug_enhanced_{method_name}_{timestamp}.png"
 
 # ============================================================================
-# CONFIGURAZIONI LOGGING
+# LOGGING CONFIGURATIONS
 # ============================================================================
 
-# File di log principale
+# Main log file
 LOG_FILE = "log.txt"
 
-# Formato timestamp per log
+# Timestamp format for logs
 TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 FILE_TIMESTAMP_FORMAT = "%Y%m%d_%H%M%S"
 
 # ============================================================================
-# CONFIGURAZIONI TARGET MESSAGE
+# TARGET MESSAGE CONFIGURATIONS
 # ============================================================================
 
-# Messaggio target da cercare
+# Target message to search for
 TARGET_MESSAGE = "Model thinking limit reached, please enter 'Continue' to"
 
-# Pattern regex per trovare il messaggio target
+# Regex pattern to find the target message
 TARGET_PATTERN = r"Model\s+thinking\s+limit\s+reached.*?Continue.*?to"
 
-# Parola finale di cui trovare le coordinate
+# Final word to find coordinates for
 TARGET_END_WORD = "to"
 
 # ============================================================================
-# CONFIGURAZIONI STATISTICHE
+# STATISTICS CONFIGURATIONS
 # ============================================================================
 
-# Numero massimo di tempi di scansione da mantenere per calcolare la media
+# Maximum number of scan times to keep for calculating average
 MAX_SCAN_TIMES_HISTORY = 100
 
 # ============================================================================
-# INIZIALIZZAZIONE STATISTICHE GLOBALI
+# GLOBAL STATISTICS INITIALIZATION
 # ============================================================================
 
 def get_initial_stats():
-    """Restituisce la struttura iniziale delle statistiche globali."""
+    """Returns the initial structure of global statistics."""
     return {
         'total_scans': 0,
         'successful_detections': 0,
@@ -176,27 +176,27 @@ def get_initial_stats():
     }
 
 # ============================================================================
-# CONFIGURAZIONI DIMENSIONI MINIME
+# MINIMUM SIZE CONFIGURATIONS
 # ============================================================================
 
-# Dimensioni minime per considerare un'immagine valida
+# Minimum dimensions to consider an image valid
 MIN_IMAGE_WIDTH = 10
 MIN_IMAGE_HEIGHT = 10
 
 # ============================================================================
-# MESSAGGI DI SISTEMA
+# SYSTEM MESSAGES
 # ============================================================================
 
-# Messaggi di avvio
+# Startup messages
 STARTUP_MESSAGES = {
-    'title': "🚀 AVVIO SCANNER AUTOMATICO OGNI 2 MINUTI PER MESSAGGIO 'Continue'",
+    'title': "🚀 STARTING AUTOMATIC SCANNER EVERY 2 MINUTES FOR 'Continue' MESSAGE",
     'target': f"Target: '{TARGET_MESSAGE}'",
-    'objective': f"Obiettivo: trovare coordinate della fine della parola '{TARGET_END_WORD}' e cliccare automaticamente",
-    'mode': "Modalità: AUTOMATICA - Click automatico senza conferma",
-    'interval': f"Intervallo: ogni 2 minuti ({SCAN_INTERVAL} secondi)",
-    'interrupt': "Per interrompere: Ctrl+C"
+    'objective': f"Objective: find coordinates of the end of word '{TARGET_END_WORD}' and click automatically",
+    'mode': "Mode: AUTOMATIC - Automatic click without confirmation",
+    'interval': f"Interval: every 2 minutes ({SCAN_INTERVAL} seconds)",
+    'interrupt': "To interrupt: Ctrl+C"
 }
 
-# Separatori per log
+# Log separators
 LOG_SEPARATOR = "=" * 80
 SUB_SEPARATOR = "-" * 40

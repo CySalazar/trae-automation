@@ -1,10 +1,10 @@
-"""Modulo per gestione coordinate e click automatici.
+"""Module for coordinate management and automatic clicks.
 
-Questo modulo fornisce funzionalità complete per:
-- Validazione delle coordinate
-- Esecuzione di click automatici con retry
-- Gestione errori durante i click
-- Validazione post-click
+This module provides complete functionality for:
+- Coordinate validation
+- Automatic click execution with retry
+- Error handling during clicks
+- Post-click validation
 """
 
 import time
@@ -19,13 +19,13 @@ from logger import (
 )
 
 def validate_coordinates(coordinates):
-    """Valida che le coordinate siano utilizzabili per un click.
+    """Validates that coordinates are usable for a click.
     
     Args:
-        coordinates (tuple or list): Coordinate (x, y) da validare
+        coordinates (tuple or list): Coordinates (x, y) to validate
         
     Returns:
-        bool: True se le coordinate sono valide
+        bool: True if coordinates are valid
     """
     try:
         if not coordinates:
@@ -39,90 +39,90 @@ def validate_coordinates(coordinates):
         
         x, y = coordinates
         
-        # Controlla che siano numeri
+        # Check that they are numbers
         if not all(isinstance(coord, (int, float)) for coord in [x, y]):
             return False
         
-        # Controlla che siano positivi
+        # Check that they are positive
         if x < 0 or y < 0:
             return False
         
-        # Ottieni dimensioni schermo
+        # Get screen dimensions
         try:
             screen_width, screen_height = pyautogui.size()
             
-            # Controlla che siano dentro i limiti dello schermo
+            # Check that they are within screen bounds
             if x >= screen_width or y >= screen_height:
-                log_error(f"Coordinate {coordinates} fuori dai limiti schermo {screen_width}x{screen_height}")
+                log_error(f"Coordinates {coordinates} outside screen bounds {screen_width}x{screen_height}")
                 return False
                 
         except Exception as e:
-            log_error(f"Errore ottenimento dimensioni schermo: {e}")
-            # Continua comunque con validazione base
+            log_error(f"Error getting screen dimensions: {e}")
+            # Continue anyway with basic validation
         
         return True
         
     except Exception as e:
-        log_error(f"Errore validazione coordinate {coordinates}: {e}")
+        log_error(f"Error validating coordinates {coordinates}: {e}")
         return False
 
 def safe_click(coordinates, validate_after_click=True):
-    """Esegue un click sicuro con validazione e gestione errori.
+    """Performs a safe click with validation and error handling.
     
     Args:
-        coordinates (tuple): Coordinate (x, y) dove cliccare
-        validate_after_click (bool): Se validare il click dopo l'esecuzione
+        coordinates (tuple): Coordinates (x, y) where to click
+        validate_after_click (bool): Whether to validate the click after execution
         
     Returns:
-        bool: True se il click è stato eseguito con successo
+        bool: True if the click was executed successfully
     """
     try:
-        # Validazione coordinate
+        # Coordinate validation
         if not validate_coordinates(coordinates):
-            log_error(f"Coordinate non valide per click: {coordinates}")
+            log_error(f"Invalid coordinates for click: {coordinates}")
             return False
         
         x, y = coordinates
-        log_debug(f"Tentativo click alle coordinate ({x}, {y})")
+        log_debug(f"Attempting click at coordinates ({x}, {y})")
         
-        # Esegui il click
+        # Execute the click
         try:
             pyautogui.click(x, y)
-            log_debug(f"Click eseguito alle coordinate ({x}, {y})")
+            log_debug(f"Click executed at coordinates ({x}, {y})")
             
-            # Validazione post-click se richiesta
+            # Post-click validation if requested
             if validate_after_click:
                 time.sleep(CLICK_VALIDATION_TIMEOUT)
-                # Qui potresti aggiungere ulteriori validazioni se necessario
+                # Here you could add additional validations if necessary
             
             record_click_performed()
             return True
             
         except pyautogui.FailSafeException as e:
-            log_error(f"FailSafe attivato durante click: {e}")
+            log_error(f"FailSafe activated during click: {e}")
             record_click_error()
             return False
             
         except Exception as e:
-            log_error(f"Errore durante esecuzione click: {e}")
+            log_error(f"Error during click execution: {e}")
             record_click_error()
             return False
         
     except Exception as e:
-        log_error(f"Errore critico durante safe_click: {e}")
+        log_error(f"Critical error during safe_click: {e}")
         record_click_error()
         return False
 
 def click_with_retry(coordinates, max_retries=None, retry_delay=None):
-    """Esegue un click con retry automatici in caso di fallimento.
+    """Performs a click with automatic retries in case of failure.
     
     Args:
-        coordinates (tuple): Coordinate (x, y) dove cliccare
-        max_retries (int, optional): Numero massimo di retry
-        retry_delay (float, optional): Delay tra i retry in secondi
+        coordinates (tuple): Coordinates (x, y) where to click
+        max_retries (int, optional): Maximum number of retries
+        retry_delay (float, optional): Delay between retries in seconds
         
     Returns:
-        bool: True se il click è stato eseguito con successo
+        bool: True if the click was executed successfully
     """
     if max_retries is None:
         max_retries = MAX_RETRIES
@@ -130,53 +130,53 @@ def click_with_retry(coordinates, max_retries=None, retry_delay=None):
         retry_delay = RETRY_DELAY
     
     try:
-        for attempt in range(max_retries + 1):  # +1 per includere il tentativo iniziale
+        for attempt in range(max_retries + 1):  # +1 to include initial attempt
             try:
-                log_debug(f"Tentativo click #{attempt + 1}/{max_retries + 1}")
+                log_debug(f"Click attempt #{attempt + 1}/{max_retries + 1}")
                 
                 if safe_click(coordinates, validate_after_click=True):
-                    log_message(f"✅ Click eseguito con successo al tentativo #{attempt + 1}")
+                    log_message(f"✅ Click executed successfully on attempt #{attempt + 1}")
                     return True
                 
-                # Se non è l'ultimo tentativo, attendi prima del retry
+                # If not the last attempt, wait before retry
                 if attempt < max_retries:
-                    log_debug(f"Click fallito, retry tra {retry_delay} secondi...")
+                    log_debug(f"Click failed, retrying in {retry_delay} seconds...")
                     time.sleep(retry_delay)
                 
             except Exception as e:
-                log_error(f"Errore durante tentativo click #{attempt + 1}: {e}")
+                log_error(f"Error during click attempt #{attempt + 1}: {e}")
                 if attempt < max_retries:
                     time.sleep(retry_delay)
                 continue
         
-        log_error(f"❌ Tutti i {max_retries + 1} tentativi di click falliti")
+        log_error(f"❌ All {max_retries + 1} click attempts failed")
         return False
         
     except Exception as e:
-        log_error(f"Errore critico durante click_with_retry: {e}")
+        log_error(f"Critical error during click_with_retry: {e}")
         return False
 
 def get_screen_dimensions():
-    """Ottiene le dimensioni dello schermo.
+    """Gets the screen dimensions.
     
     Returns:
-        tuple: (width, height) o (0, 0) se fallisce
+        tuple: (width, height) or (0, 0) if it fails
     """
     try:
         return pyautogui.size()
     except Exception as e:
-        log_error(f"Errore ottenimento dimensioni schermo: {e}")
+        log_error(f"Error getting screen dimensions: {e}")
         return (0, 0)
 
 def is_coordinate_on_screen(x, y):
-    """Verifica se una coordinata è dentro i limiti dello schermo.
+    """Checks if a coordinate is within screen bounds.
     
     Args:
-        x (int): Coordinata X
-        y (int): Coordinata Y
+        x (int): X coordinate
+        y (int): Y coordinate
         
     Returns:
-        bool: True se la coordinata è sullo schermo
+        bool: True if the coordinate is on screen
     """
     try:
         screen_width, screen_height = get_screen_dimensions()
@@ -186,17 +186,17 @@ def is_coordinate_on_screen(x, y):
         return 0 <= x < screen_width and 0 <= y < screen_height
         
     except Exception as e:
-        log_error(f"Errore verifica coordinata su schermo: {e}")
+        log_error(f"Error checking coordinate on screen: {e}")
         return False
 
 def filter_valid_coordinates(coordinates_list):
-    """Filtra una lista di coordinate mantenendo solo quelle valide.
+    """Filters a list of coordinates keeping only valid ones.
     
     Args:
-        coordinates_list (list): Lista di coordinate da filtrare
+        coordinates_list (list): List of coordinates to filter
         
     Returns:
-        list: Lista di coordinate valide
+        list: List of valid coordinates
     """
     valid_coordinates = []
     
@@ -210,105 +210,105 @@ def filter_valid_coordinates(coordinates_list):
                     valid_coordinates.append(coord)
                     log_coordinates_found("target", coord)
                 else:
-                    log_debug(f"Coordinata non valida filtrata: {coord}")
+                    log_debug(f"Invalid coordinate filtered: {coord}")
             except Exception as e:
-                log_error(f"Errore validazione coordinata {coord}: {e}")
+                log_error(f"Error validating coordinate {coord}: {e}")
                 continue
         
-        log_debug(f"Filtro coordinate: {len(valid_coordinates)}/{len(coordinates_list)} valide")
+        log_debug(f"Coordinate filter: {len(valid_coordinates)}/{len(coordinates_list)} valid")
         return valid_coordinates
         
     except Exception as e:
-        log_error(f"Errore critico durante filtro coordinate: {e}")
+        log_error(f"Critical error during coordinate filtering: {e}")
         return []
 
 def select_best_coordinate(coordinates_list):
-    """Seleziona la migliore coordinata da una lista.
+    """Selects the best coordinate from a list.
     
     Args:
-        coordinates_list (list): Lista di coordinate
+        coordinates_list (list): List of coordinates
         
     Returns:
-        tuple or None: Migliore coordinata o None se nessuna valida
+        tuple or None: Best coordinate or None if none valid
     """
     try:
         valid_coords = filter_valid_coordinates(coordinates_list)
         
         if not valid_coords:
-            log_debug("Nessuna coordinata valida trovata")
+            log_debug("No valid coordinates found")
             return None
         
         if len(valid_coords) == 1:
-            log_debug(f"Una sola coordinata valida: {valid_coords[0]}")
+            log_debug(f"Only one valid coordinate: {valid_coords[0]}")
             return valid_coords[0]
         
-        # Se ci sono multiple coordinate, seleziona la prima (potrebbero essere tutte simili dopo deduplicazione)
+        # If there are multiple coordinates, select the first one (they might all be similar after deduplication)
         selected = valid_coords[0]
-        log_debug(f"Selezionata coordinata: {selected} da {len(valid_coords)} opzioni")
+        log_debug(f"Selected coordinate: {selected} from {len(valid_coords)} options")
         return selected
         
     except Exception as e:
-        log_error(f"Errore selezione migliore coordinata: {e}")
+        log_error(f"Error selecting best coordinate: {e}")
         return None
 
 def perform_automatic_click(coordinates_list):
-    """Esegue un click automatico sulla migliore coordinata disponibile.
+    """Performs an automatic click on the best available coordinate.
     
     Args:
-        coordinates_list (list): Lista di coordinate candidate
+        coordinates_list (list): List of candidate coordinates
         
     Returns:
-        bool: True se il click è stato eseguito con successo
+        bool: True if the click was executed successfully
     """
     try:
         if not coordinates_list:
-            log_debug("Nessuna coordinata fornita per click automatico")
+            log_debug("No coordinates provided for automatic click")
             return False
         
-        log_debug(f"Tentativo click automatico su {len(coordinates_list)} coordinate candidate")
+        log_debug(f"Automatic click attempt on {len(coordinates_list)} candidate coordinates")
         
-        # Seleziona la migliore coordinata
+        # Select the best coordinate
         best_coord = select_best_coordinate(coordinates_list)
         if not best_coord:
-            log_error("❌ Nessuna coordinata valida per click automatico")
+            log_error("❌ No valid coordinates for automatic click")
             return False
         
-        # Esegui il click con retry
-        log_message(f"🖱️ Esecuzione click automatico alle coordinate {best_coord}")
+        # Execute the click with retry
+        log_message(f"🖱️ Executing automatic click at coordinates {best_coord}")
         success = click_with_retry(best_coord)
         
         if success:
-            log_message(f"✅ Click automatico eseguito con successo alle coordinate {best_coord}")
+            log_message(f"✅ Automatic click executed successfully at coordinates {best_coord}")
         else:
-            log_error(f"❌ Click automatico fallito alle coordinate {best_coord}")
+            log_error(f"❌ Automatic click failed at coordinates {best_coord}")
         
         return success
         
     except Exception as e:
-        log_error(f"Errore critico durante click automatico: {e}")
+        log_error(f"Critical error during automatic click: {e}")
         return False
 
 def get_mouse_position():
-    """Ottiene la posizione corrente del mouse.
+    """Gets the current mouse position.
     
     Returns:
-        tuple: (x, y) posizione del mouse o (0, 0) se fallisce
+        tuple: (x, y) mouse position or (0, 0) if it fails
     """
     try:
         return pyautogui.position()
     except Exception as e:
-        log_error(f"Errore ottenimento posizione mouse: {e}")
+        log_error(f"Error getting mouse position: {e}")
         return (0, 0)
 
 def move_mouse_to_coordinate(coordinates, duration=0.5):
-    """Muove il mouse a una coordinata specifica.
+    """Moves the mouse to a specific coordinate.
     
     Args:
-        coordinates (tuple): Coordinate (x, y) di destinazione
-        duration (float): Durata del movimento in secondi
+        coordinates (tuple): Destination coordinates (x, y)
+        duration (float): Movement duration in seconds
         
     Returns:
-        bool: True se il movimento è stato eseguito con successo
+        bool: True if the movement was executed successfully
     """
     try:
         if not validate_coordinates(coordinates):
@@ -316,21 +316,21 @@ def move_mouse_to_coordinate(coordinates, duration=0.5):
         
         x, y = coordinates
         pyautogui.moveTo(x, y, duration=duration)
-        log_debug(f"Mouse spostato alle coordinate ({x}, {y})")
+        log_debug(f"Mouse moved to coordinates ({x}, {y})")
         return True
         
     except Exception as e:
-        log_error(f"Errore spostamento mouse: {e}")
+        log_error(f"Error moving mouse: {e}")
         return False
 
 def calculate_coordinate_center(coordinates_list):
-    """Calcola il centro geometrico di una lista di coordinate.
+    """Calculates the geometric center of a list of coordinates.
     
     Args:
-        coordinates_list (list): Lista di coordinate
+        coordinates_list (list): List of coordinates
         
     Returns:
-        tuple or None: Coordinate del centro o None se fallisce
+        tuple or None: Center coordinates or None if it fails
     """
     try:
         valid_coords = filter_valid_coordinates(coordinates_list)
@@ -341,7 +341,7 @@ def calculate_coordinate_center(coordinates_list):
         if len(valid_coords) == 1:
             return valid_coords[0]
         
-        # Calcola il centro
+        # Calculate the center
         total_x = sum(coord[0] for coord in valid_coords)
         total_y = sum(coord[1] for coord in valid_coords)
         
@@ -350,14 +350,14 @@ def calculate_coordinate_center(coordinates_list):
         
         center = (center_x, center_y)
         
-        # Valida il centro calcolato
+        # Validate the calculated center
         if validate_coordinates(center):
-            log_debug(f"Centro calcolato: {center} da {len(valid_coords)} coordinate")
+            log_debug(f"Calculated center: {center} from {len(valid_coords)} coordinates")
             return center
         else:
-            log_error(f"Centro calcolato non valido: {center}")
+            log_error(f"Calculated center not valid: {center}")
             return None
         
     except Exception as e:
-        log_error(f"Errore calcolo centro coordinate: {e}")
+        log_error(f"Error calculating coordinate center: {e}")
         return None

@@ -1,11 +1,10 @@
-"""Modulo principale per la logica di scansione.
+"""Main module for scanning logic.
 
-Questo modulo orchestra tutti i componenti del sistema per:
-- Eseguire scansioni complete dello schermo
-- Processare le immagini e estrarre il testo
-- Cercare il messaggio target
-- Eseguire click automatici quando necessario
-"""
+This module orchestrates all system components to:
+- Execute complete screen scans
+- Process images and extract text
+- Search for target message
+- Execute automatic clicks when necessary"""
 
 import time
 from datetime import datetime
@@ -32,125 +31,125 @@ from ocr_engine import (
 from coordinate_manager import perform_automatic_click
 
 def scan_entire_screen_for_continue_message():
-    """Esegue una scansione completa dello schermo per trovare il messaggio 'Continue'.
+    """Executes a complete screen scan to find the 'Continue' message.
     
     Returns:
-        list: Lista di coordinate trovate o lista vuota se non trovate/errore
+        list: List of found coordinates or empty list if not found/error
     """
     try:
-        log_debug("Inizio scansione completa dello schermo")
+        log_debug("Starting complete screen scan")
         
-        # Gestisci cartella screenshot
+        # Manage screenshot folder
         try:
             manage_screenshots_folder()
         except Exception as e:
-            log_error(f"Errore gestione cartella screenshot: {e}")
-            # Continua comunque
+            log_error(f"Error managing screenshot folder: {e}")
+            # Continue anyway
         
-        # Cattura screenshot
+        # Capture screenshot
         try:
             screenshot = safe_screenshot()
             if screenshot is None:
-                log_error("Impossibile catturare screenshot")
+                log_error("Unable to capture screenshot")
                 return []
         except Exception as e:
-            log_error(f"Errore critico durante cattura screenshot: {e}")
+            log_error(f"Critical error during screenshot capture: {e}")
             return []
         
-        # Salva screenshot per debug
+        # Save screenshot for debug
         try:
             save_screenshot(screenshot, SCREENSHOT_FULLSCREEN_PATTERN)
         except Exception as e:
-            log_error(f"Errore salvataggio screenshot: {e}")
-            # Continua comunque
+            log_error(f"Error saving screenshot: {e}")
+            # Continue anyway
         
-        # Enhancement delle immagini
+        # Image enhancement
         try:
             enhanced_images = enhance_image_for_text_detection(screenshot)
             if not enhanced_images:
-                log_error("Nessuna immagine enhanced generata")
+                log_error("No enhanced images generated")
                 return []
         except Exception as e:
-            log_error(f"Errore durante enhancement immagini: {e}")
+            log_error(f"Error during image enhancement: {e}")
             return []
         
-        # Processa ogni immagine enhanced
+        # Process each enhanced image
         all_detections = []
         for method_name, enhanced_image in enhanced_images:
             try:
-                log_debug(f"Processamento immagine enhanced: {method_name}")
+                log_debug(f"Processing enhanced image: {method_name}")
                 
-                # Salva immagine enhanced per debug
+                # Save enhanced image for debug
                 try:
                     save_enhanced_image(enhanced_image, method_name)
                 except Exception as e:
-                    log_error(f"Errore salvataggio immagine enhanced {method_name}: {e}")
-                    # Continua comunque
+                    log_error(f"Error saving enhanced image {method_name}: {e}")
+                    # Continue anyway
                 
-                # Estrai testo
+                # Extract text
                 try:
                     detections = extract_all_text_with_positions(enhanced_image)
                     if detections:
                         all_detections.extend(detections)
                         log_enhancement_stats(method_name, len(detections))
                     else:
-                        log_debug(f"Nessuna detection per metodo {method_name}")
+                        log_debug(f"No detections for method {method_name}")
                 except Exception as e:
-                    log_error(f"Errore estrazione testo per {method_name}: {e}")
+                    log_error(f"Error extracting text for {method_name}: {e}")
                     continue
                 
             except Exception as e:
-                log_error(f"Errore processamento metodo {method_name}: {e}")
+                log_error(f"Error processing method {method_name}: {e}")
                 continue
         
         if not all_detections:
-            log_debug("Nessuna detection trovata in tutte le immagini enhanced")
+            log_debug("No detections found in all enhanced images")
             return []
         
-        # Deduplicazione detection
+        # Deduplicate detections
         try:
             unique_detections = deduplicate_detections(all_detections)
-            log_debug(f"Detection dopo deduplicazione: {len(unique_detections)}")
+            log_debug(f"Detections after deduplication: {len(unique_detections)}")
         except Exception as e:
-            log_error(f"Errore deduplicazione detection: {e}")
+            log_error(f"Error deduplicating detections: {e}")
             unique_detections = all_detections  # Fallback
         
-        # Log delle detection trovate (solo per debug)
+        # Log found detections (debug only)
         try:
-            detected_words = [det['text'] for det in unique_detections[:10]]  # Prime 10
+            detected_words = [det['text'] for det in unique_detections[:10]]  # First 10
             if detected_words:
-                log_debug(f"Parole rilevate (prime 10): {', '.join(detected_words)}")
+                log_debug(f"Detected words (first 10): {', '.join(detected_words)}")
         except Exception as e:
-            log_error(f"Errore logging detection: {e}")
+            log_error(f"Error logging detections: {e}")
         
-        # Cerca il pattern target
+        # Search for target pattern
         try:
             coordinates = find_target_pattern_in_detections(
                 unique_detections, TARGET_PATTERN, TARGET_END_WORD
             )
-            log_debug(f"Coordinate trovate dal pattern: {len(coordinates)}")
+            log_debug(f"Coordinates found by pattern: {len(coordinates)}")
         except Exception as e:
-            log_error(f"Errore ricerca pattern target: {e}")
+            log_error(f"Error searching target pattern: {e}")
             return []
         
-        # Deduplicazione finale delle coordinate
+        # Final coordinate deduplication
         try:
             final_coordinates = deduplicate_coordinates(coordinates)
-            log_debug(f"Coordinate finali dopo deduplicazione: {len(final_coordinates)}")
+            log_debug(f"Final coordinates after deduplication: {len(final_coordinates)}")
             return final_coordinates
         except Exception as e:
-            log_error(f"Errore deduplicazione coordinate finali: {e}")
+            log_error(f"Error deduplicating final coordinates: {e}")
             return coordinates if coordinates else []
         
     except Exception as e:
-        log_error(f"Errore critico durante scansione schermo: {e}")
+        log_error(f"Critical error during screen scan: {e}")
         return []
 
 def perform_single_scan(scan_number):
-    """Esegue una singola scansione completa.
+    """Executes a single complete scan.
     
     Args:
-        scan_number (int): Numero della scansione
+        scan_number (int): Scan number
         
     Returns:
         tuple: (success, coordinates_found)
@@ -159,20 +158,20 @@ def perform_single_scan(scan_number):
         log_scan_start(scan_number)
         scan_start_time = time.time()
         
-        # Esegui scansione
+        # Execute scan
         coordinates = scan_entire_screen_for_continue_message()
         
-        # Calcola tempo di scansione
+        # Calculate scan time
         scan_time = time.time() - scan_start_time
         update_performance_stats(scan_time)
         
-        # Determina se la scansione ha avuto successo
+        # Determine if the scan was successful
         success = len(coordinates) > 0
         
-        # Log risultato
+        # Log result
         log_scan_complete(scan_number, success, coordinates)
-        
-        # Aggiorna statistiche
+
+        # Update statistics
         update_scan_stats(success, scan_time)
         
         if success:
@@ -181,16 +180,16 @@ def perform_single_scan(scan_number):
         return success, coordinates
         
     except Exception as e:
-        log_error(f"Errore durante scansione #{scan_number}: {e}")
+        log_error(f"Error during scan #{scan_number}: {e}")
         return False, []
 
 def perform_scan_with_retry(scan_number, max_retries=None, retry_delay=None):
-    """Esegue una scansione con retry automatici.
+    """Executes a scan with automatic retries.
     
     Args:
-        scan_number (int): Numero della scansione
-        max_retries (int, optional): Numero massimo di retry
-        retry_delay (float, optional): Delay tra i retry
+        scan_number (int): Scan number
+        max_retries (int, optional): Maximum number of retries
+        retry_delay (float, optional): Delay between retries
         
     Returns:
         tuple: (success, coordinates_found)
@@ -204,70 +203,70 @@ def perform_scan_with_retry(scan_number, max_retries=None, retry_delay=None):
         for attempt in range(max_retries + 1):
             try:
                 if attempt > 0:
-                    log_debug(f"Retry scansione #{scan_number}, tentativo {attempt + 1}/{max_retries + 1}")
+                    log_debug(f"Retry scan #{scan_number}, attempt {attempt + 1}/{max_retries + 1}")
                 
                 success, coordinates = perform_single_scan(scan_number)
                 
                 if success:
                     if attempt > 0:
-                        log_message(f"✅ Scansione #{scan_number} riuscita al tentativo {attempt + 1}")
+                        log_message(f"✅ Scan #{scan_number} successful on attempt {attempt + 1}")
                     return True, coordinates
                 
-                # Se non è l'ultimo tentativo, attendi prima del retry
+                # If not the last attempt, wait before retry
                 if attempt < max_retries:
-                    log_debug(f"Scansione fallita, retry tra {retry_delay} secondi...")
+                    log_debug(f"Scan failed, retrying in {retry_delay} seconds...")
                     time.sleep(retry_delay)
                 
             except Exception as e:
-                log_error(f"Errore durante tentativo {attempt + 1} della scansione #{scan_number}: {e}")
+                log_error(f"Error during attempt {attempt + 1} of scan #{scan_number}: {e}")
                 if attempt < max_retries:
                     time.sleep(retry_delay)
                 continue
         
-        log_debug(f"Tutti i tentativi di scansione #{scan_number} falliti")
+        log_debug(f"All scan attempts #{scan_number} failed")
         return False, []
         
     except Exception as e:
-        log_error(f"Errore critico durante scan_with_retry #{scan_number}: {e}")
+        log_error(f"Critical error during scan_with_retry #{scan_number}: {e}")
         return False, []
 
 def handle_scan_result(scan_number, success, coordinates):
-    """Gestisce il risultato di una scansione.
+    """Handles the result of a scan.
     
     Args:
-        scan_number (int): Numero della scansione
-        success (bool): Se la scansione ha avuto successo
-        coordinates (list): Coordinate trovate
+        scan_number (int): Scan number
+        success (bool): Whether the scan was successful
+        coordinates (list): Found coordinates
         
     Returns:
-        bool: True se è stato eseguito un click automatico
+        bool: True if an automatic click was performed
     """
     try:
         if success and coordinates:
-            log_message(f"🎯 Messaggio target trovato nella scansione #{scan_number}!")
+            log_message(f"🎯 Target message found in scan #{scan_number}!")
             
-            # Esegui click automatico
+            # Execute automatic click
             click_success = perform_automatic_click(coordinates)
             
             if click_success:
-                log_message(f"✅ Click automatico eseguito con successo per scansione #{scan_number}")
+                log_message(f"✅ Automatic click executed successfully for scan #{scan_number}")
                 return True
             else:
-                log_error(f"❌ Click automatico fallito per scansione #{scan_number}")
+                log_error(f"❌ Automatic click failed for scan #{scan_number}")
                 return False
         else:
-            log_debug(f"Messaggio target non trovato nella scansione #{scan_number}")
+            log_debug(f"Target message not found in scan #{scan_number}")
             return False
             
     except Exception as e:
-        log_error(f"Errore gestione risultato scansione #{scan_number}: {e}")
+        log_error(f"Error handling scan result #{scan_number}: {e}")
         return False
 
 def handle_consecutive_failures():
-    """Gestisce i fallimenti consecutivi implementando attesa estesa.
+    """Handles consecutive failures by implementing extended wait.
     
     Returns:
-        bool: True se è stata eseguita un'attesa estesa
+        bool: True if an extended wait was performed
     """
     try:
         stats = get_stats_copy()
@@ -276,14 +275,14 @@ def handle_consecutive_failures():
         if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
             log_extended_wait_start()
             
-            # Attesa estesa
+            # Extended wait
             try:
                 time.sleep(EXTENDED_WAIT_TIME)
             except KeyboardInterrupt:
-                log_message("⚠️ Interruzione durante attesa estesa")
+                log_message("⚠️ Interruption during extended wait")
                 raise
             except Exception as e:
-                log_error(f"Errore durante attesa estesa: {e}")
+                log_error(f"Error during extended wait: {e}")
             
             log_extended_wait_complete()
             reset_consecutive_failures()
@@ -292,14 +291,14 @@ def handle_consecutive_failures():
         return False
         
     except Exception as e:
-        log_error(f"Errore gestione fallimenti consecutivi: {e}")
+        log_error(f"Error handling consecutive failures: {e}")
         return False
 
 def should_perform_extended_wait():
-    """Determina se dovrebbe essere eseguita un'attesa estesa.
+    """Determines if an extended wait should be performed.
     
     Returns:
-        bool: True se dovrebbe essere eseguita un'attesa estesa
+        bool: True if an extended wait should be performed
     """
     try:
         stats = get_stats_copy()
@@ -309,44 +308,44 @@ def should_perform_extended_wait():
         return False
 
 def log_scan_summary(scan_number, success, click_performed, scan_time=None):
-    """Registra un riassunto della scansione.
+    """Logs a scan summary.
     
     Args:
-        scan_number (int): Numero della scansione
-        success (bool): Se la scansione ha avuto successo
-        click_performed (bool): Se è stato eseguito un click
-        scan_time (float, optional): Tempo di scansione in secondi
+        scan_number (int): Scan number
+        success (bool): Whether the scan was successful
+        click_performed (bool): Whether a click was performed
+        scan_time (float, optional): Scan time in seconds
     """
     try:
         status_icon = "✅" if success else "❌"
         click_icon = "🖱️" if click_performed else ""
         
-        summary = f"{status_icon} Scansione #{scan_number}"
+        summary = f"{status_icon} Scan #{scan_number}"
         
         if success:
-            summary += " - Target trovato"
+            summary += " - Target found"
             if click_performed:
-                summary += " - Click eseguito"
+                summary += " - Click performed"
         else:
-            summary += " - Target non trovato"
+            summary += " - Target not found"
         
         if scan_time:
             summary += f" ({scan_time:.2f}s)"
         
         log_message(summary)
         
-        # Log report di stato se necessario
+        # Log status report if necessary
         if should_log_status_report():
             log_system_status()
             
     except Exception as e:
-        log_error(f"Errore logging riassunto scansione: {e}")
+        log_error(f"Error logging scan summary: {e}")
 
 def get_next_scan_number():
-    """Ottiene il numero della prossima scansione.
+    """Gets the next scan number.
     
     Returns:
-        int: Numero della prossima scansione
+        int: Next scan number
     """
     try:
         stats = get_stats_copy()
@@ -355,33 +354,33 @@ def get_next_scan_number():
         return 1
 
 def is_system_healthy():
-    """Verifica se il sistema è in uno stato sano.
+    """Checks if the system is in a healthy state.
     
     Returns:
-        bool: True se il sistema è sano
+        bool: True if the system is healthy
     """
     try:
         stats = get_stats_copy()
         
-        # Controlla se ci sono troppi errori
+        # Check if there are too many errors
         total_errors = stats.get('total_errors', 0)
         total_scans = stats.get('total_scans', 1)
         
         error_rate = total_errors / total_scans if total_scans > 0 else 0
         
-        # Se il tasso di errore è superiore al 50%, considera il sistema non sano
+        # If error rate is above 50%, consider the system unhealthy
         if error_rate > 0.5 and total_scans > 10:
-            log_error(f"Sistema non sano: tasso errori {error_rate:.1%} su {total_scans} scansioni")
+            log_error(f"System unhealthy: error rate {error_rate:.1%} over {total_scans} scans")
             return False
         
         return True
         
     except Exception as e:
-        log_error(f"Errore verifica salute sistema: {e}")
-        return True  # Assume sano in caso di errore
+        log_error(f"Error checking system health: {e}")
+        return True  # Assume healthy in case of error
 
 def log_scan_summary():
-    """Registra un riassunto delle scansioni effettuate."""
+    """Logs a summary of performed scans."""
     try:
         stats = get_stats_copy()
         total_scans = stats.get('total_scans', 0)
@@ -390,7 +389,7 @@ def log_scan_summary():
         
         if total_scans > 0:
             success_rate = (successful_detections / total_scans) * 100
-            log_message(f"📊 Riassunto: {total_scans} scansioni, {successful_detections} detection ({success_rate:.1f}%), {total_clicks} click")
+            log_message(f"📊 Summary: {total_scans} scans, {successful_detections} detections ({success_rate:.1f}%), {total_clicks} clicks")
         
     except Exception as e:
-        log_error(f"Errore durante log riassunto scansioni: {e}")
+        log_error(f"Error during scan summary logging: {e}")

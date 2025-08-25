@@ -71,14 +71,14 @@ pyautogui.PAUSE = 0.1
 # ============================================================================
 
 def signal_handler(signum, frame):
-    """Gestisce i segnali di interruzione per shutdown pulito."""
+    """Handles interruption signals for clean shutdown."""
     try:
-        log_message("\n\n🛑 INTERRUZIONE RICEVUTA")
+        log_message("\n\n🛑 INTERRUPTION RECEIVED")
         log_system_status()
         log_system_shutdown()
         sys.exit(0)
     except Exception as e:
-        print(f"Errore durante shutdown: {e}")
+        print(f"Error during shutdown: {e}")
         sys.exit(1)
 
 # ============================================================================
@@ -86,78 +86,78 @@ def signal_handler(signum, frame):
 # ============================================================================
 
 def run_continuous_scanner():
-    """Esegue il loop principale di scansione continua."""
+    """Runs the main continuous scanning loop."""
     try:
         log_system_startup()
         log_message(f"🎯 Target: '{TARGET_PATTERN}'")
-        log_message(f"🔍 Parola finale: '{TARGET_END_WORD}'")
-        log_message("🤖 Modalità: AUTOMATICA - Click automatico senza conferma")
-        log_message("💡 Per interrompere: Ctrl+C")
+        log_message(f"🔍 Final word: '{TARGET_END_WORD}'")
+        log_message("🤖 Mode: AUTOMATIC - Automatic click without confirmation")
+        log_message("💡 To interrupt: Ctrl+C")
         log_message("\n" + "="*80)
         
         while True:
             try:
-                # Verifica salute del sistema
+                # Check system health
                 if not is_system_healthy():
-                    log_error("Sistema non sano, continuazione con cautela...")
+                    log_error("System unhealthy, continuing with caution...")
                 
-                # Ottieni numero scansione
+                # Get scan number
                 scan_number = get_next_scan_number()
                 
-                # Esegui scansione con retry
+                # Execute scan with retry
                 scan_start_time = time.time()
                 success, coordinates = perform_scan_with_retry(scan_number)
                 scan_time = time.time() - scan_start_time
                 
-                # Gestisci risultato scansione
+                # Handle scan result
                 click_performed = False
                 if success:
                     click_performed = handle_scan_result(scan_number, success, coordinates)
                 
-                # Log riassunto scansione
+                # Log scan summary
                 log_scan_summary(scan_number, success, click_performed, scan_time)
                 
-                # Gestisci fallimenti consecutivi
+                # Handle consecutive failures
                 if not success:
                     extended_wait_performed = handle_consecutive_failures()
                     if extended_wait_performed:
-                        continue  # Salta l'attesa normale se è stata fatta attesa estesa
+                        continue  # Skip normal wait if extended wait was performed
                 
-                # Log report di stato periodico
+                # Log periodic status report
                 if should_log_status_report():
                     log_system_status()
                 
-                # Attesa prima della prossima scansione
+                # Wait before next scan
                 try:
                     next_scan_number = get_next_scan_number()
-                    log_message(f"\n⏰ Prossima scansione #{next_scan_number} tra {SCAN_INTERVAL//60} minuti...")
-                    log_message("💡 Premi Ctrl+C per interrompere")
+                    log_message(f"\n⏰ Next scan #{next_scan_number} in {SCAN_INTERVAL//60} minutes...")
+                    log_message("💡 Press Ctrl+C to interrupt")
                     time.sleep(SCAN_INTERVAL)
                 except KeyboardInterrupt:
-                    raise  # Rilancia per gestione nel blocco esterno
+                    raise  # Re-raise for handling in outer block
                 except Exception as e:
-                    log_error(f"Errore durante attesa: {e}")
-                    time.sleep(10)  # Attesa ridotta in caso di errore
+                    log_error(f"Error during wait: {e}")
+                    time.sleep(10)  # Reduced wait in case of error
                 
             except KeyboardInterrupt:
-                raise  # Rilancia per gestione nel blocco esterno
+                raise  # Re-raise for handling in outer block
             except Exception as e:
-                log_error(f"Errore nel loop principale: {e}")
-                time.sleep(5)  # Breve pausa prima di continuare
+                log_error(f"Error in main loop: {e}")
+                time.sleep(5)  # Brief pause before continuing
                 continue
                 
     except KeyboardInterrupt:
-        log_message("\n\n🛑 INTERRUZIONE MANUALE RICEVUTA (Ctrl+C)")
+        log_message("\n\n🛑 MANUAL INTERRUPTION RECEIVED (Ctrl+C)")
         log_system_status()
         log_system_shutdown()
     except pyautogui.FailSafeException:
-        log_message("\n\n🛑 FAILSAFE ATTIVATO - Mouse mosso nell'angolo")
+        log_message("\n\n🛑 FAILSAFE ACTIVATED - Mouse moved to corner")
         log_system_status()
         log_system_shutdown()
     except Exception as e:
-        log_error(f"\n\n❌ ERRORE CRITICO NON GESTITO: {e}")
+        log_error(f"\n\n❌ UNHANDLED CRITICAL ERROR: {e}")
         log_system_status()
-        log_message("🏁 SCANNER AUTOMATICO TERMINATO A CAUSA DI ERRORE CRITICO")
+        log_message("🏁 AUTOMATIC SCANNER TERMINATED DUE TO CRITICAL ERROR")
         sys.exit(1)
 
 # ============================================================================
@@ -165,9 +165,9 @@ def run_continuous_scanner():
 # ============================================================================
 
 def validate_system_requirements():
-    """Valida che tutti i requisiti del sistema siano soddisfatti."""
+    """Validates that all system requirements are satisfied."""
     try:
-        # Test import di tutti i moduli
+        # Test import of all modules
         from config import TESSERACT_CMD
         from image_processing import safe_screenshot
         from ocr_engine import extract_all_text_with_positions
@@ -176,55 +176,55 @@ def validate_system_requirements():
         # Test Tesseract
         import os
         if not os.path.exists(TESSERACT_CMD):
-            log_error(f"Tesseract non trovato in: {TESSERACT_CMD}")
+            log_error(f"Tesseract not found at: {TESSERACT_CMD}")
             return False
         
         # Test screenshot
         test_screenshot = safe_screenshot()
         if test_screenshot is None:
-            log_error("Impossibile catturare screenshot di test")
+            log_error("Unable to capture test screenshot")
             return False
         
-        log_message("✅ Tutti i requisiti del sistema sono soddisfatti")
+        log_message("✅ All system requirements are satisfied")
         return True
         
     except Exception as e:
-        log_error(f"Errore validazione requisiti sistema: {e}")
+        log_error(f"Error validating system requirements: {e}")
         return False
 
 def cleanup_on_exit():
-    """Pulizia risorse prima dell'uscita."""
+    """Cleanup resources before exit."""
     try:
-        log_debug("Pulizia risorse in corso...")
-        # Eventuali operazioni di pulizia possono essere aggiunte qui
-        log_debug("Pulizia completata")
+        log_debug("Resource cleanup in progress...")
+        # Additional cleanup operations can be added here
+        log_debug("Cleanup completed")
     except Exception as e:
-        log_error(f"Errore durante pulizia: {e}")
+        log_error(f"Error during cleanup: {e}")
 
 # ============================================================================
 # MAIN ENTRY POINT
 # ============================================================================
 
 def main():
-    """Punto di ingresso principale dell'applicazione."""
+    """Main entry point of the application."""
     try:
         # Setup logging
         setup_logging()
         
-        # Registra signal handlers
+        # Register signal handlers
         signal.signal(signal.SIGINT, signal_handler)
         signal.signal(signal.SIGTERM, signal_handler)
         
-        # Valida requisiti sistema
+        # Validate system requirements
         if not validate_system_requirements():
-            log_error("Validazione requisiti sistema fallita")
+            log_error("System requirements validation failed")
             sys.exit(1)
         
-        # Avvia scanner continuo
+        # Start continuous scanner
         run_continuous_scanner()
         
     except Exception as e:
-        print(f"Errore critico durante avvio: {e}")
+        print(f"Critical error during startup: {e}")
         sys.exit(1)
     finally:
         cleanup_on_exit()

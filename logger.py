@@ -1,10 +1,10 @@
-"""Modulo per gestione logging e statistiche del sistema.
+"""Module for system logging and statistics management.
 
-Questo modulo fornisce funzionalità complete per:
-- Logging strutturato con timestamp
-- Monitoraggio statistiche di performance
-- Report di stato del sistema
-- Gestione errori e metriche
+This module provides complete functionality for:
+- Structured logging with timestamps
+- Performance statistics monitoring
+- System status reports
+- Error handling and metrics
 """
 
 import time
@@ -16,69 +16,69 @@ from config import (
     get_initial_stats
 )
 
-# Statistiche globali del sistema
+# Global system statistics
 stats = get_initial_stats()
 
 def log_message(message, level="INFO", include_separator=False):
-    """Registra un messaggio nel file di log con timestamp.
+    """Records a message in the log file with timestamp.
     
     Args:
-        message (str): Il messaggio da registrare
-        level (str): Livello del log (INFO, ERROR, WARNING, DEBUG)
-        include_separator (bool): Se includere un separatore prima del messaggio
+        message (str): The message to record
+        level (str): Log level (INFO, ERROR, WARNING, DEBUG)
+        include_separator (bool): Whether to include a separator before the message
     """
     try:
         timestamp = datetime.now().strftime(TIMESTAMP_FORMAT)
         log_entry = f"[{timestamp}] [{level}] {message}"
         
-        # Stampa su console
+        # Print to console
         print(log_entry)
         
-        # Scrivi su file
+        # Write to file
         with open(LOG_FILE, "a", encoding="utf-8") as f:
             if include_separator:
                 f.write(f"\n{LOG_SEPARATOR}\n")
             f.write(log_entry + "\n")
             
     except Exception as e:
-        # Fallback: stampa solo su console se il file non è accessibile
-        print(f"[{datetime.now().strftime(TIMESTAMP_FORMAT)}] [ERROR] Errore logging: {e}")
+        # Fallback: print only to console if file is not accessible
+        print(f"[{datetime.now().strftime(TIMESTAMP_FORMAT)}] [ERROR] Logging error: {e}")
         print(f"[{datetime.now().strftime(TIMESTAMP_FORMAT)}] [{level}] {message}")
 
 def log_error(message, exception=None):
-    """Registra un messaggio di errore con dettagli opzionali dell'eccezione.
+    """Records an error message with optional exception details.
     
     Args:
-        message (str): Messaggio di errore
-        exception (Exception, optional): Eccezione da includere nei dettagli
+        message (str): Error message
+        exception (Exception, optional): Exception to include in details
     """
     error_msg = message
     if exception:
-        error_msg += f" - Dettagli: {str(exception)}"
+        error_msg += f" - Details: {str(exception)}"
     
     log_message(error_msg, "ERROR")
     
-    # Aggiorna statistiche errori
+    # Update error statistics
     stats['total_errors'] += 1
 
 def log_warning(message):
-    """Registra un messaggio di warning.
+    """Records a warning message.
     
     Args:
-        message (str): Messaggio di warning
+        message (str): Warning message
     """
     log_message(message, "WARNING")
 
 def log_debug(message):
-    """Registra un messaggio di debug.
+    """Records a debug message.
     
     Args:
-        message (str): Messaggio di debug
+        message (str): Debug message
     """
     log_message(message, "DEBUG")
 
 def log_startup_messages():
-    """Registra i messaggi di avvio del sistema."""
+    """Records system startup messages."""
     from config import STARTUP_MESSAGES
     
     log_message("", include_separator=True)
@@ -91,11 +91,11 @@ def log_startup_messages():
     log_message("", include_separator=True)
 
 def update_scan_stats(scan_successful=True, scan_time=None):
-    """Aggiorna le statistiche di scansione.
+    """Updates scan statistics.
     
     Args:
-        scan_successful (bool): Se la scansione è stata completata con successo
-        scan_time (float, optional): Tempo impiegato per la scansione in secondi
+        scan_successful (bool): Whether the scan was completed successfully
+        scan_time (float, optional): Time taken for the scan in seconds
     """
     stats['total_scans'] += 1
     
@@ -106,31 +106,31 @@ def update_scan_stats(scan_successful=True, scan_time=None):
         stats['failed_scans'] += 1
         stats['consecutive_failures'] += 1
         
-        # Aggiorna il massimo di fallimenti consecutivi
+        # Update maximum consecutive failures
         if stats['consecutive_failures'] > stats['max_consecutive_failures']:
             stats['max_consecutive_failures'] = stats['consecutive_failures']
     
-    # Aggiorna metriche di performance se fornito il tempo
+    # Update performance metrics if time is provided
     if scan_time is not None:
         update_performance_stats(scan_time)
 
 def update_performance_stats(scan_time):
-    """Aggiorna le statistiche di performance con il tempo di scansione.
+    """Updates performance statistics with scan time.
     
     Args:
-        scan_time (float): Tempo di scansione in secondi
+        scan_time (float): Scan time in seconds
     """
     try:
         metrics = stats['performance_metrics']
         
-        # Aggiungi il nuovo tempo alla lista
+        # Add the new time to the list
         metrics['scan_times'].append(scan_time)
         
-        # Mantieni solo gli ultimi N tempi per efficienza
+        # Keep only the last N times for efficiency
         if len(metrics['scan_times']) > MAX_SCAN_TIMES_HISTORY:
             metrics['scan_times'] = metrics['scan_times'][-MAX_SCAN_TIMES_HISTORY:]
         
-        # Calcola statistiche
+        # Calculate statistics
         if metrics['scan_times']:
             metrics['avg_scan_time'] = sum(metrics['scan_times']) / len(metrics['scan_times'])
             metrics['max_scan_time'] = max(metrics['max_scan_time'], scan_time)
@@ -140,58 +140,58 @@ def update_performance_stats(scan_time):
             else:
                 metrics['min_scan_time'] = min(metrics['min_scan_time'], scan_time)
         
-        log_debug(f"Tempo scansione: {scan_time:.2f}s (Media: {metrics['avg_scan_time']:.2f}s)")
+        log_debug(f"Scan time: {scan_time:.2f}s (Average: {metrics['avg_scan_time']:.2f}s)")
         
     except Exception as e:
-        log_error(f"Errore aggiornamento statistiche performance: {e}")
+        log_error(f"Error updating performance statistics: {e}")
 
 def record_successful_detection():
-    """Registra una detection di successo."""
+    """Records a successful detection."""
     stats['last_successful_detection'] = time.time()
-    log_message("✅ Detection del messaggio target completata con successo!")
+    log_message("✅ Target message detection completed successfully!")
 
 def record_click_performed():
-    """Registra un click eseguito."""
+    """Records a performed click."""
     stats['clicks_performed'] += 1
     stats['last_click_time'] = time.time()
-    log_message(f"🖱️ Click automatico eseguito! (Totale: {stats['clicks_performed']})")
+    log_message(f"🖱️ Automatic click performed! (Total: {stats['clicks_performed']})")
 
 def record_click_error():
-    """Registra un errore di click."""
+    """Records a click error."""
     stats['click_errors'] += 1
-    log_error("❌ Errore durante l'esecuzione del click automatico")
+    log_error("❌ Error during automatic click execution")
 
 def record_screenshot_error():
-    """Registra un errore di screenshot."""
+    """Records a screenshot error."""
     stats['screenshot_errors'] += 1
-    log_error("📸 Errore durante la cattura dello screenshot")
+    log_error("📸 Error during screenshot capture")
 
 def record_ocr_error():
-    """Registra un errore OCR."""
+    """Records an OCR error."""
     stats['ocr_errors'] += 1
-    log_error("🔍 Errore durante l'estrazione del testo OCR")
+    log_error("🔍 Error during OCR text extraction")
 
 def record_enhancement_error():
-    """Registra un errore di enhancement immagine."""
+    """Records an image enhancement error."""
     stats['enhancement_errors'] += 1
-    log_error("🎨 Errore durante l'enhancement dell'immagine")
+    log_error("🎨 Error during image enhancement")
 
 def get_uptime():
-    """Calcola e restituisce l'uptime del sistema in secondi.
+    """Calculates and returns system uptime in seconds.
     
     Returns:
-        float: Uptime in secondi
+        float: Uptime in seconds
     """
     return time.time() - stats['start_time']
 
 def format_uptime(uptime_seconds):
-    """Formatta l'uptime in formato leggibile.
+    """Formats uptime in readable format.
     
     Args:
-        uptime_seconds (float): Uptime in secondi
+        uptime_seconds (float): Uptime in seconds
         
     Returns:
-        str: Uptime formattato (es. "2h 30m 45s")
+        str: Formatted uptime (e.g. "2h 30m 45s")
     """
     hours = int(uptime_seconds // 3600)
     minutes = int((uptime_seconds % 3600) // 60)
@@ -205,189 +205,189 @@ def format_uptime(uptime_seconds):
         return f"{seconds}s"
 
 def calculate_success_rate():
-    """Calcola il tasso di successo delle scansioni.
+    """Calculates scan success rate.
     
     Returns:
-        float: Tasso di successo in percentuale (0-100)
+        float: Success rate as percentage (0-100)
     """
     if stats['total_scans'] == 0:
         return 0.0
     return (stats['successful_detections'] / stats['total_scans']) * 100
 
 def get_time_since_last_detection():
-    """Calcola il tempo trascorso dall'ultima detection di successo.
+    """Calculates time elapsed since last successful detection.
     
     Returns:
-        str: Tempo formattato o "Mai" se non ci sono state detection
+        str: Formatted time or "Never" if no detections occurred
     """
     if stats['last_successful_detection'] is None:
-        return "Mai"
+        return "Never"
     
     time_diff = time.time() - stats['last_successful_detection']
     return format_uptime(time_diff)
 
 def get_time_since_last_click():
-    """Calcola il tempo trascorso dall'ultimo click.
+    """Calculates time elapsed since last click.
     
     Returns:
-        str: Tempo formattato o "Mai" se non ci sono stati click
+        str: Formatted time or "Never" if no clicks occurred
     """
     if stats['last_click_time'] is None:
-        return "Mai"
+        return "Never"
     
     time_diff = time.time() - stats['last_click_time']
     return format_uptime(time_diff)
 
 def log_system_status():
-    """Registra un report completo dello stato del sistema."""
+    """Logs a complete system status report."""
     try:
         uptime = get_uptime()
         success_rate = calculate_success_rate()
         
         log_message("", include_separator=True)
-        log_message("📊 REPORT STATO SISTEMA")
+        log_message("📊 SYSTEM STATUS REPORT")
         log_message(f"⏱️ Uptime: {format_uptime(uptime)}")
-        log_message(f"🔍 Scansioni totali: {stats['total_scans']}")
-        log_message(f"✅ Detection riuscite: {stats['successful_detections']}")
-        log_message(f"❌ Scansioni fallite: {stats['failed_scans']}")
-        log_message(f"📈 Tasso di successo: {success_rate:.1f}%")
-        log_message(f"🖱️ Click eseguiti: {stats['clicks_performed']}")
-        log_message(f"🔄 Fallimenti consecutivi: {stats['consecutive_failures']}")
-        log_message(f"📊 Max fallimenti consecutivi: {stats['max_consecutive_failures']}")
+        log_message(f"🔍 Total scans: {stats['total_scans']}")
+        log_message(f"✅ Successful detections: {stats['successful_detections']}")
+        log_message(f"❌ Failed scans: {stats['failed_scans']}")
+        log_message(f"📈 Success rate: {success_rate:.1f}%")
+        log_message(f"🖱️ Clicks performed: {stats['clicks_performed']}")
+        log_message(f"🔄 Consecutive failures: {stats['consecutive_failures']}")
+        log_message(f"📊 Max consecutive failures: {stats['max_consecutive_failures']}")
         
-        # Statistiche errori
-        log_message(f"🚨 Errori totali: {stats['total_errors']}")
-        log_message(f"  📸 Errori screenshot: {stats['screenshot_errors']}")
-        log_message(f"  🔍 Errori OCR: {stats['ocr_errors']}")
-        log_message(f"  🖱️ Errori click: {stats['click_errors']}")
-        log_message(f"  🎨 Errori enhancement: {stats['enhancement_errors']}")
+        # Error statistics
+        log_message(f"🚨 Total errors: {stats['total_errors']}")
+        log_message(f"  📸 Screenshot errors: {stats['screenshot_errors']}")
+        log_message(f"  🔍 OCR errors: {stats['ocr_errors']}")
+        log_message(f"  🖱️ Click errors: {stats['click_errors']}")
+        log_message(f"  🎨 Enhancement errors: {stats['enhancement_errors']}")
         
         # Performance metrics
         metrics = stats['performance_metrics']
         if metrics['scan_times']:
-            log_message(f"⚡ Performance scansioni:")
-            log_message(f"  📊 Tempo medio: {metrics['avg_scan_time']:.2f}s")
-            log_message(f"  ⚡ Tempo minimo: {metrics['min_scan_time']:.2f}s")
-            log_message(f"  🐌 Tempo massimo: {metrics['max_scan_time']:.2f}s")
+            log_message(f"⚡ Scan performance:")
+            log_message(f"  📊 Average time: {metrics['avg_scan_time']:.2f}s")
+            log_message(f"  ⚡ Minimum time: {metrics['min_scan_time']:.2f}s")
+            log_message(f"  🐌 Maximum time: {metrics['max_scan_time']:.2f}s")
         
-        # Tempi ultima attività
-        log_message(f"🕐 Ultima detection: {get_time_since_last_detection()} fa")
-        log_message(f"🕐 Ultimo click: {get_time_since_last_click()} fa")
+        # Last activity times
+        log_message(f"🕐 Last detection: {get_time_since_last_detection()} ago")
+        log_message(f"🕐 Last click: {get_time_since_last_click()} ago")
         
         log_message("", include_separator=True)
         
     except Exception as e:
-        log_error(f"Errore durante la generazione del report di stato: {e}")
+        log_error(f"Error generating status report: {e}")
 
 def should_log_status_report():
-    """Determina se è il momento di registrare un report di stato.
+    """Determines if it's time to log a status report.
     
     Returns:
-        bool: True se dovrebbe essere registrato un report
+        bool: True if a report should be logged
     """
     return stats['total_scans'] > 0 and stats['total_scans'] % STATUS_REPORT_FREQUENCY == 0
 
 def reset_consecutive_failures():
-    """Resetta il contatore dei fallimenti consecutivi."""
+    """Resets the consecutive failures counter."""
     stats['consecutive_failures'] = 0
-    log_message("🔄 Contatore fallimenti consecutivi resettato")
+    log_message("🔄 Consecutive failures counter reset")
 
 def get_stats_copy():
-    """Restituisce una copia delle statistiche correnti.
+    """Returns a copy of current statistics.
     
     Returns:
-        dict: Copia delle statistiche
+        dict: Copy of statistics
     """
     return stats.copy()
 
 def log_scan_start(scan_number):
-    """Registra l'inizio di una nuova scansione.
+    """Logs the start of a new scan.
     
     Args:
-        scan_number (int): Numero della scansione
+        scan_number (int): Scan number
     """
-    log_message(f"🔍 Avvio scansione #{scan_number}...")
+    log_message(f"🔍 Starting scan #{scan_number}...")
 
 def log_scan_complete(scan_number, found_target=False, coordinates=None):
-    """Registra il completamento di una scansione.
+    """Logs the completion of a scan.
     
     Args:
-        scan_number (int): Numero della scansione
-        found_target (bool): Se il target è stato trovato
-        coordinates (tuple, optional): Coordinate trovate
+        scan_number (int): Scan number
+        found_target (bool): Whether target was found
+        coordinates (tuple, optional): Found coordinates
     """
     if found_target and coordinates:
-        log_message(f"✅ Scansione #{scan_number} completata - Target trovato alle coordinate {coordinates}")
+        log_message(f"✅ Scan #{scan_number} completed - Target found at coordinates {coordinates}")
     else:
-        log_message(f"❌ Scansione #{scan_number} completata - Target non trovato")
+        log_message(f"❌ Scan #{scan_number} completed - Target not found")
 
 def log_enhancement_stats(method_name, detections_count):
-    """Registra le statistiche di enhancement per un metodo specifico.
+    """Logs enhancement statistics for a specific method.
     
     Args:
-        method_name (str): Nome del metodo di enhancement
-        detections_count (int): Numero di detection trovate
+        method_name (str): Enhancement method name
+        detections_count (int): Number of detections found
     """
-    log_debug(f"Enhancement {method_name}: {detections_count} detection valide")
+    log_debug(f"Enhancement {method_name}: {detections_count} valid detections")
 
 def log_coordinates_found(word, coordinates):
-    """Registra il ritrovamento di coordinate per una parola.
+    """Logs the finding of coordinates for a word.
     
     Args:
-        word (str): Parola trovata
-        coordinates (tuple): Coordinate (x, y)
+        word (str): Found word
+        coordinates (tuple): Coordinates (x, y)
     """
-    log_message(f"🎯 Coordinate trovate per '{word}': {coordinates}")
+    log_message(f"🎯 Coordinates found for '{word}': {coordinates}")
 
 def log_extended_wait_start():
-    """Registra l'inizio di un'attesa estesa."""
+    """Logs the start of an extended wait."""
     from config import EXTENDED_WAIT_TIME
-    log_message(f"⏳ Troppi fallimenti consecutivi. Attesa estesa di {EXTENDED_WAIT_TIME//60} minuti...")
+    log_message(f"⏳ Too many consecutive failures. Extended wait of {EXTENDED_WAIT_TIME//60} minutes...")
 
 def log_extended_wait_complete():
-    """Registra il completamento di un'attesa estesa."""
-    log_message("✅ Attesa estesa completata. Ripresa scansioni normali.")
+    """Logs the completion of an extended wait."""
+    log_message("✅ Extended wait completed. Resuming normal scans.")
 
 def setup_logging():
-    """Inizializza il sistema di logging.
+    """Initializes the logging system.
     
-    Crea il file di log se non esiste e registra l'avvio del sistema.
+    Creates the log file if it doesn't exist and logs system startup.
     """
     try:
-        # Crea la directory del log se non esiste
+        # Create log directory if it doesn't exist
         log_dir = os.path.dirname(LOG_FILE)
         if log_dir and not os.path.exists(log_dir):
             os.makedirs(log_dir)
         
-        # Registra l'avvio del sistema
-        log_message("🚀 Sistema di rilevamento automatico avviato", include_separator=True)
-        log_message(f"📁 File di log: {LOG_FILE}")
+        # Log system startup
+        log_message("🚀 Automatic detection system started", include_separator=True)
+        log_message(f"📁 Log file: {LOG_FILE}")
         
     except Exception as e:
-        print(f"Errore durante inizializzazione logging: {e}")
+        print(f"Error during logging initialization: {e}")
 
 def log_system_startup():
-    """Registra l'avvio del sistema con informazioni dettagliate."""
-    log_message("🚀 Sistema di rilevamento automatico avviato", include_separator=True)
-    log_message(f"📁 File di log: {LOG_FILE}")
-    log_message(f"⏰ Avvio: {datetime.now().strftime(TIMESTAMP_FORMAT)}")
+    """Logs system startup with detailed information."""
+    log_message("🚀 Automatic detection system started", include_separator=True)
+    log_message(f"📁 Log file: {LOG_FILE}")
+    log_message(f"⏰ Startup: {datetime.now().strftime(TIMESTAMP_FORMAT)}")
 
 def log_system_shutdown():
-    """Registra l'arresto del sistema."""
+    """Logs system shutdown."""
     uptime = get_uptime()
-    log_message("🛑 Sistema di rilevamento automatico arrestato", include_separator=True)
-    log_message(f"⏱️ Uptime totale: {format_uptime(uptime)}")
-    log_message(f"🔍 Scansioni totali: {stats['total_scans']}")
-    log_message(f"✅ Detection riuscite: {stats['successful_detections']}")
+    log_message("🛑 Automatic detection system stopped", include_separator=True)
+    log_message(f"⏱️ Total uptime: {format_uptime(uptime)}")
+    log_message(f"🔍 Total scans: {stats['total_scans']}")
+    log_message(f"✅ Successful detections: {stats['successful_detections']}")
 
 def log_scan_interval(scan_number, interval_minutes):
-    """Registra l'intervallo di scansione."""
-    log_message(f"⏰ Prossima scansione #{scan_number} tra {interval_minutes} minuti...")
+    """Logs scan interval."""
+    log_message(f"⏰ Next scan #{scan_number} in {interval_minutes} minutes...")
 
 def should_log_status_report():
-    """Determina se è il momento di registrare un report di stato."""
+    """Determines if it's time to log a status report."""
     return stats['total_scans'] % STATUS_REPORT_FREQUENCY == 0
 
 def get_stats_copy():
-    """Restituisce una copia delle statistiche correnti."""
+    """Returns a copy of current statistics."""
     return stats.copy()

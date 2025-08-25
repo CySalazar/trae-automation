@@ -1,10 +1,10 @@
-"""Modulo per estrazione testo tramite OCR.
+"""Module for text extraction via OCR.
 
-Questo modulo fornisce funzionalità complete per:
-- Estrazione testo da immagini con multiple configurazioni OCR
-- Validazione e processamento dei risultati OCR
-- Gestione errori e retry per operazioni OCR
-- Deduplicazione delle detection
+This module provides complete functionality for:
+- Text extraction from images with multiple OCR configurations
+- Validation and processing of OCR results
+- Error handling and retry for OCR operations
+- Detection deduplication
 """
 
 import re
@@ -22,20 +22,20 @@ from logger import (
 from image_processing import validate_image
 
 def extract_text_with_single_config(image, config):
-    """Estrae testo da un'immagine usando una singola configurazione OCR.
+    """Extracts text from an image using a single OCR configuration.
     
     Args:
-        image (PIL.Image): Immagine da processare
-        config (str): Configurazione OCR da utilizzare
+        image (PIL.Image): Image to process
+        config (str): OCR configuration to use
         
     Returns:
-        dict or None: Dati OCR o None se fallisce
+        dict or None: OCR data or None if it fails
     """
     try:
         if not validate_image(image):
             return None
         
-        # Esegui OCR con la configurazione specificata
+        # Execute OCR with the specified configuration
         data = pytesseract.image_to_data(
             image,
             output_type=pytesseract.Output.DICT,
@@ -45,23 +45,23 @@ def extract_text_with_single_config(image, config):
         return data
         
     except Exception as e:
-        log_error(f"Errore OCR con config '{config}': {e}")
+        log_error(f"OCR error with config '{config}': {e}")
         return None
 
 def validate_ocr_data(data):
-    """Valida i dati OCR restituiti da Tesseract.
+    """Validates OCR data returned by Tesseract.
     
     Args:
-        data (dict): Dati OCR da validare
+        data (dict): OCR data to validate
         
     Returns:
-        bool: True se i dati sono validi
+        bool: True if the data is valid
     """
     try:
         if not data or not isinstance(data, dict):
             return False
         
-        # Controlla che ci siano le chiavi necessarie
+        # Check that necessary keys are present
         required_keys = ['text', 'left', 'top', 'width', 'height', 'conf']
         for key in required_keys:
             if key not in data:
@@ -69,7 +69,7 @@ def validate_ocr_data(data):
             if not isinstance(data[key], list):
                 return False
         
-        # Controlla che tutte le liste abbiano la stessa lunghezza
+        # Check that all lists have the same length
         lengths = [len(data[key]) for key in required_keys]
         if not all(length == lengths[0] for length in lengths):
             return False
@@ -80,14 +80,14 @@ def validate_ocr_data(data):
         return False
 
 def process_single_detection(i, data):
-    """Processa una singola detection OCR.
+    """Processes a single OCR detection.
     
     Args:
-        i (int): Indice della detection
-        data (dict): Dati OCR completi
+        i (int): Detection index
+        data (dict): Complete OCR data
         
     Returns:
-        dict or None: Detection processata o None se non valida
+        dict or None: Processed detection or None if invalid
     """
     try:
         text = data['text'][i].strip()
@@ -97,18 +97,18 @@ def process_single_detection(i, data):
         width = data['width'][i]
         height = data['height'][i]
         
-        # Validazione base
+        # Basic validation
         if not text or confidence < MIN_CONFIDENCE_THRESHOLD:
             return None
         
-        # Validazione coordinate
+        # Coordinate validation
         if not all(isinstance(val, (int, float)) for val in [left, top, width, height]):
             return None
         
         if left < 0 or top < 0 or width <= 0 or height <= 0:
             return None
         
-        # Calcola coordinate del centro
+        # Calculate center coordinates
         center_x = int(left + width // 2)
         center_y = int(top + height // 2)
         
@@ -124,40 +124,40 @@ def process_single_detection(i, data):
         }
         
     except Exception as e:
-        log_error(f"Errore processamento detection {i}: {e}")
+        log_error(f"Error processing detection {i}: {e}")
         return None
 
 def extract_all_text_with_positions(image):
-    """Estrae tutto il testo con posizioni da un'immagine usando multiple configurazioni OCR.
+    """Extracts all text with positions from an image using multiple OCR configurations.
     
     Args:
-        image (PIL.Image): Immagine da processare
+        image (PIL.Image): Image to process
         
     Returns:
-        list: Lista di detection valide
+        list: List of valid detections
     """
     all_detections = []
     
     try:
-        # Validazione input
+        # Input validation
         if not validate_image(image):
-            log_error("Immagine non valida per estrazione testo")
+            log_error("Invalid image for text extraction")
             return []
         
-        log_debug(f"Inizio estrazione testo da immagine {image.width}x{image.height}")
+        log_debug(f"Starting text extraction from image {image.width}x{image.height}")
         
-        # Prova tutte le configurazioni OCR
+        # Try all OCR configurations
         for config in OCR_CONFIGS:
             try:
-                log_debug(f"Tentativo OCR con config: {config}")
+                log_debug(f"OCR attempt with config: {config}")
                 
-                # Estrai dati OCR
+                # Extract OCR data
                 data = extract_text_with_single_config(image, config)
                 if not validate_ocr_data(data):
-                    log_debug(f"Dati OCR non validi per config: {config}")
+                    log_debug(f"Invalid OCR data for config: {config}")
                     continue
                 
-                # Processa ogni detection
+                # Process each detection
                 valid_detections = 0
                 for i in range(len(data['text'])):
                     try:
@@ -166,33 +166,33 @@ def extract_all_text_with_positions(image):
                             all_detections.append(detection)
                             valid_detections += 1
                     except Exception as e:
-                        log_error(f"Errore processamento detection {i} con config {config}: {e}")
+                        log_error(f"Error processing detection {i} with config {config}: {e}")
                         continue
                 
-                log_debug(f"Config {config}: {valid_detections} detection valide")
+                log_debug(f"Config {config}: {valid_detections} valid detections")
                 
             except Exception as e:
-                log_error(f"Errore OCR con configurazione {config}: {e}")
+                log_error(f"OCR error with configuration {config}: {e}")
                 record_ocr_error()
                 continue
         
-        log_debug(f"Estrazione testo completata: {len(all_detections)} detection totali")
+        log_debug(f"Text extraction completed: {len(all_detections)} total detections")
         return all_detections
         
     except Exception as e:
-        log_error(f"Errore critico durante estrazione testo: {e}")
+        log_error(f"Critical error during text extraction: {e}")
         record_ocr_error()
         return []
 
 def calculate_distance(det1, det2):
-    """Calcola la distanza euclidea tra due detection.
+    """Calculates the Euclidean distance between two detections.
     
     Args:
-        det1 (dict): Prima detection
-        det2 (dict): Seconda detection
+        det1 (dict): First detection
+        det2 (dict): Second detection
         
     Returns:
-        float: Distanza euclidea
+        float: Euclidean distance
     """
     try:
         dx = det1['center_x'] - det2['center_x']
@@ -202,23 +202,23 @@ def calculate_distance(det1, det2):
         return float('inf')
 
 def deduplicate_detections(detections):
-    """Rimuove detection duplicate basandosi sulla distanza e confidence.
+    """Removes duplicate detections based on distance and confidence.
     
     Args:
-        detections (list): Lista di detection da deduplicare
+        detections (list): List of detections to deduplicate
         
     Returns:
-        list: Lista di detection deduplicate
+        list: List of deduplicated detections
     """
     try:
-        # Validazione input
+        # Input validation
         if not detections or not isinstance(detections, list):
-            log_debug("Lista detection vuota o non valida")
+            log_debug("Empty or invalid detection list")
             return []
         
-        log_debug(f"Inizio deduplicazione di {len(detections)} detection")
+        log_debug(f"Starting deduplication of {len(detections)} detections")
         
-        # Filtra detection non valide
+        # Filter invalid detections
         valid_detections = []
         for det in detections:
             try:
@@ -229,7 +229,7 @@ def deduplicate_detections(detections):
                 if not all(field in det for field in required_fields):
                     continue
                 
-                # Validazione valori
+                # Value validation
                 if not det['text'] or det['text'].isspace():
                     continue
                 
@@ -245,23 +245,23 @@ def deduplicate_detections(detections):
                 valid_detections.append(det)
                 
             except Exception as e:
-                log_error(f"Errore validazione detection: {e}")
+                log_error(f"Error validating detection: {e}")
                 continue
         
         if not valid_detections:
-            log_debug("Nessuna detection valida dopo filtro")
+            log_debug("No valid detections after filtering")
             return []
         
-        log_debug(f"Detection valide dopo filtro: {len(valid_detections)}")
+        log_debug(f"Valid detections after filtering: {len(valid_detections)}")
         
-        # Ordina per confidence (più alta prima)
+        # Sort by confidence (highest first)
         try:
             valid_detections.sort(key=lambda x: x['confidence'], reverse=True)
         except Exception as e:
-            log_error(f"Errore ordinamento detection: {e}")
-            return valid_detections  # Restituisci senza ordinamento
+            log_error(f"Error sorting detections: {e}")
+            return valid_detections  # Return without sorting
         
-        # Deduplicazione
+        # Deduplication
         deduplicated = []
         for current in valid_detections:
             try:
@@ -269,41 +269,41 @@ def deduplicate_detections(detections):
                 
                 for existing in deduplicated:
                     try:
-                        # Controlla se il testo è identico
+                        # Check if text is identical
                         if current['text'].lower() == existing['text'].lower():
                             distance = calculate_distance(current, existing)
                             if distance < DEDUPLICATION_DISTANCE_THRESHOLD:
                                 is_duplicate = True
                                 break
                     except Exception as e:
-                        log_error(f"Errore confronto detection: {e}")
+                        log_error(f"Error comparing detections: {e}")
                         continue
                 
                 if not is_duplicate:
                     deduplicated.append(current)
                     
             except Exception as e:
-                log_error(f"Errore durante deduplicazione: {e}")
+                log_error(f"Error during deduplication: {e}")
                 continue
         
-        log_debug(f"Deduplicazione completata: {len(deduplicated)} detection uniche")
+        log_debug(f"Deduplication completed: {len(deduplicated)} unique detections")
         return deduplicated
         
     except Exception as e:
-        log_error(f"Errore critico durante deduplicazione: {e}")
-        # Fallback: restituisci le detection originali
+        log_error(f"Critical error during deduplication: {e}")
+        # Fallback: return original detections
         return detections if isinstance(detections, list) else []
 
 def find_target_pattern_in_detections(detections, target_pattern, target_end_word):
-    """Cerca il pattern target nelle detection e trova le coordinate della parola finale.
+    """Searches for target pattern in detections and finds coordinates of the final word.
     
     Args:
-        detections (list): Lista di detection
-        target_pattern (str): Pattern regex da cercare
-        target_end_word (str): Parola finale di cui trovare le coordinate
+        detections (list): List of detections
+        target_pattern (str): Regex pattern to search for
+        target_end_word (str): Final word to find coordinates for
         
     Returns:
-        list: Lista di coordinate (x, y) trovate
+        list: List of found coordinates (x, y)
     """
     coordinates = []
     
@@ -311,11 +311,11 @@ def find_target_pattern_in_detections(detections, target_pattern, target_end_wor
         if not detections:
             return coordinates
         
-        log_debug(f"Ricerca pattern '{target_pattern}' in {len(detections)} detection")
+        log_debug(f"Searching pattern '{target_pattern}' in {len(detections)} detections")
         
-        # Crea una stringa con tutto il testo rilevato
+        # Create a string with all detected text
         all_text_parts = []
-        text_to_detection = {}  # Mappa posizione nel testo -> detection
+        text_to_detection = {}  # Map text position -> detection
         
         current_pos = 0
         for det in detections:
@@ -323,72 +323,72 @@ def find_target_pattern_in_detections(detections, target_pattern, target_end_wor
                 text = det['text']
                 all_text_parts.append(text)
                 
-                # Mappa ogni carattere alla sua detection
+                # Map each character to its detection
                 for i in range(len(text)):
                     text_to_detection[current_pos + i] = det
                 
-                current_pos += len(text) + 1  # +1 per lo spazio
-                all_text_parts.append(' ')  # Aggiungi spazio tra detection
+                current_pos += len(text) + 1  # +1 for space
+                all_text_parts.append(' ')  # Add space between detections
                 
             except Exception as e:
-                log_error(f"Errore processamento detection per pattern: {e}")
+                log_error(f"Error processing detection for pattern: {e}")
                 continue
         
         full_text = ''.join(all_text_parts)
-        log_debug(f"Testo completo per ricerca: '{full_text[:100]}...'")
+        log_debug(f"Full text for search: '{full_text[:100]}...'")
         
-        # Cerca il pattern
+        # Search for the pattern
         try:
             pattern_matches = list(re.finditer(target_pattern, full_text, re.IGNORECASE))
-            log_debug(f"Trovati {len(pattern_matches)} match del pattern")
+            log_debug(f"Found {len(pattern_matches)} pattern matches")
             
             for match in pattern_matches:
                 try:
-                    # Trova tutte le occorrenze della parola target nel match
+                    # Find all occurrences of target word in the match
                     match_text = match.group()
                     word_pattern = r'\b' + re.escape(target_end_word) + r'\b'
                     word_matches = list(re.finditer(word_pattern, match_text, re.IGNORECASE))
                     
                     for word_match in word_matches:
                         try:
-                            # Calcola la posizione assoluta della parola
+                            # Calculate absolute position of the word
                             word_start_pos = match.start() + word_match.start()
                             word_end_pos = match.start() + word_match.end() - 1
                             
-                            # Trova la detection corrispondente alla fine della parola
+                            # Find detection corresponding to end of word
                             if word_end_pos in text_to_detection:
                                 det = text_to_detection[word_end_pos]
                                 coord = (det['center_x'], det['center_y'])
                                 coordinates.append(coord)
-                                log_debug(f"Coordinate trovate per '{target_end_word}': {coord}")
+                                log_debug(f"Coordinates found for '{target_end_word}': {coord}")
                             
                         except Exception as e:
-                            log_error(f"Errore estrazione coordinate parola: {e}")
+                            log_error(f"Error extracting word coordinates: {e}")
                             continue
                             
                 except Exception as e:
-                    log_error(f"Errore processamento match pattern: {e}")
+                    log_error(f"Error processing pattern match: {e}")
                     continue
                     
         except Exception as e:
-            log_error(f"Errore ricerca pattern regex: {e}")
+            log_error(f"Error searching regex pattern: {e}")
         
-        log_debug(f"Ricerca pattern completata: {len(coordinates)} coordinate trovate")
+        log_debug(f"Pattern search completed: {len(coordinates)} coordinates found")
         return coordinates
         
     except Exception as e:
-        log_error(f"Errore critico durante ricerca pattern: {e}")
+        log_error(f"Critical error during pattern search: {e}")
         return []
 
 def deduplicate_coordinates(coordinates, tolerance=None):
-    """Deduplicazione finale delle coordinate trovate.
+    """Final deduplication of found coordinates.
     
     Args:
-        coordinates (list): Lista di coordinate (x, y)
-        tolerance (int, optional): Tolleranza per considerare coordinate duplicate
+        coordinates (list): List of coordinates (x, y)
+        tolerance (int, optional): Tolerance for considering coordinates as duplicates
         
     Returns:
-        list: Lista di coordinate deduplicate
+        list: List of deduplicated coordinates
     """
     if tolerance is None:
         tolerance = FINAL_COORDINATES_TOLERANCE
@@ -397,7 +397,7 @@ def deduplicate_coordinates(coordinates, tolerance=None):
         if not coordinates:
             return []
         
-        log_debug(f"Deduplicazione {len(coordinates)} coordinate con tolleranza {tolerance}")
+        log_debug(f"Deduplicating {len(coordinates)} coordinates with tolerance {tolerance}")
         
         deduplicated = []
         for coord in coordinates:
@@ -424,12 +424,12 @@ def deduplicate_coordinates(coordinates, tolerance=None):
                     deduplicated.append((int(x), int(y)))
                     
             except Exception as e:
-                log_error(f"Errore deduplicazione coordinata {coord}: {e}")
+                log_error(f"Error deduplicating coordinate {coord}: {e}")
                 continue
         
-        log_debug(f"Deduplicazione coordinate completata: {len(deduplicated)} coordinate uniche")
+        log_debug(f"Coordinate deduplication completed: {len(deduplicated)} unique coordinates")
         return deduplicated
         
     except Exception as e:
-        log_error(f"Errore critico deduplicazione coordinate: {e}")
+        log_error(f"Critical error in coordinate deduplication: {e}")
         return coordinates if isinstance(coordinates, list) else []
